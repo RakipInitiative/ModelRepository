@@ -6,12 +6,13 @@ Joint project of EFSA, Federal Institute For Risk Assessment, DTU and ANSES to c
 ##### Reference
 https://efsa.onlinelibrary.wiley.com/doi/full/10.2903/j.efsa.2020.6090 
 
-### CPM
+### CPMs started working on
 8 consumer phase models are compared to each other
 
 #### Christensen et al.: Risk Assessment of Campylobacter jejuni in Chicken Products
 ##### status
   * found fskx file in RAKIP model repository, not fully annotated, discrepancies between code and reference
+  * refers to DOI: 10.1111/j.1539-6924.2010.01481.x --> checking that reference led to similar publication
 ##### todo
   * need to check if model code and code in reference are identical
   * annotation completing  
@@ -23,6 +24,7 @@ Products. Danish Veterinary and Food Administration, Copenhagen, Denmark.
 #### Brynestad et al.: Quantitative microbiological risk assessment of campylobacteriosis cases in the German population due to consumption of chicken prepared in homes
 ##### status
   * found fskx file in RAKIP model repository, not fully annotated, discrepancies between code and reference
+  * refers to DOI: 10.1111/j.1539-6924.2010.01481.x --> checking that reference led to similar publication
 ##### todo
   * need to check if model code and code in reference are identical
   * annotation completing  
@@ -36,6 +38,7 @@ International Journal of Risk Assessment and Management, 8, 194–213
 #### Nauta et al.: Food safety in the domestic environment: the effect of consumer risk information on human disease risks
 ##### status
   * found fskx file in RAKIP model repository, not fully annotated, discrepancies between code and reference
+  * refers to DOI: 10.1111/j.1539-6924.2010.01481.x --> checking that reference led to DIFFERENT publication
 ##### todo
   * need to check if model code and code in reference are identical
   * annotation completing  
@@ -48,6 +51,7 @@ environment: the effect of consumer risk information on human disease risks. Ris
 #### WHO: Risk assessment of Campylobacter spp. in broiler chickens: technical report
 ##### status
   * found fskx file in RAKIP model repository, not fully annotated, discrepancies between code and reference
+  * refers to DOI: 10.1111/j.1539-6924.2010.01481.x --> checking that reference led to DIFFERENT publication
 ##### todo
   * need to check if model code and code in reference are identical
   * annotation completing  
@@ -55,7 +59,7 @@ environment: the effect of consumer risk information on human disease risks. Ris
 WHO, 2009. Risk assessment of Campylobacter spp. in broiler chickens: technical report. Microbiological Risk
 Assessment Series, 12 
 
-
+### CPMs not started yet
 
 #### Mylius et al.: Cross-contamination during food preparation: a mechanistic modelapplied to chicken-borne Campylobacter
 ##### Reference
