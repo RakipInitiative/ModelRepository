@@ -4,7 +4,7 @@
 require(distr)
 
 # input parameters
-Iterations <- 10000 # 10000
+Iterations <- 100000 # 10000
 transferRateLower <- -3.7
 transferRateUpper <- -1
 chickenPortionSizeMean <- 189
@@ -13,7 +13,7 @@ chickenPortionSizeStd <- 126.9
 # these are the 91 Sims from @Risk
 logNPerGramLowerBound <- -2
 logNPerGramStepsize <- 0.1
-logNPerGramUpperBound <- 7
+logNPerGramUpperBound <- 6
 
 
 # model script
@@ -42,7 +42,7 @@ logNPerGram <- seq(logNPerGramLowerBound,logNPerGramUpperBound,by=logNPerGramSte
 
 
 #AX4 - size 91
-NcarcassVec <- rpois(1,1097*10^logNPerGram)
+NcarcassVec <- rpois(length(logNPerGram),1097*10^logNPerGram)
 
 count <- 0
 dose <- c(rep(1,length(logNPerGram)))
@@ -55,10 +55,10 @@ for (Ncarcass in NcarcassVec)
     dose[count] <- 0
   } else {
     if (Ncarcass<25000) {
-      dose[count] <- mean(rbinom(1,Ncarcass,pTR))
+      dose[count] <- rbinom(1,Ncarcass,pTR)
     } else {
-      dummy <-round(rnorm(1,Ncarcass*pTR,Ncarcass*pTR*(1-pTr)))
-      dose[count] <- mean(max(0,dummy))
+      dummy <-round(rnorm(1,Ncarcass*pTR,Ncarcass*pTR*(1-pTR)))
+      dose[count] <- max(0,dummy)
     }
   }
 }
@@ -82,6 +82,6 @@ Pill <- PillInf*(1-exp(log(gamma(alpha+beta))+log(gamma(dose+beta))-log(gamma(do
 
 
 # visualization script
-plot(logNPerGram,dose)
+plot(logNPerGram,Pill)
 #axis(1, 1:1000, 1:1000)
 
