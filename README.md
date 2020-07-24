@@ -9,6 +9,18 @@ https://efsa.onlinelibrary.wiley.com/doi/full/10.2903/j.efsa.2020.6090
 ### CPMs started working on
 8 consumer phase models are compared to each other
 
+### Questions for Maarten
+  * visualization RAKIP models what is ordinate? what is info i get out of it?
+  * dose in RAKIP models only binomial distribution, dose in @Risk model is normal -> what to do?
+  * Cret in RAKIP is randomly chosen for abscissa in visualization, in @Risk as axis of abscissa with certain range for Pill -> what to do?
+  * Lindqvist Ncarcass vs Nportion?
+  * Van Asselt -> washed board prob =0, but unwashed board depends on hands => shouldnt washed board with unwashed hands do something?
+  * Maxportion in RAKIP = 1000, but in @Risk no upper bound is given... what to do?
+  * calistri model empiric transfer probability hands to meat 2x 0.6? is that correct?
+
+### general R problems
+  * R 3.X: some functions(rbinom, gamma, etc.) have only a 32bit range of numbers --> some models use numbers outside of 32bit range - solved in R4 but FSK only supports R3.X
+
 #### Christensen et al.: Risk Assessment of Campylobacter jejuni in Chicken Products
 ##### status
   * found fskx file in RAKIP model repository, not fully annotated, discrepancies between code and reference

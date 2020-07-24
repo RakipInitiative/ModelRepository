@@ -94,13 +94,13 @@ PrevExp <- runConsumerPhaseLindqvist$PrevExp
 library(gridExtra)
 
 resultsCPM <- cbind(round(runConsumerPhaseLindqvist$dosemean,0), round(runConsumerPhaseLindqvist$PrevExp*100,1))
-rownames(resultsCPM) <- c("CPM Nauta")
+rownames(resultsCPM) <- c("CPM Lindqvist")
 colnames(resultsCPM) <- c("Mean dose", 'Prevalence of exposure [%]')
 
 tableCPM <- matrix(round(runConsumerPhaseLindqvist$dose,0))
 rownames(tableCPM) <- rownames(tableCPM, do.NULL=FALSE, prefix="Value.")
 colnames(tableCPM) <- c('Dose')
-write.csv(tableCPM, file="doses-consumer-phase-Nauta.csv")
+write.csv(tableCPM, file="doses-consumer-phase-Lindqvist.csv")
 
 sortdose <-sort(log10(runConsumerPhaseLindqvist$dose))
 vsize <-length(sortdose)
