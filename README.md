@@ -16,7 +16,7 @@ https://efsa.onlinelibrary.wiley.com/doi/full/10.2903/j.efsa.2020.6090
   * Lindqvist Ncarcass vs Nportion?
   * Van Asselt -> washed board prob =0, but unwashed board depends on hands => shouldnt washed board with unwashed hands do something?
   * Maxportion in RAKIP = 1000, but in @Risk no upper bound is given... what to do?
-  * calistri model empiric transfer probability hands to meat 2x 0.6? is that correct?
+  * calistri model empiric transfer probability hands to meat 2x 0.6? is that correct? R doesnt accept it like this
   * found an error in Nauta updated model: Input parameter piCret was unused, but needed in code --> fixed
 
 ### general R problems
