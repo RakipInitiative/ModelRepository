@@ -17,6 +17,7 @@ https://efsa.onlinelibrary.wiley.com/doi/full/10.2903/j.efsa.2020.6090
   * Van Asselt -> washed board prob =0, but unwashed board depends on hands => shouldnt washed board with unwashed hands do something?
   * Maxportion in RAKIP = 1000, but in @Risk no upper bound is given... what to do?
   * calistri model empiric transfer probability hands to meat 2x 0.6? is that correct?
+  * found an error in Nauta updated model: Input parameter piCret was unused, but needed in code --> fixed
 
 ### general R problems
   * R 3.X: some functions(rbinom, gamma, etc.) have only a 32bit range of numbers --> some models use numbers outside of 32bit range - solved in R4 but FSK only supports R3.X
@@ -71,7 +72,7 @@ environment: the effect of consumer risk information on human disease risks. Ris
 WHO, 2009. Risk assessment of Campylobacter spp. in broiler chickens: technical report. Microbiological Risk
 Assessment Series, 12 
 
-### CPMs not started yet
+### CPMs currently in process of transfer to fskx
 
 #### Mylius et al.: Cross-contamination during food preparation: a mechanistic modelapplied to chicken-borne Campylobacter
 ##### Reference

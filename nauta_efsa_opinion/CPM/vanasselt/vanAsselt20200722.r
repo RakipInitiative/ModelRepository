@@ -35,24 +35,6 @@ modConsumerPhaseVanAsselt <- function(niter, Pprev, muCret, sigmaCret, meanPorti
   sigmaWc <- round(sqrt(uniroot(fvarWc, lower = 0, upper = 1e3, tol = 1e-7)$root),3)
   muWc <- round(log(meanPortion) - ((sigmaWc)^2)/2,3)
   
-  #random numbers from the mixture distribution
-  rnorm.mixture <- function(n, K, mu.mix=rep(0,K), sigma.mix=rep(1,K), pi.mix=rep(0.5,K)) {
-    
-    N = n #number of samples
-    U = runif(N) #N random samples from U(0,1)
-    
-    pi.mix.sum <- rep(0, length(pi.mix)+1)
-    for (i in 2:length(pi.mix.sum)) pi.mix.sum[i] <- pi.mix.sum[i-1] + pi.mix[i-1]
-    
-    sample = rep(NA,N) #N samples from mixture model
-    for (i in 1:N){
-      
-      k <- min(which(U[i]<pi.mix.sum))-1
-      sample[i] = rnorm(1, mu.mix[k], sigma.mix[k])
-    }
-    
-    return(list(sample=sample))
-  }
   
   Cretlog <- array(NA, niter)
   Cret <- array(NA, niter)
@@ -71,6 +53,8 @@ modConsumerPhaseVanAsselt <- function(niter, Pprev, muCret, sigmaCret, meanPorti
     transferRateHands[i] <- r(transferRateHandsDistr)(1)
   }
   transferRateUnwashedBoard <- (1-transferRateHands)*10^(rnorm(niter,transferRateUnwashedBoardMean,transferRateUnwashedBoardStd))
+  
+  
   #from @Risk code
   transferRateWashedBoard <- rnorm(niter,transferRateWashedBoardMean,transferRateWashedBoardStd)
   # Marcel thinks this should be more like this:
@@ -85,8 +69,7 @@ modConsumerPhaseVanAsselt <- function(niter, Pprev, muCret, sigmaCret, meanPorti
     
   K <- length(muCret)
   for (i in 1:niter){
-    Cretlog[i] <- rnorm.mixture(n=1, K, mu.mix=muCret, sigma.mix=sigmaCret, pi.mix=piCret)$sample
-    
+    Cretlog[i] <- rnorm(1, muCret, sigmaCret)
     Cret[i] <- 10^Cretlog[i]
     
     Wc[i] <- min(rlnorm(1, muWc, sigmaWc), upperPortion)

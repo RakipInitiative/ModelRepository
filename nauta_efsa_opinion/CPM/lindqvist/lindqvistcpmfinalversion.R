@@ -21,24 +21,7 @@ require(distr)
 modConsumerPhaseLindqvist <- function(niter, meanPortion, stdPortion, upperPortion, transferRateLower, transferRateUpper, muCret, piCret, sigmaCret, Pprev){
   
   
-  #random numbers from the mixture distribution
-  rnorm.mixture <- function(n, K, mu.mix=rep(0,K), sigma.mix=rep(1,K), pi.mix=rep(0.5,K)) {
-    
-    N = n #number of samples
-    U = runif(N) #N random samples from U(0,1)
-    
-    pi.mix.sum <- rep(0, length(pi.mix)+1)
-    for (i in 2:length(pi.mix.sum)) pi.mix.sum[i] <- pi.mix.sum[i-1] + pi.mix[i-1]
-    
-    sample = rep(NA,N) #N samples from mixture model
-    for (i in 1:N){
-      
-      k <- min(which(U[i]<pi.mix.sum))-1
-      sample[i] = rnorm(1, mu.mix[k], sigma.mix[k])
-    }
-    
-    return(list(sample=sample))
-  }
+
   
   #transform lognormal parameters for the portion size
   fvarWc <- function(x,a) (exp(x) - 1)*exp(2*log(meanPortion))-stdPortion^2
@@ -64,8 +47,7 @@ modConsumerPhaseLindqvist <- function(niter, meanPortion, stdPortion, upperPorti
   K <- length(muCret)
   
   for (i in 1:niter){
-    Cretlog[i] <- rnorm.mixture(n=1, K, mu.mix=muCret, sigma.mix=sigmaCret, pi.mix=piCret)$sample
-    
+    Cretlog[i] <- rnorm(1, muCret, sigmaCret)
     Cret[i] <- 10^Cretlog[i]
     
     Ncarcass[i] <- rpois(1,1097*Cret[i])

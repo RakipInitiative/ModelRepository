@@ -54,8 +54,7 @@ normalLimit <- 25000
 
 library(mc2d)
 
-#modConsumerPhaseMylius <- function(niter, Pprev, muCret, sigmaCret, meanPortion, stdPortion, upperPortion, 
- #                                   ){
+modConsumerPhaseMylius <- function(niter, Pprev, muCret, sigmaCret, meanPortion, stdPortion, upperPortion, chicken2boardMean, chicken2boardStd, board2saladMean, board2saladStd, chicken2handsMean, chicken2handsStd, hands2saladMean, hands2saladStd, hands2handsMean, hands2handsStd, saladWashingEffectMin, saladWashingEffectMostLikely, saladWashingEffectMax, boardWashingEffectMin, boardWashingEffectMostLikely, boardWashingEffectMax, cuttingBoardHandlingUsesDifferentBoard, cuttingBoardHandlingTurnAroundBoard, cuttingBoardHandlingUseSameBoard, cuttingBoardHandlingCleanBoard, transferHands2tap, freqChickenFirs, freqHandWash, freqBoardWash, freqWashSalad, normalLimit){
   
   #transform lognormal parameters for the portion size
   fvarWc <- function(x,a) (exp(x) - 1)*exp(2*log(meanPortion))-stdPortion^2
@@ -167,7 +166,7 @@ library(mc2d)
   transferChicken2saladAfterWashing <- (transferBoard2salad*transferChicken2boardAfterWashing+transferHands2salad*transferChicken2handsAfterWashing)*finalSurvivalProbCutSalad #E29
   ############################################################################
 
-  Ptr[i] <- transferChicken2saladAfterWashing*finalSurvivalProbWashingSalad
+    Ptr[i] <- transferChicken2saladAfterWashing*finalSurvivalProbWashingSalad
   
     Cretlog[i] <- rnorm(1, muCret, sigmaCret)
     Cret[i] <- 10^Cretlog[i]
@@ -178,22 +177,21 @@ library(mc2d)
     
 
 
-    dose[i] <- ifelse(Nportion[i]==0, 0, rbinom(1, size=Nportion[i], prob=Ptr))
+    dose[i] <- ifelse(Nportion[i]==0, 0, rbinom(1, size=Nportion[i], prob=Ptr[i]))
   }
   
   dosemean <- mean(dose)*Pprev
   PrevExp <- Pprev*(sum(dose>0)/niter)
   
-  #return(list(dose=dose, dosemean=dosemean, PrevExp = PrevExp))
-#}
+  return(list(dose=dose, dosemean=dosemean, PrevExp = PrevExp))
+}
 
-#runConsumerPhaseMylius <- modConsumerPhaseMylius(niter, Pprev, muCret, sigmaCret, meanPortion, stdPortion, upperPortion, 
-                                                     #)
+runConsumerPhaseMylius <- modConsumerPhaseMylius(niter, Pprev, muCret, sigmaCret, meanPortion, stdPortion, upperPortion, chicken2boardMean, chicken2boardStd, board2saladMean, board2saladStd, chicken2handsMean, chicken2handsStd, hands2saladMean, hands2saladStd, hands2handsMean, hands2handsStd, saladWashingEffectMin, saladWashingEffectMostLikely, saladWashingEffectMax, boardWashingEffectMin, boardWashingEffectMostLikely, boardWashingEffectMax, cuttingBoardHandlingUsesDifferentBoard, cuttingBoardHandlingTurnAroundBoard, cuttingBoardHandlingUseSameBoard, cuttingBoardHandlingCleanBoard, transferHands2tap, freqChickenFirs, freqHandWash, freqBoardWash, freqWashSalad, normalLimit)
 
 
-  #dose <- runConsumerPhaseMylius$dose
-#dosemean <- runConsumerPhaseMylius$dosemean
-#PrevExp <- runConsumerPhaseMylius$PrevExp
+dose <- runConsumerPhaseMylius$dose
+dosemean <- runConsumerPhaseMylius$dosemean
+PrevExp <- runConsumerPhaseMylius$PrevExp
 
 
 
