@@ -1,24 +1,19 @@
 # set.seed(1234)
 transferRateLower <- -3.7
 transferRateUpper <- -1
-logNPerGramLowerBound <- -2
-logNPerGramStepsize <- 0.1
-logNPerGramUpperBound <- 6
 meanPortion <- 189.0
-piCret <- 1.0
 sigmaCret <- 0.2
 muCret <- 1.5
 Pprev <- 0.25
 niter <- 100000
 upperPortion <- 1000.0
 stdPortion <- 126.9
-#logPtr <- c(2.24, 2.36, 2.37, 2.58, 2.82, 2.86, 3.16, 3.17, 3.47, 3.52, 3.57, 3.83, 3.83, 3.84, 3.87, 3.89, 3.89, 3.90, 3.94, 4.03, 4.09, 4.42, 4.53, 4.54, 4.54, 4.62, 4.62, 4.68, 4.73, 4.76,4.84, 4.92, 4.93, 4.95, 4.97, 5.20, 5.25, 5.27, 5.39, 5.47, 5.60, 5.83, 5.89, 5.95, 5.96, 6.02, 6.23, 6.38, 6.96, 7.37, 7.90, 8.20, 9.00, 9.00, 9.00)
 
 
 # model
 require(distr)
 
-modConsumerPhaseLindqvist <- function(niter, meanPortion, stdPortion, upperPortion, transferRateLower, transferRateUpper, muCret, piCret, sigmaCret, Pprev){
+modConsumerPhaseLindqvist <- function(niter, meanPortion, stdPortion, upperPortion, transferRateLower, transferRateUpper, muCret, sigmaCret, Pprev){
   
   
 
@@ -65,7 +60,7 @@ modConsumerPhaseLindqvist <- function(niter, meanPortion, stdPortion, upperPorti
   return(list(dose=dose, dosemean=dosemean, PrevExp = PrevExp)) 
 }
 
-runConsumerPhaseLindqvist <- modConsumerPhaseLindqvist(niter, meanPortion, stdPortion, upperPortion, transferRateLower, transferRateUpper, muCret, piCret, sigmaCret, Pprev)
+runConsumerPhaseLindqvist <- modConsumerPhaseLindqvist(niter, meanPortion, stdPortion, upperPortion, transferRateLower, transferRateUpper, muCret, sigmaCret, Pprev)
 
 dose <- runConsumerPhaseLindqvist$dose
 dosemean <- runConsumerPhaseLindqvist$dosemean
