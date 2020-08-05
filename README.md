@@ -18,6 +18,7 @@ https://efsa.onlinelibrary.wiley.com/doi/full/10.2903/j.efsa.2020.6090
   * Maxportion in RAKIP = 1000, but in @Risk no upper bound is given... what to do?
   * calistri model empiric transfer probability hands to meat 2x 0.6? is that correct? R doesnt accept it like this
   * found an error in Nauta updated model: Input parameter piCret was unused, but needed in code --> fixed
+  * in Campy regression @Risk code in tab "meat conc distributions", column log dose interval : first and last values weird source cell in excel -> better?
 
 ### general R problems
   * R 3.X: some functions(rbinom, gamma, etc.) have only a 32bit range of numbers --> some models use numbers outside of 32bit range - solved in R4 but FSK only supports R3.X
