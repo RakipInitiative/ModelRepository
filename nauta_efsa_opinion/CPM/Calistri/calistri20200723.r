@@ -82,10 +82,10 @@ modConsumerPhaseCalistri <- function(niter, Pprev, muCret, sigmaCret, meanPortio
     
     Nportion[i] <- ifelse(Cret[i]*Wc[i]<1e3, rpois(1, Cret[i]*Wc[i]), round(rnorm(1, Cret[i]*Wc[i], sqrt(Cret[i]*Wc[i])),0))
     
-    transferM2K <- sample(abscissaMeat2Kitchenwareapprox, 1, prob=PMeat2Kitchenwareapprox)
-    transferK2M <- sample(abscissaKitchenware2Meatapprox, 1, prob=PKitchenware2Meatapprox)
-    transferM2H <- sample(abscissaMeat2Handsapprox, 1, prob=PMeat2Handsapprox)
-    transferH2M <- sample(abscissaHands2Meatapprox, 1, prob=PHands2Meatapprox)
+    transferM2K <- sample(abscissaMeat2Kitchenwareapprox, 1, prob=PMeat2Kitchenwareapprox, replace=TRUE)
+    transferK2M <- sample(abscissaKitchenware2Meatapprox, 1, prob=PKitchenware2Meatapprox, replace=TRUE)
+    transferM2H <- sample(abscissaMeat2Handsapprox, 1, prob=PMeat2Handsapprox, replace=TRUE)
+    transferH2M <- sample(abscissaHands2Meatapprox, 1, prob=PHands2Meatapprox, replace=TRUE)
     
     
     # AU34

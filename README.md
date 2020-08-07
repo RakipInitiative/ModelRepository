@@ -19,6 +19,8 @@ https://efsa.onlinelibrary.wiley.com/doi/full/10.2903/j.efsa.2020.6090
   * calistri model empiric transfer probability hands to meat 2x 0.6? is that correct? R doesnt accept it like this
   * found an error in Nauta updated model: Input parameter piCret was unused, but needed in code --> fixed
   * in Campy regression @Risk code in tab "meat conc distributions", column log dose interval : first and last values weird source cell in excel -> better?
+  * in R models is Prev used --> also for efsa opinion relevant?
+  * Mylius model: normal limit for continuums limit of poisson distribution -> normal distribution?
 
 ### general R problems
   * R 3.X: some functions(rbinom, gamma, etc.) have only a 32bit range of numbers --> some models use numbers outside of 32bit range - solved in R4 but FSK only supports R3.X

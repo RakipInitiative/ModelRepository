@@ -1,6 +1,4 @@
 # set.seed(1234)
-transferRateLower <- -3.7
-transferRateUpper <- -1
 meanPortion <- 189.0
 sigmaCret <- 0.2
 muCret <- 1.5
@@ -8,6 +6,9 @@ Pprev <- 0.25
 niter <- 100000
 upperPortion <- 1000.0
 stdPortion <- 126.9
+
+transferRateLower <- -3.7
+transferRateUpper <- -1
 
 
 # model
@@ -39,8 +40,7 @@ modConsumerPhaseLindqvist <- function(niter, meanPortion, stdPortion, upperPorti
   Np <- r(NpDistribution)(niter)
   
   # parameter for gaussian mixture distribution -> Cretlog
-  K <- length(muCret)
-  
+
   for (i in 1:niter){
     Cretlog[i] <- rnorm(1, muCret, sigmaCret)
     Cret[i] <- 10^Cretlog[i]
