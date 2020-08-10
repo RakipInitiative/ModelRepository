@@ -10,17 +10,26 @@ https://efsa.onlinelibrary.wiley.com/doi/full/10.2903/j.efsa.2020.6090
 8 consumer phase models are compared to each other
 
 ### Questions for Maarten
-  * visualization RAKIP models what is ordinate? what is info i get out of it?
-  * dose in RAKIP models only binomial distribution, dose in @Risk model is normal -> what to do?
-  * Cret in RAKIP is randomly chosen for abscissa in visualization, in @Risk as axis of abscissa with certain range for Pill -> what to do?
-  * Lindqvist Ncarcass vs Nportion?
-  * Van Asselt -> washed board prob =0, but unwashed board depends on hands => shouldnt washed board with unwashed hands do something?
-  * Maxportion in RAKIP = 1000, but in @Risk no upper bound is given... what to do?
-  * calistri model empiric transfer probability hands to meat 2x 0.6? is that correct? R doesnt accept it like this
-  * found an error in Nauta updated model: Input parameter piCret was unused, but needed in code --> fixed
-  * in Campy regression @Risk code in tab "meat conc distributions", column log dose interval : first and last values weird source cell in excel -> better?
-  * in R models is Prev used --> also for efsa opinion relevant?
-  * Mylius model: normal limit for continuums limit of poisson distribution -> normal distribution?
+#### general questions model related
+  * Cret in R code is randomly chosen (normal distribution), in @Risk as abscissa with certain range for Pill
+    * -> new model?s Maarten: OK
+  * new visualisation dose vs cret --> possible to simulate the other plot, sampling from Cret-axis and get dose distribution
+    * possible to recreate old visualization -> would that be better? Maarten: YES
+    * (current visualization RAKIP models: what is ordinate? what is info i get out of it?) Distribution given Cret
+  * Maxportion in RAKIP = 1000, but in @Risk no upper bound is given... what to do? MAarten: take it
+  * in R models is Prev (probability of prevalence) used --> also for efsa opinion relevant? Maarten: take it
+  * dose in RAKIP models only binomial distribution, dose in @Risk model is normal -> which one ? Maarten: BOTH
+
+#### specific CPM related questions
+  * Lindqvist: Ncarcass vs Nportion? Maarten: summ Nportion to Ncarcass (1097 average carcass size)
+  * Van Asselt: washed board prob =0, but unwashed board depends on hands => shouldnt washed board with unwashed hands do something? Maarten: its ok
+  * calistri model: empiric transfer probability hands to meat 2x 0.6? is that correct? its a cdf, isnt it? Maarten: Mistake
+  * (obsolete now if Cret is not a distribution: found an error in Nauta updated R model: Input parameter piCret was unused, but needed in code --> fixed)
+
+#### regression model questions
+  *  in Campy regression @Risk code in tab "meat conc distributions", column log dose interval : first and last values weird source cell in excel -> better? Maarten: Pattern reason
+ 
+
 
 ### general R problems
   * R 3.X: some functions(rbinom, gamma, etc.) have only a 32bit range of numbers --> some models use numbers outside of 32bit range - solved in R4 but FSK only supports R3.X

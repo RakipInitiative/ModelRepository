@@ -61,11 +61,39 @@ PrevExp <- runConsumerPhaseNauta$PrevExp
 #################################
 #visualisation
 #################################
-xmin = min(Cretlog)
-xmax = max(Cretlog)*1.1
-ymin = min(log10(dosemean))
-ymax = max(log10(dosemean))*1.1
-plot(Cretlog, log10(dosemean), xlab = "log(C_ret) in cfu/g", ylab = "log(dose) in cfu/g after consumer handling of chicken meat in ready-to-eat chicken salad", main = "result of van Asselt Consumer phase model",xlim=c(xmin,xmax),ylim=c(ymin,ymax))
+maxDistsShown = 7 # number of distribution of doses shown
+dhelp <- dose
+chelp <- Cretlog
+
+
+
+# take 1st and last Cretlog and distsInBetween
+if (totalNrOfDists>maxDistsShown){
+  totalNrOfDists = length(Cretlog)
+  
+  stepSize = round((totalNrOfDists-1)/(maxDistsShown-1))
+  steps = seq(1,totalNrOfDists,by=stepSize)
+  steps[maxDistsShown] <- length(Cretlog)
+  
+  chelp <- Cretlog[steps]
+  dhelp <- dose[steps,1:niter]
+}
+dvec <- as.vector(t(log10(dhelp+0.001)))
+cvec <- sort(rep(chelp,niter))
+d <- data.frame(cvec,dvec)
+colnames(d)<-c("log of contamination at retail","log of dose of contamination at consumer")
+ggplot(d, aes(x = `log of dose of contamination at consumer`, y = `log of contamination at retail`, fill = ..x.., group=`log of contamination at retail`)) +
+  geom_density_ridges_gradient(scale = 3, rel_min_height = 0.01) +
+  scale_fill_viridis(name = "color scale", option = "C") +
+  labs(title = 'distributions of doses of campylobacter in chicken salad as function of contamination of chicken meat bought at retails')
+
+
+#d = as.data.frame(t(dose))
+#colnames(d)<-Cretlog
+
+
+
+#plot(Cretlog, log10(dosemean), xlab = "log(C_ret) in cfu/g", ylab = "log(dose) in cfu/g after consumer handling of chicken meat in ready-to-eat chicken salad", main = "result of van Asselt Consumer phase model",xlim=c(xmin,xmax),ylim=c(ymin,ymax))
 
 
 
@@ -120,5 +148,7 @@ plot(Cretlog, log10(dosemean), xlab = "log(C_ret) in cfu/g", ylab = "log(dose) i
   #################################
   #visualisation
   #################################
-plot(Cretlog, Pillmean, xlab = "log(C_ret)", ylab = "P_ill", main = "probability of getting ill based on contamination of chicken meat bought at retail")
+#plot(Cretlog, Pillmean, xlab = "log(C_ret)", ylab = "P_ill", main = "probability of getting ill based on contamination of chicken meat bought at retail")
   #################################
+  
+  
