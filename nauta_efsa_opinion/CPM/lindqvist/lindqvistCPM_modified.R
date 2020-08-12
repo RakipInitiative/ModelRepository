@@ -24,7 +24,7 @@ maxDistsShown = 5
 #################################
 #model
 #################################
-# set.seed(1234)
+set.seed(1234)
 myCPMname <- c("CPM Lindqvist")
 modConsumerPhaseLindqvist <- function(niter, 
                                       Pprev, 

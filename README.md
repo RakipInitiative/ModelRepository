@@ -30,12 +30,12 @@ https://efsa.onlinelibrary.wiley.com/doi/full/10.2903/j.efsa.2020.6090
   *  in Campy regression @Risk code in tab "meat conc distributions", column log dose interval : first and last values weird source cell in excel -> better? Maarten: Pattern reason
  
 ### Todo list
-  * finish up R code of all CPMs -> visualisation DONE
-  * edit all R model code based on Maartens Answers DONE
-  * merge metadata sheets from Petras metadata and my parameters
-  * create fskx files for CPMs
-  * check content and make sure every CPM works fine
-  * finalise R code for DRMs
+  * finish up R code of all CPMs -> visualisation ... DONE
+  * edit all R model code based on Maartens Answers ... DONE
+  * merge metadata sheets from Petras metadata and my parameters ... DONE
+  * create fskx files for CPMs ... DONE
+  * check content and make sure every CPM works fine ... POSTPONED (weird bugs in Fsk Lab -> Thomas)
+  * finalise R code for DRMs ... IN PROGRESS
   * create metadata sheets for DRMs
   * create fskx files for DRMs
   * check content and make sure every DRM works fine
