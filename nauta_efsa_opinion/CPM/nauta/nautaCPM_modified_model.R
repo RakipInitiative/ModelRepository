@@ -1,16 +1,15 @@
 
-
 #################################
 #model
 #################################
 # set.seed(1234)
-myCPMname <- c("CPM Lindqvist")
-modConsumerPhaseLindqvist <- function(niter, 
-                                      Pprev, 
-                                      muCret, sigmaCret, piCret,
-                                      CretLogMin, CretLogMax, CretLogStep, 
-                                      meanPortion, stdPortion, upperPortion, 
-                                      transferRateLower,transferRateUpper){
+myCPMname <- c("CPM Nauta")
+modConsumerPhaseNauta <- function(niter, 
+                                  Pprev, 
+                                  muCret, sigmaCret, piCret,
+                                  CretLogMin, CretLogMax, CretLogStep, 
+                                  meanPortion, stdPortion, upperPortion, 
+                                  logPtr){
   
   #transform lognormal parameters for the portion size
   fvarWc <- function(x,a) (exp(x) - 1)*exp(2*log(meanPortion))-stdPortion^2
@@ -35,6 +34,8 @@ modConsumerPhaseLindqvist <- function(niter,
     
     return(list(sample=sample))
   }
+  
+  # initialising arrays
   Cretlog <- seq(CretLogMin,CretLogMax,by=CretLogStep)
   Cret <- 10^Cretlog
   Wc <- array(NA, niter)
@@ -42,23 +43,21 @@ modConsumerPhaseLindqvist <- function(niter,
   Ptr <- array(NA, length(Cretlog))
   dose <- matrix(NA, length(Cretlog),niter)
   
-  X <- runif(niter,transferRateLower,transferRateUpper)
-  NpDistribution <- DiscreteDistribution(supp=c(1,2,3,4,5),prob=c(0.28,0.48,0.11,0.09,0.04))
-  Np <- r(NpDistribution)(niter)
   
   Wc <- apply(cbind(rlnorm(niter, muWc, sigmaWc), upperPortion*rep(1,niter)),1,min)
   
-  Ptr <- apply(cbind(rep(1,niter),Np*Wc/1097*10^X),1,min)
+  # transfer rate
+  Ptr <- 10^(-sample(logPtr, niter,replace=TRUE))
 
   for (j in 1:length(Cretlog)){
-    Nportion[j,1:niter] <- ifelse(Cret[j]*Wc<1e3, rpois(niter, Cret[j]*1097), round(rnorm(niter, Cret[j]*1097, sqrt(Cret[j]*1097)),0))
+    Nportion[j,1:niter] <- ifelse(Cret[j]*Wc<1e3, rpois(niter, Cret[j]*Wc), round(rnorm(niter, Cret[j]*Wc, sqrt(Cret[j]*Wc)),0))
     dose[j,1:niter] <- ifelse(Nportion[j,1:niter]==0, 
                               0, 
                               ifelse(Nportion[j,1:niter]<25e3, 
                                      rbinom(niter, size=Nportion[j,1:niter], prob=Ptr), 
                                      round(rnorm(niter,Nportion[j,1:niter]*Ptr,sqrt(Nportion[j,1:niter]*Ptr*(1-Ptr))))
+                                     )
                               )
-    )
   }
   
   # exluding rare cases if normal distribution creates negativ doses
@@ -80,17 +79,17 @@ modConsumerPhaseLindqvist <- function(niter,
   return(list(Cretlog=Cretlog, dosemean=dosemean, dose=dose, PrevExp = PrevExp)) 
 }
 
-runConsumerPhaseLindqvist <- modConsumerPhaseLindqvist(niter, 
-                                                       Pprev, 
-                                                       muCret, sigmaCret, piCret,
-                                                       CretLogMin, CretLogMax, CretLogStep, 
-                                                       meanPortion, stdPortion, upperPortion, 
-                                                       transferRateLower,transferRateUpper)
+runConsumerPhaseNauta <- modConsumerPhaseNauta(niter, 
+                                               Pprev, 
+                                               muCret, sigmaCret, piCret,
+                                               CretLogMin, CretLogMax, CretLogStep, 
+                                               meanPortion, stdPortion, upperPortion, 
+                                               logPtr)
 
-Cretlog <- runConsumerPhaseLindqvist$Cretlog
-dose <- runConsumerPhaseLindqvist$dose
-dosemean <- runConsumerPhaseLindqvist$dosemean
-PrevExp <- runConsumerPhaseLindqvist$PrevExp
+Cretlog <- runConsumerPhaseNauta$Cretlog
+dose <- runConsumerPhaseNauta$dose
+dosemean <- runConsumerPhaseNauta$dosemean
+PrevExp <- runConsumerPhaseNauta$PrevExp
 #############################
 
 
