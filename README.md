@@ -34,13 +34,17 @@ https://efsa.onlinelibrary.wiley.com/doi/full/10.2903/j.efsa.2020.6090
   * edit all R model code based on Maartens Answers ... DONE
   * merge metadata sheets from Petras metadata and my parameters ... DONE
   * create fskx files for CPMs ... DONE
-  * check content and make sure every CPM works fine ... POSTPONED (weird bugs with Fsk Lab -> Thomas)
-  * finalise R code for DRMs ... IN PROGRESS
-  * create metadata sheets for DRMs
-  * create fskx files for DRMs
-  * check content and make sure every DRM works fine
-  * finalise R code for efsa opinion
-  * create a model combiner -> joiner / new fskx model 
+  * check content and make sure every CPM works fine ...  DONE
+  * finalise R code for DRMs ... DONE
+  * create metadata sheets for DRMs ... DONE
+  * create fskx files for DRMs ... DONE
+  * check content and make sure every DRM works fine ... DONE
+  * finalise R code for efsa opinion ... DONE 
+  * create a model combiner -> joiner / new fskx model ... in Progress 
+    * first functional version with 1 member state (EU) and all reduction scenarios ... DONE
+    * implement member state reduction strategy parameters as input ... DONE
+    * transfer to fskx ... in progress
+  * distribute new versions of CPMs/DRMs based on comments from Maarten 
   * annotate it
   * finalise knime workflow with all CPMs and DRMs and opinion
 
