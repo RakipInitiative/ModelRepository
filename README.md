@@ -6,8 +6,29 @@ Joint project of EFSA, Federal Institute For Risk Assessment, DTU and ANSES to c
 ##### Reference
 https://efsa.onlinelibrary.wiley.com/doi/full/10.2903/j.efsa.2020.6090 
 
-### CPMs started working on
-8 consumer phase models are compared to each other
+### Todo list
+  * finish up R code of all CPMs -> visualisation ... DONE
+  * edit all R model code based on Maartens Answers ... DONE
+  * merge metadata sheets from Petras metadata and my parameters ... DONE
+  * create fskx files for CPMs ... DONE
+  * check content and make sure every CPM works fine ...  DONE
+  * finalise R code for DRMs ... DONE
+  * create metadata sheets for DRMs ... DONE
+  * create fskx files for DRMs ... DONE
+  * check content and make sure every DRM works fine ... DONE
+  * finalise R code for risk reduction model ... DONE 
+  * develop visualisation for risk reduction model ... DONE
+  * create a KNIME workflow ... in Progress 
+    * first functional version with 1 member state (EU) and all reduction scenarios ... DONE
+    * implement member state reduction strategy parameters as input ... DONE
+    * transfer to fskx ... in progress (difficulties with Simulation Configurator -> discussion with developers)
+  * finalise visualisation code for CPM
+  * finalise visualisation code for risk reduction model 
+  * clean up: distribute new versions of CPMs/DRMs based on comments from Maarten
+  * annotate risk reduction analysis model
+  * finalise knime workflow with all CPMs and DRMs and opinion
+
+
 
 ### Questions for Maarten
 #### general questions model related
@@ -29,24 +50,6 @@ https://efsa.onlinelibrary.wiley.com/doi/full/10.2903/j.efsa.2020.6090
 #### regression model questions
   *  in Campy regression @Risk code in tab "meat conc distributions", column log dose interval : first and last values weird source cell in excel -> better? Maarten: Pattern reason
  
-### Todo list
-  * finish up R code of all CPMs -> visualisation ... DONE
-  * edit all R model code based on Maartens Answers ... DONE
-  * merge metadata sheets from Petras metadata and my parameters ... DONE
-  * create fskx files for CPMs ... DONE
-  * check content and make sure every CPM works fine ...  DONE
-  * finalise R code for DRMs ... DONE
-  * create metadata sheets for DRMs ... DONE
-  * create fskx files for DRMs ... DONE
-  * check content and make sure every DRM works fine ... DONE
-  * finalise R code for efsa opinion ... DONE 
-  * create a model combiner -> joiner / new fskx model ... in Progress 
-    * first functional version with 1 member state (EU) and all reduction scenarios ... DONE
-    * implement member state reduction strategy parameters as input ... DONE
-    * transfer to fskx ... in progress
-  * distribute new versions of CPMs/DRMs based on comments from Maarten 
-  * annotate it
-  * finalise knime workflow with all CPMs and DRMs and opinion
 
 
 ### general R problems
