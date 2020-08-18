@@ -21,16 +21,27 @@ https://efsa.onlinelibrary.wiley.com/doi/full/10.2903/j.efsa.2020.6090
   * create a KNIME workflow ... in Progress 
     * first functional version with 1 member state (EU) and all reduction scenarios ... DONE
     * implement member state reduction strategy parameters as input ... DONE
-    * transfer to fskx ... in progress (difficulties with Simulation Configurator -> discussion with developers)
-  * finalise visualisation code for CPM
-  * finalise visualisation code for risk reduction model 
-  * clean up: distribute new versions of CPMs/DRMs based on comments from Maarten
-  * annotate risk reduction analysis model
+    * transfer to fskx ... DONE, but without simulation combination of Member state parameter vs reduction scenario parameter
+      * sequential use of Simulation Configurator JS (SCJS) not possible
+      * workaround is to have the reduction scenarios available via SCJS, but let the user change the member state if necessary OR treat it as different model
+  * compiling list of questions for Maarten ... in progress
+  * finalise visualisation code for CPM ... starts after call with Maarten at 20/08/20
+  * finalise visualisation code for risk reduction model ... starts after call with Maarten at 20/08/20
+  * clean up: distribute new versions of CPMs/DRMs based on comments from Maarten ... starts after call with Maarten at 20/08/20
+  * annotate risk reduction analysis model ... in Progress
   * finalise knime workflow with all CPMs and DRMs and opinion
 
 
 
-### Questions for Maarten
+### Questions for Maarten - call 2
+  * Inputs from MS skin results -> how to annotate?
+  * intervention scenarios: should they be put into visualisation?
+  * visualisation of CPM
+  * visualisation of DRM
+  * visualisation of RRM
+
+
+### Questions for Maarten - call 1
 #### general questions model related
   * Cret in R code is randomly chosen (normal distribution), in @Risk as abscissa with certain range for Pill
     * -> new model?s Maarten: OK
