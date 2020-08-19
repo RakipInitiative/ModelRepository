@@ -24,44 +24,64 @@ https://efsa.onlinelibrary.wiley.com/doi/full/10.2903/j.efsa.2020.6090
     * transfer to fskx ... DONE, but without simulation combination of Member state parameter vs reduction scenario parameter
       * sequential use of Simulation Configurator JS (SCJS) not possible
       * workaround is to have the reduction scenarios available via SCJS, but let the user change the member state if necessary OR treat it as different model
-  * compiling list of questions for Maarten ... in progress
+  * compiling list of questions for Maarten ... DONE
   * finalise visualisation code for CPM ... starts after call with Maarten at 20/08/20
   * finalise visualisation code for risk reduction model ... starts after call with Maarten at 20/08/20
   * clean up: distribute new versions of CPMs/DRMs based on comments from Maarten ... starts after call with Maarten at 20/08/20
-  * annotate risk reduction analysis model ... in Progress
-  * finalise knime workflow with all CPMs and DRMs and opinion
+  * annotate risk reduction analysis model ... in Progress, mostly done. Last steps need input from call with Maarte at 20/08/20
+  * finalise KNIME workflow with all CPMs and DRMs and opinion
+  * fix Lindqvist CPM annotation regarding carcass size
 
 
 
 ### Questions for Maarten - call 2
-  * Inputs from MS skin results -> how to annotate?
-  * intervention scenarios: should they be put into visualisation?
-  * visualisation of CPM
-  * visualisation of DRM
+  * visualisation of CPM ... fine, according to Maarten, confirmation?
+  * visualisation of DRM -> changes, more infos?
   * visualisation of RRM
+    * may show all intervention scenarios at the same time (load from table) = same vis as in @Risk -> better?
+    * IF ONLY one intervention scenario: should the name (FA1/2/3...) be put into visualisation?
+    * which text infos in visualisation?
+  * annotation of RRM:
+    * Inputs from MS skin results
+       * definition?
+       * how to annotate?
+       * EU values are weighted average of all MS, here is just taken as input value, not calculated -> problem?
+    * meat conc distributions Input scale (CFU skin) as parameter or leave it as is? how to annotate?
+    * slope - definition?
+    * tau - definition?
+    * delta fex - definition?
+  
 
 
 ### Questions for Maarten - call 1
 #### general questions model related
   * Cret in R code is randomly chosen (normal distribution), in @Risk as abscissa with certain range for Pill
-    * -> new model?s Maarten: OK
+    * -> new model?s 
+    * Maarten: OK
   * new visualisation dose vs cret --> possible to simulate the other plot, sampling from Cret-axis and get dose distribution
-    * possible to recreate old visualization -> would that be better? Maarten: YES
+    * possible to recreate old visualization -> would that be better? 
+    * Maarten: YES
     * (current visualization RAKIP models: what is ordinate? what is info i get out of it?) Distribution given Cret
-  * Maxportion in RAKIP = 1000, but in @Risk no upper bound is given... what to do? MAarten: take it
-  * in R models is Prev (probability of prevalence) used --> also for efsa opinion relevant? Maarten: take it
-  * dose in RAKIP models only binomial distribution, dose in @Risk model is normal -> which one ? Maarten: BOTH
+  * Maxportion in RAKIP = 1000, but in @Risk no upper bound is given... what to do? 
+    * Maarten: take Maxportion = 1000
+  * in R models is Prev (probability of prevalence) used --> also for efsa opinion relevant? 
+    * Maarten: use it in code as is
+  * dose in RAKIP models only binomial distribution, dose in @Risk model is normal -> which one ? 
+    * Maarten: BOTH (for either case)
 
 #### specific CPM related questions
-  * Lindqvist: Ncarcass vs Nportion? Maarten: summ Nportion to Ncarcass (1097 average carcass size)
-  * Van Asselt: washed board prob =0, but unwashed board depends on hands => shouldnt washed board with unwashed hands do something? Maarten: its ok
-  * calistri model: empiric transfer probability hands to meat 2x 0.6? is that correct? its a cdf, isnt it? Maarten: Mistake
-  * (obsolete now if Cret is not a distribution: found an error in Nauta updated R model: Input parameter piCret was unused, but needed in code --> fixed)
+  * Lindqvist: Ncarcass vs Nportion? 
+    * Maarten: summ Nportion to Ncarcass (1097 average carcass size)
+  * Van Asselt: washed board prob =0, but unwashed board depends on hands => shouldnt washed board with unwashed hands do something? 
+    * Maarten: its ok
+  * calistri model: empiric transfer probability hands to meat 2x 0.6? is that correct? its a cdf, isnt it? 
+    * Maarten: Mistake;
+    * Marcel checked in paper: 0.8 is correct, corrected in R code, but differences are minor <1%
 
 #### regression model questions
-  *  in Campy regression @Risk code in tab "meat conc distributions", column log dose interval : first and last values weird source cell in excel -> better? Maarten: Pattern reason
+  *  in Campy regression @Risk code in tab "meat conc distributions", column log dose interval : first and last values weird source cell in excel -> better? 
+    * Maarten: reason is matching pattern in delta -> Marcel simulates this in R code (even if changes would be minor)
  
-
 
 ### general R problems
   * R 3.X: some functions(rbinom, gamma, etc.) have only a 32bit range of numbers --> some models use numbers outside of 32bit range - solved in R4 but FSK only supports R3.X
