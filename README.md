@@ -19,6 +19,22 @@ https://efsa.onlinelibrary.wiley.com/doi/full/10.2903/j.efsa.2020.6090
   * check content and make sure every DRM works fine ... DONE
   * finalise R code for risk reduction model ... DONE 
   * develop visualisation for risk reduction model ... DONE
+  * compiling list of questions for Maarten ... DONE
+
+#### plan for next days
+##### 21/08
+  * implement visualisation fixes for CPMs and DRMs
+  * implement visualisation with all reduction (or "intervention") scenarios
+  * implement RRM standalone fskx model with all 24 CPM/DRM-combinations as a csv table input and have the user choose CPM and DRM as input parameter
+##### 24/08
+  * distribute new visualisation code to all CPMs and DRMs
+  * cleaning up obsolete code snippets and output parameters to increase transparency
+  * finalise RRM annotation (need some input see below)
+##### 25/08
+  * fix a number of known errors in CPM/DRM annotation
+  * review and test of all CPMs, DRMs and RRM fskx files (execution and annotation)
+##### 26/08
+  * create a few example CPM/DRM combination as fskx models
 
 #### still to do
   * create a KNIME workflow ... in Progress 
@@ -27,17 +43,23 @@ https://efsa.onlinelibrary.wiley.com/doi/full/10.2903/j.efsa.2020.6090
     * transfer to fskx ... DONE, but without simulation combination of Member state parameter vs reduction scenario parameter
       * sequential use of Simulation Configurator JS (SCJS) not possible
       * workaround is to have the reduction scenarios available via SCJS, but let the user change the member state if necessary OR treat it as different model
-  * compiling list of questions for Maarten ... DONE
   * finalise visualisation code for CPM ... starts after call with Maarten at 20/08/20
   * finalise visualisation code for risk reduction model ... starts after call with Maarten at 20/08/20
   * clean up: distribute new versions of CPMs/DRMs based on comments from Maarten ... starts after call with Maarten at 20/08/20
     * CPMs
-      * distuingish inputs and constants -> Pprev?
-      * input quickform?      
+      * distuingish inputs and constants -> Pprev?     
       * distribute visualisation to all CPMs
       * review output parameters -> decrease number?
       * change reference from 2011 paper to efsa opinion 2020
       * fix Lindqvist CPM annotation regarding carcass size
+      * steps in CPM?
+      * upper bound of cdf?
+    * DRM vis
+      * dose uniform log steps from 0 to 8 in small steps
+      * text cutoff fixing
+    * RRM
+      * uncertainty of RRR
+      * all scenarios plus 1
   * annotate risk reduction analysis model ... in Progress, mostly done. Last steps need input from call with Maarte at 20/08/20
   * finalise KNIME workflow with all CPMs and DRMs and opinion
   * create RRM with CPM/DRM as input
@@ -47,20 +69,23 @@ https://efsa.onlinelibrary.wiley.com/doi/full/10.2903/j.efsa.2020.6090
 
 ### Questions for Maarten - call 2
   * visualisation of CPM ... fine, according to Maarten, confirmation?
+    * Maarten:  
   * visualisation of DRM -> changes, more infos?
+    * Maarten: 
   * visualisation of RRM
     * may show all intervention scenarios at the same time (load from table) = same vis as in @Risk -> better?
     * IF ONLY one intervention scenario: should the name (FA1/2/3...) be put into visualisation?
     * which text infos in visualisation?
+    * Maarten: 
   * annotation of RRM:
     * Inputs from MS skin results
        * definition?
        * how to annotate?
        * EU values are weighted average of all MS, here is just taken as input value, not calculated -> problem?
     * meat conc distributions Input scale (CFU skin) as parameter or leave it as is? how to annotate?
-    * slope - definition?
-    * tau - definition?
-    * delta fex - definition?
+    * slope - definition? or where to find
+    * tau - definition? or where to find
+    * delta fex - definition? or where to find
   
 
 
