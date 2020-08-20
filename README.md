@@ -7,6 +7,7 @@ Joint project of EFSA, Federal Institute For Risk Assessment, DTU and ANSES to c
 https://efsa.onlinelibrary.wiley.com/doi/full/10.2903/j.efsa.2020.6090 
 
 ### Todo list
+#### DONE
   * finish up R code of all CPMs -> visualisation ... DONE
   * edit all R model code based on Maartens Answers ... DONE
   * merge metadata sheets from Petras metadata and my parameters ... DONE
@@ -18,6 +19,8 @@ https://efsa.onlinelibrary.wiley.com/doi/full/10.2903/j.efsa.2020.6090
   * check content and make sure every DRM works fine ... DONE
   * finalise R code for risk reduction model ... DONE 
   * develop visualisation for risk reduction model ... DONE
+
+#### still to do
   * create a KNIME workflow ... in Progress 
     * first functional version with 1 member state (EU) and all reduction scenarios ... DONE
     * implement member state reduction strategy parameters as input ... DONE
@@ -28,9 +31,17 @@ https://efsa.onlinelibrary.wiley.com/doi/full/10.2903/j.efsa.2020.6090
   * finalise visualisation code for CPM ... starts after call with Maarten at 20/08/20
   * finalise visualisation code for risk reduction model ... starts after call with Maarten at 20/08/20
   * clean up: distribute new versions of CPMs/DRMs based on comments from Maarten ... starts after call with Maarten at 20/08/20
+    * CPMs
+      * distuingish inputs and constants -> Pprev?
+      * input quickform?      
+      * distribute visualisation to all CPMs
+      * review output parameters -> decrease number?
+      * change reference from 2011 paper to efsa opinion 2020
+      * fix Lindqvist CPM annotation regarding carcass size
   * annotate risk reduction analysis model ... in Progress, mostly done. Last steps need input from call with Maarte at 20/08/20
   * finalise KNIME workflow with all CPMs and DRMs and opinion
-  * fix Lindqvist CPM annotation regarding carcass size
+  * create RRM with CPM/DRM as input
+  * create example CPM/DRM model
 
 
 
