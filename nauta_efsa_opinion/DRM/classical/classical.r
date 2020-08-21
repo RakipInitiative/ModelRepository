@@ -1,9 +1,10 @@
 #parameters
 dose <- rep(1,100000)
 alphaGamma <- 0.145
+betaGamma <- 7.59
 Pprev <- 0.25
 condPillinf <- 0.33
-betaGamma <- 7.59
+
 
 
 #model

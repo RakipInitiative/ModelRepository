@@ -206,11 +206,11 @@ slopeML <- 0.27
 slopeMax <- 0.7
 tauMin <- 0.0
 tauMax <- 3.0
-scenarioMean <- 1.23
-scenarioVar <- 0.0
-scenarioUnc <- 0.66
+scenarioMeanUser <- 1.0
+scenarioVarUser <- 0.0
+scenarioUncUser <- 0.0
 # EU stuff
-MS <- "MT"
+MS <- "EU"
 #p <- 67.0
 #mu <- 2.44
 #sigma <- 1.24
@@ -226,7 +226,7 @@ library(mc2d)
 #################################
 
 # load from all Member states skin results 
-dfMS <- read.table(paste0(dirname(sys.frame(1)$ofile),"/ms.csv"), 
+dfMS <- read.table("~/PycharmProjects/ModelRepository/nauta_efsa_opinion/ms.csv", 
                  header = TRUE,
                  sep = ";")
 
@@ -237,6 +237,11 @@ p <- dfMS$pMS[getMSROW]
 mu <- dfMS$muMS[getMSROW]
 sigma <- dfMS$sigmaMS[getMSROW]
 
+
+#load all reduction scenarios from EFSA opinion
+dfRedScen <- read.table("~/PycharmProjects/ModelRepository/nauta_efsa_opinion/reductionscenarios.csv", 
+                   header = TRUE,
+                   sep = ";")
 
 # machine tolerance for numeric error, needed for matching double numbers
 tol = .Machine$double.eps^0.5
@@ -265,8 +270,8 @@ CretLogSkin <- log10(CretSkin)
 slope <- rpert(niter,slopeMin,slopeML,slopeMax)
 #slope <- 0.27
 tau <- runif(1, min = tauMin, max = tauMax)
-tau <- 1
-deltaFec <- rnorm(niter,scenarioMean,scenarioUnc)
+#tau<-1
+
 
 
 # DR plus
@@ -300,26 +305,39 @@ Pdose <- newVector/sum(newVector)
 
 # columns K through M
 # here happens the actual simulation
-muAfterIntervention <- mu - slope*deltaFec#
-sigmaAfterIntervention <- sqrt(sigma^2 + scenarioVar^2*slope^2)#
+RR <- matrix(NA,niter,nrow(dfRedScen)+1)
+#parameter
+for(scen in 1:(nrow(dfRedScen)+1)) {
+  if (scen<=nrow(dfRedScen)) {
+    scenarioMean <- dfRedScen$scenarioMean[scen]
+    scenarioVar <- dfRedScen$scenarioVar[scen]
+    scenarioUnc <- dfRedScen$scenarioUnc[scen]
+  } else {
+    scenarioMean <- scenarioMeanUser
+    scenarioVar <- scenarioVarUser
+    scenarioUnc <- scenarioUncUser
+  }
+  deltaFec <- rnorm(niter,scenarioMean,scenarioUnc)
+  muAfterIntervention <- mu - slope*deltaFec#
+  sigmaAfterIntervention <- sqrt(sigma^2 + scenarioVar^2*slope^2)*rep(1,length(muAfterIntervention))#
 
-Pdose1AfterIntervention <- matrix(NA,length(CretLogSkin),niter)
-newVectorAfterIntervention <- matrix(NA,length(CretLogSkin),niter)
+  Pdose1AfterIntervention <- matrix(NA,length(CretLogSkin),niter)
+  newVectorAfterIntervention <- matrix(NA,length(CretLogSkin),niter)
 
-for(i in 1:niter) {
-  Pdose1AfterIntervention[1:length(CretLogSkin),i] <- dnorm(CretLogSkin,muAfterIntervention[i],sigmaAfterIntervention[i])
+  for(i in 1:niter) {
+    Pdose1AfterIntervention[1:length(CretLogSkin),i] <- dnorm(CretLogSkin,muAfterIntervention[i],sigmaAfterIntervention[i])
+  }
+  newVectorAfterIntervention <- matrix(logDoseInterval,length(CretLogSkin),niter)*Pdose1AfterIntervention
+  PdoseAfterIntervention <- newVectorAfterIntervention/t(matrix(colSums(newVectorAfterIntervention),niter,length(CretLogSkin)))
+
+
+
+  #back to DR plus
+  RISK <- risk*Pdose
+  RISKAfterIntervention <- risk*PdoseAfterIntervention
+
+  RR[1:niter,scen] <- ifelse(colSums(RISKAfterIntervention)>sum(RISK),1,colSums(RISKAfterIntervention)/sum(RISK))
 }
-newVectorAfterIntervention <- matrix(logDoseInterval,length(CretLogSkin),niter)*Pdose1AfterIntervention
-PdoseAfterIntervention <- newVectorAfterIntervention/t(matrix(colSums(newVectorAfterIntervention),niter,length(CretLogSkin)))
-
-
-
-#back to DR plus
-RISK <- risk*Pdose
-RISKAfterIntervention <- risk*PdoseAfterIntervention
-
-RR <- ifelse(colSums(RISKAfterIntervention)>sum(RISK),1,colSums(RISKAfterIntervention)/sum(RISK))
-
 
 
 
@@ -330,24 +348,42 @@ RR <- ifelse(colSums(RISKAfterIntervention)>sum(RISK),1,colSums(RISKAfterInterve
 #################################
 #visualization
 #################################
-RRquant <- quantile(RR,c(.01,.025,.05,.5,.95,.975,.99))
-RR2p5 <- 1-RRquant["2.5%"]
-RR50 <- 1-RRquant["50%"]
-RR97p5 <- 1-RRquant["97.5%"]
-RRerrMinus <- RR50-RR2p5
-RRerrPlus <- RR97p5-RR50
-RRmean <- 1-mean(RR)
-RRleft <- 1-mean(RR)+RRerrMinus
-RRright <- 1-mean(RR)-RRerrPlus
+RRdens <- matrix(NA,niter,nrow(dfRedScen))
+# for(scen in 1:nrow(dfRedScen)){
+#   RRquant <- quantile(RR[1:niter,scen],c(.01,.025,.05,.5,.95,.975,.99))
+#   RR2p5 <- 1-RRquant["2.5%"]
+#   RR50 <- 1-RRquant["50%"]
+#   RR97p5 <- 1-RRquant["97.5%"]
+#   RRerrMinus <- RR50-RR2p5
+#   RRerrPlus <- RR97p5-RR50
+#   RRmean <- 1-mean(RR[1:niter,scen])
+#   RRleft <- 1-mean(RR[1:niter,scen])+RRerrMinus
+#   RRright <- 1-mean(RR[1:niter,scen])-RRerrPlus
+#   
+#   #RRdens[1:niter,scen] <- (1-RR[1:niter,scen]))
+# }
+RRR <- (1-RR)*100
+
+dfPlot <- cbind(FA1 = RRR[1:niter,1],
+                FA2 = RRR[1:niter,2],
+                FA3 = RRR[1:niter,3],
+                VA1 = RRR[1:niter,4],
+                VA2 = RRR[1:niter,5],
+                UserScenario = RRR[1:niter,6])
 
 
-RRdens <- density((1-RR))
+boxplot(dfPlot, 
+        main = "Uncertainty of relative risk reductions for different scenarios", 
+        ylab="Relative Risk Reduction (%)",
+        notch = TRUE, col = 2:7)
 
-plot(RRdens, type="l", lwd=3, ylab=" ",xlab="Risk Reduction", main="probability of Risk Reduction")
-segments(RRleft,0, RRleft, RRdens$y[match.closest(RRleft,RRdens$x)], lwd=3, lty=2)
-segments(RRright,0, RRright, RRdens$y[match.closest(RRright,RRdens$x)], lwd=3, lty=2)
-segments(RRmean,0, RRmean, RRdens$y[match.closest(RRmean,RRdens$x)], lwd=3, lty=3)
-text(RRmean-0.1, RRdens$y[match.closest(RRmean,RRdens$x)]/10, paste0("Mean RRR=", round_any(RRmean*100,0.1), "%"), pos=3)
+
+
+#plot(RRdens, type="l", lwd=3, ylab=" ",xlab="Risk Reduction", main="probability of Risk Reduction")
+# segments(RRleft,0, RRleft, RRdens$y[match.closest(RRleft,RRdens$x)], lwd=3, lty=2)
+# segments(RRright,0, RRright, RRdens$y[match.closest(RRright,RRdens$x)], lwd=3, lty=2)
+# segments(RRmean,0, RRmean, RRdens$y[match.closest(RRmean,RRdens$x)], lwd=3, lty=3)
+# text(RRmean-0.1, RRdens$y[match.closest(RRmean,RRdens$x)]/10, paste0("Mean RRR=", round_any(RRmean*100,0.1), "%"), pos=3)
 
 
 
