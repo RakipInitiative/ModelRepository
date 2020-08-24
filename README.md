@@ -24,16 +24,18 @@ https://efsa.onlinelibrary.wiley.com/doi/full/10.2903/j.efsa.2020.6090
 #### plan for next days
 ##### 21/08
   * implement visualisation fixes for CPMs 
-    * find out about reason for steplike function at low doses ... in progress, needs more time to investigate
+    * find out about reason for steplike function at low doses ... DONE
     * fix cdf should increase to 1 ... DONE
   * implement visualisation fixes for DRMs ... DONE
   * implement visualisation with all reduction (or "intervention") scenarios ... DONE
   * implement RRM standalone fskx model with all 24 CPM/DRM-combinations as a csv table input and have the user choose CPM and DRM as input parameter ... DONE
 ##### 24/08
-  * clean up R code
-  * distribute new visualisation code to all CPMs and DRMs
+  * clean up R code ... in progress
+    * CPMs ... DONE
+  * distribute new visualisation code to all CPMs and DRMs ... in progress
+    * finishing CPMs ... mostly done, mylius missing
   * cleaning up obsolete code snippets and output parameters to increase transparency
-  * test CPMs on server as soon as CPM is ready to be tested
+  * test CPMs on server as soon as CPM is ready to be tested ... in progress, stuck at uploading -> asking Lars/Thomas for help
 ##### 25/08
   * finalise RRM annotation (need some input see below)
   * fix a number of known errors in CPM/DRM annotation
