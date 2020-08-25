@@ -37,7 +37,17 @@ https://efsa.onlinelibrary.wiley.com/doi/full/10.2903/j.efsa.2020.6090
   * cleaning up obsolete code snippets and output parameters to increase transparency
   * test CPMs on server as soon as CPM is ready to be tested ... in progress, stuck at uploading -> asking Lars/Thomas for help
 ##### 25/08
-  * finalise RRM annotation (need some input see below)
+  * clean up R code ... in progress
+    * CPMs ... DONE
+    * DRMs ... DONE
+    * RRM ... DONE
+  * distribute new visualisation code to all CPMs and DRMs ... in progress
+    * finishing CPMs ... DONE
+    * finishing DRMs ... DONE, but Maarten has some comments for the visualisation
+    * finishing RRM ... DONE
+  * cleaning up obsolete code snippets and output parameters to increase transparency ... DONE
+  * test CPMs on server as soon as CPM is ready to be tested ... not possible at the moment, Thomas is investigating
+  * finalise RRM annotation (need some input see below) ... in progress
   * fix a number of known errors in CPM/DRM annotation
 ##### 26/08
   * review and test of all CPMs, DRMs and RRM fskx files (execution and annotation)

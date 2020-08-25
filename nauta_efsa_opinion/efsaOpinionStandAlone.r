@@ -22,23 +22,13 @@
 # 2	median challenge
 # 3	outbreak
 
-CPMnames <- c("Christensen", 
-              "FAO/WHO", 
-              "Mylius", 
-              "Van Asselt", 
-              "Nauta", 
-              "Brynestad", 
-              "Calistri", 
-              "Lindqvist")
-DRMnames <- c("classic", 
-              "median challenge", 
-              "outbreak")
+
 
 CPM = 6
 DRM = 3
-Cretlog <- rep(1,91)
-Pillmean <- rep(1,91)
-niter <- 250000
+#Cretlog <- rep(1,91)
+#Pillmean <- rep(1,91)
+niter <- 2500
 slopeMin <- 0.0
 slopeML <- 0.27
 slopeMax <- 0.7
@@ -63,17 +53,29 @@ library(mc2d)
 # model 
 #################################
 
+CPMnames <- c("Christensen", 
+              "FAO/WHO", 
+              "Mylius", 
+              "Van Asselt", 
+              "Nauta", 
+              "Brynestad", 
+              "Calistri", 
+              "Lindqvist")
+DRMnames <- c("classic", 
+              "median challenge", 
+              "outbreak")
+
 # load CPM, DRM
 filenamesDRM = c("allCPMsDRMclass.csv", "allCPMsDRMMedChall.csv", "allCPMsDRMMedOut.csv")
 
-dfCPMDRM = read.table(paste0("~/PycharmProjects/ModelRepository/nauta_efsa_opinion/",filenamesDRM[DRM]), 
+dfCPMDRM = read.table(paste0("~/Projects/ModelRepository/nauta_efsa_opinion/",filenamesDRM[DRM]), 
                       header = TRUE,
                       sep = ";")
 
 Cretlog <- dfCPMDRM$Cretlog
 Pillmean <- as.matrix(dfCPMDRM[CPM+1]) # because CPMs in csv start with column 2 end with column 9
 # load from all Member states skin results 
-dfMS <- read.table("~/PycharmProjects/ModelRepository/nauta_efsa_opinion/ms.csv", 
+dfMS <- read.table("~/Projects/ModelRepository/nauta_efsa_opinion/ms.csv", 
                  header = TRUE,
                  sep = ";")
 
@@ -86,7 +88,7 @@ sigma <- dfMS$sigmaMS[getMSROW]
 
 
 #load all reduction scenarios from EFSA opinion
-dfRedScen <- read.table("~/PycharmProjects/ModelRepository/nauta_efsa_opinion/reductionscenarios.csv", 
+dfRedScen <- read.table("~/Projects/ModelRepository/nauta_efsa_opinion/reductionscenarios.csv", 
                    header = TRUE,
                    sep = ";")
 
@@ -195,6 +197,8 @@ for(scen in 1:(nrow(dfRedScen)+1)) {
 #################################
 #visualization
 #################################
+
+#dfPlot<- cbind(1:10)
 RRdens <- matrix(NA,niter,nrow(dfRedScen))
 # for(scen in 1:nrow(dfRedScen)){
 #   RRquant <- quantile(RR[1:niter,scen],c(.01,.025,.05,.5,.95,.975,.99))
@@ -211,12 +215,12 @@ RRdens <- matrix(NA,niter,nrow(dfRedScen))
 # }
 RRR <- (1-RR)*100
 
-dfPlot <- cbind(FA1 = RRR[1:niter,1],
-                FA2 = RRR[1:niter,2],
-                FA3 = RRR[1:niter,3],
+ dfPlot <- cbind(FA1 = RRR[1:niter,1],
+                 FA2 = RRR[1:niter,2],
+                 FA3 = RRR[1:niter,3],
                 VA1 = RRR[1:niter,4],
-                VA2 = RRR[1:niter,5],
-                UserScenario = RRR[1:niter,6])
+                 VA2 = RRR[1:niter,5],
+                 UserScenario = RRR[1:niter,6])
 
 
 boxplot(dfPlot, 
