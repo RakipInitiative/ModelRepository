@@ -63,42 +63,15 @@ https://efsa.onlinelibrary.wiley.com/doi/full/10.2903/j.efsa.2020.6090
 ##### 27/08
   * distribute new visualisation code to all CPMs and DRMs ... in progress
     * finishing CPMs ... DONE
-    * finishing DRMs ... pending, waiting for Maartens comments
+    * finishing DRMs ... in progress
+      * creating DRMonly versions
+      * adapting DRM module versions with explanation lowpriority since joiner doesnt work properly
     * finishing RRM ... pending, waiting for Maartens comments
    * test CPMs on server as soon as CPM is ready to be tested ... pending, waiting for developres
   * finalise RRM annotation (need some input see below) ... in progress
   * fix a number of known errors in CPM/DRM annotation ... DONE
   * review and test of all CPMs, DRMs and RRM fskx files (execution and annotation) ... in progress
   * create a few example CPM/DRM combination as fskx models
-
-#### still to do
-  * create a KNIME workflow ... in Progress 
-    * first functional version with 1 member state (EU) and all reduction scenarios ... DONE
-    * implement member state reduction strategy parameters as input ... DONE
-    * transfer to fskx ... DONE, but without simulation combination of Member state parameter vs reduction scenario parameter
-      * sequential use of Simulation Configurator JS (SCJS) not possible
-      * workaround is to have the reduction scenarios available via SCJS, but let the user change the member state if necessary OR treat it as different model
-  * finalise visualisation code for CPM ... starts after call with Maarten at 20/08/20
-  * finalise visualisation code for risk reduction model ... starts after call with Maarten at 20/08/20
-  * clean up: distribute new versions of CPMs/DRMs based on comments from Maarten ... starts after call with Maarten at 20/08/20
-    * CPMs
-      * distuingish inputs and constants -> Pprev?     
-      * distribute visualisation to all CPMs
-      * review output parameters -> decrease number?
-      * change reference from 2011 paper to efsa opinion 2020
-      * fix Lindqvist CPM annotation regarding carcass size
-      * steps in CPM?
-      * upper bound of cdf?
-    * DRM vis
-      * dose uniform log steps from 0 to 8 in small steps
-      * text cutoff fixing
-    * RRM
-      * uncertainty of RRR
-      * all scenarios plus 1
-  * annotate risk reduction analysis model ... in Progress, mostly done. Last steps need input from call with Maarten at 20/08/20
-  * finalise KNIME workflow with all CPMs and DRMs and opinion
-  * create RRM with CPM/DRM as input
-  * create example CPM/DRM model
 
 
 

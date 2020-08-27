@@ -32,8 +32,9 @@ modDoseResponseMedianChallenge <- function(dose, Pprev, condPillinf, alphaGamma,
   
   Pill <- matrix(NA, nrOfCrets, nrOfDoses)
   
-  for (i in 1:nrOfDoses) Pill[1:nrOfCrets,i] <- condPillinf[1:nrOfCrets,i]*round((1 - exp(lgamma(alphaGamma+betaGamma)+lgamma(betaGamma+dose[1:nrOfCrets,i])-lgamma(betaGamma)-lgamma(alphaGamma+betaGamma+dose[1:nrOfCrets,i]))),4)
-  
+  for (i in 1:nrOfDoses) {
+    Pill[1:nrOfCrets,i] <- condPillinf[1:nrOfCrets,i]*round((1 - exp(lgamma(alphaGamma+betaGamma)+lgamma(betaGamma+dose[1:nrOfCrets,i])-lgamma(betaGamma)-lgamma(alphaGamma+betaGamma+dose[1:nrOfCrets,i]))),4)
+  }
   Pillmean <- rowMeans(Pill)
   Qill <- Pillmean*Pprev
   PrevExp <- Pprev*(sum(dose>0)/nrOfDoses)
@@ -41,11 +42,12 @@ modDoseResponseMedianChallenge <- function(dose, Pprev, condPillinf, alphaGamma,
   
   
   return(list(Pill=Pill, Pillmean=Pillmean, Qill=Qill, PrevExp=PrevExp))
-  #return(list(Qill=Qill, PrevExp=PrevExp))
 }
 
-runDoseResponseMedianChallenge <- modDoseResponseMedianChallenge(dose, Pprev, condPillinf, alphaGamma, betaGamma)
-#runDoseResponseMedianChallenge <- modDoseResponseMedianChallenge(dose=runConsumerPhaseNauta$dose, Pprev, condPillinf, alphaGamma, betaGamma)
+runDoseResponseMedianChallenge <- modDoseResponseMedianChallenge(dose, 
+                                                                 Pprev, 
+                                                                 condPillinf, 
+                                                                 alphaGamma, betaGamma)
 
 Qill <-runDoseResponseMedianChallenge$Qill
 PrevExp <- runDoseResponseMedianChallenge$PrevExp
@@ -56,5 +58,8 @@ Pill <-runDoseResponseMedianChallenge$Pill
 #################################
 #visualisation
 #################################
-plot(Cretlog, Pillmean, xlab = "log(C_ret)", ylab = "P_ill", main = "probability of illness based on contamination of chicken meat bought at retail")
+plot(Cretlog, Pillmean, 
+     xlab = "log(C_ret)", 
+     ylab = "P_ill", 
+     main = "probability of illness as a function of doses")
 #################################
