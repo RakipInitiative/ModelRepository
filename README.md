@@ -43,14 +43,32 @@ https://efsa.onlinelibrary.wiley.com/doi/full/10.2903/j.efsa.2020.6090
     * RRM ... DONE
   * distribute new visualisation code to all CPMs and DRMs ... in progress
     * finishing CPMs ... DONE
-    * finishing DRMs ... DONE, but Maarten has some comments for the visualisation
-    * finishing RRM ... DONE
+    * finishing DRMs ... pending, waiting for Maartens comments
+    * finishing RRM ... pending, waiting for Maartens comments
   * cleaning up obsolete code snippets and output parameters to increase transparency ... DONE
   * test CPMs on server as soon as CPM is ready to be tested ... not possible at the moment, Thomas is investigating
   * finalise RRM annotation (need some input see below) ... in progress
   * fix a number of known errors in CPM/DRM annotation
 ##### 26/08
-  * review and test of all CPMs, DRMs and RRM fskx files (execution and annotation)
+  * distribute new visualisation code to all CPMs and DRMs ... in progress
+    * finishing CPMs ... DONE
+    * finishing DRMs ... pending, waiting for Maartens comments
+    * finishing RRM ... pending, waiting for Maartens comments
+   * test CPMs on server as soon as CPM is ready to be tested ... pending, waiting for developres
+  * finalise RRM annotation (need some input see below) ... in progress
+  * fix a number of known errors in CPM/DRM annotation ... DONE
+  * review and test of all CPMs, DRMs and RRM fskx files (execution and annotation) ... in progress
+  * create a few example CPM/DRM combination as fskx models
+
+##### 27/08
+  * distribute new visualisation code to all CPMs and DRMs ... in progress
+    * finishing CPMs ... DONE
+    * finishing DRMs ... pending, waiting for Maartens comments
+    * finishing RRM ... pending, waiting for Maartens comments
+   * test CPMs on server as soon as CPM is ready to be tested ... pending, waiting for developres
+  * finalise RRM annotation (need some input see below) ... in progress
+  * fix a number of known errors in CPM/DRM annotation ... DONE
+  * review and test of all CPMs, DRMs and RRM fskx files (execution and annotation) ... in progress
   * create a few example CPM/DRM combination as fskx models
 
 #### still to do
