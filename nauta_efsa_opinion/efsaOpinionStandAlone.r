@@ -24,19 +24,19 @@
 
 
 
-CPM = 6
-DRM = 3
+CPM = 1
+DRM = 2
 #Cretlog <- rep(1,91)
 #Pillmean <- rep(1,91)
-niter <- 2500
-slopeMin <- 0.0
+niter <- 1000
+slopeMin <- 0.27
 slopeML <- 0.27
-slopeMax <- 0.7
-tauMin <- 0.0
-tauMax <- 3.0
+slopeMax <- 0.27
+tauMin <- 1.0
+tauMax <- 1.0
 scenarioMeanUser <- 1.0
-scenarioVarUser <- 0.0
-scenarioUncUser <- 0.0
+scenarioVariabilityUser <- 0.0
+scenarioUncertaintyUser <- 0.0
 # EU stuff
 MS <- "EU"
 #p <- 67.0
@@ -65,22 +65,31 @@ DRMnames <- c("classic",
               "median challenge", 
               "outbreak")
 
+#random CPM/DRM combination as in @Risk code
+if (CPM < 1 | CPM > length(CPMnames)) CPM <- round(runif(1,1,length(CPMnames)))
+if (DRM < 1 | DRM > length(DRMnames)) DRM <- round(runif(1,1,length(DRMnames)))
+
 # load CPM, DRM
 filenamesDRM = c("allCPMsDRMclass.csv", "allCPMsDRMMedChall.csv", "allCPMsDRMMedOut.csv")
 
-dfCPMDRM = read.table(paste0("~/Projects/ModelRepository/nauta_efsa_opinion/",filenamesDRM[DRM]), 
+dfCPMDRM = read.table(paste0("~/PycharmProjects/ModelRepository/nauta_efsa_opinion/",filenamesDRM[DRM]), 
                       header = TRUE,
                       sep = ";")
 
 Cretlog <- dfCPMDRM$Cretlog
 Pillmean <- as.matrix(dfCPMDRM[CPM+1]) # because CPMs in csv start with column 2 end with column 9
 # load from all Member states skin results 
-dfMS <- read.table("~/Projects/ModelRepository/nauta_efsa_opinion/ms.csv", 
+dfMS <- read.table("~/PycharmProjects/ModelRepository/nauta_efsa_opinion/ms.csv", 
                  header = TRUE,
                  sep = ";")
 
 
 getMSROW <- which(dfMS == MS, arr.ind = TRUE)[1]
+
+if (is.na(getMSROW)) {
+  getMSROW <- runif(1,1,nrow(dfMS))
+  MS = dfMS$MS[getMSROW]
+  }
 
 p <- dfMS$pMS[getMSROW]
 mu <- dfMS$muMS[getMSROW]
@@ -88,7 +97,7 @@ sigma <- dfMS$sigmaMS[getMSROW]
 
 
 #load all reduction scenarios from EFSA opinion
-dfRedScen <- read.table("~/Projects/ModelRepository/nauta_efsa_opinion/reductionscenarios.csv", 
+dfRedScen <- read.table("~/PycharmProjects/ModelRepository/nauta_efsa_opinion/reductionscenarios.csv", 
                    header = TRUE,
                    sep = ";")
 
@@ -116,7 +125,7 @@ CretLogSkin <- log10(CretSkin)
 
 
 # user interface
-slope <- rpert(niter,slopeMin,slopeML,slopeMax)
+slope <- rpert(1,slopeMin,slopeML,slopeMax)
 #slope <- 0.27
 tau <- runif(1, min = tauMin, max = tauMax)
 #tau<-1
@@ -163,8 +172,8 @@ for(scen in 1:(nrow(dfRedScen)+1)) {
     scenarioUnc <- dfRedScen$scenarioUnc[scen]
   } else {
     scenarioMean <- scenarioMeanUser
-    scenarioVar <- scenarioVarUser
-    scenarioUnc <- scenarioUncUser
+    scenarioVar <- scenarioVariabilityUser
+    scenarioUnc <- scenarioUncertaintyUser
   }
   deltaFec <- rnorm(niter,scenarioMean,scenarioUnc)
   muAfterIntervention <- mu - slope*deltaFec#
@@ -193,43 +202,95 @@ for(scen in 1:(nrow(dfRedScen)+1)) {
 #################################
 
 
-
 #################################
 #visualization
 #################################
 
-#dfPlot<- cbind(1:10)
+
+
+myVis <- 1
+
 RRdens <- matrix(NA,niter,nrow(dfRedScen))
-# for(scen in 1:nrow(dfRedScen)){
-#   RRquant <- quantile(RR[1:niter,scen],c(.01,.025,.05,.5,.95,.975,.99))
-#   RR2p5 <- 1-RRquant["2.5%"]
-#   RR50 <- 1-RRquant["50%"]
-#   RR97p5 <- 1-RRquant["97.5%"]
-#   RRerrMinus <- RR50-RR2p5
-#   RRerrPlus <- RR97p5-RR50
-#   RRmean <- 1-mean(RR[1:niter,scen])
-#   RRleft <- 1-mean(RR[1:niter,scen])+RRerrMinus
-#   RRright <- 1-mean(RR[1:niter,scen])-RRerrPlus
-#   
-#   #RRdens[1:niter,scen] <- (1-RR[1:niter,scen]))
-# }
+RRerrMinus <- rep(NA,nrow(dfRedScen))
+RRerrPlus <- rep(NA,nrow(dfRedScen))
+RRmean <- rep(NA,nrow(dfRedScen))
+
+
+if(myVis == 1) upTo<-nrow(dfRedScen) else upTo<-nrow(dfRedScen)+1
+myQuant <- matrix(NA,upTo,7)
+
+for(scen in 1:upTo){
+   RRquant <- quantile(RR[1:niter,scen],c(.01,.025,.05,.5,.95,.975,.99))
+   myQuant[scen,1:7] <- as.vector(RRquant)
+   RR2p5 <- 1-RRquant["2.5%"]
+   RR50 <- 1-RRquant["50%"]
+   RR97p5 <- 1-RRquant["97.5%"]
+   RRerrMinus[scen] <- (RR50-RR2p5)*100
+   RRerrPlus[scen] <- (RR97p5-RR50)*100
+   RRmean[scen] <- (1-mean(RR[1:niter,scen]))*100
+   
+   #RRdens[1:niter,scen] <- (1-RR[1:niter,scen])
+}
+RRleft <- RRmean+RRerrMinus
+RRright <- RRmean-RRerrPlus
+
+#################################
+
+if (myVis==1) {
+  library(gridExtra)
+  library(gridGraphics)
+  
+  results <- t(myQuant)
+  mylabel <- as.character(dfRedScen$Scenario[1:5])
+  #mylabel <- append(mylabel,"User\n Scenario")
+  rownames(results) <- names(RRquant)
+  colnames(results) <- mylabel
+  #pushViewport(viewport(x = .5, y = .4, height = .2, width = .2))    
+  grid.table(results)	
+}			
+
+  
+ 
+#################################
+
+
+
 RRR <- (1-RR)*100
 
- dfPlot <- cbind(FA1 = RRR[1:niter,1],
-                 FA2 = RRR[1:niter,2],
-                 FA3 = RRR[1:niter,3],
-                VA1 = RRR[1:niter,4],
-                 VA2 = RRR[1:niter,5],
-                 UserScenario = RRR[1:niter,6])
+ # dfPlot <- cbind(FA1 = RRR[1:niter,1],
+ #                 FA2 = RRR[1:niter,2],
+ #                 FA3 = RRR[1:niter,3],
+ #                VA1 = RRR[1:niter,4],
+ #                 VA2 = RRR[1:niter,5],
+ #                 UserScenario = RRR[1:niter,6])
 
-
-boxplot(dfPlot, 
-        main = "Uncertainty of relative risk reductions for different scenarios", 
-        ylab="Relative Risk Reduction (%)", ylim=c(0,100),
-        notch = TRUE, col = 2:7)
-text(5.9,95,family="A",font=2, paste0("CPM: ", CPMnames[CPM]), pos=3)
-text(5.8,87,family="D",font=2, paste0("DRM: ", DRMnames[DRM]), pos=3)
-
+myText = paste0("Uncertainty of relative risk reductions for different scenarios\n for member state: ",MS)
+# boxplot(dfPlot, 
+#         main = myText, 
+#         ylab="Relative Risk Reduction (%)", ylim=c(0,100),
+#         notch = TRUE, col = 2:7)
+#plot(c(dfRedScen$Scenario[1:5]), RRmean, ylim=c(-3, 3), xlab="x", ylab="y", pch=16, cex=2)
+#par(mfrow=c(2,1))
+#grid.table(resultsCPM)
+if (myVis==0) {
+plot(RRmean,
+     axes=FALSE, 
+     ylim=c(0,100),
+     xlim=c(0.5,6.5),
+     main = myText, 
+     xlab="Reduction Scenarios", 
+     ylab="Relative Risk Reduction (%)", 
+     pch=16, cex=2)
+#axis(1, at=1:10, labels=dfRedScen$Scenario[1:5])
+mylabel <- as.character(dfRedScen$Scenario[1:5])
+mylabel <- append(mylabel,"User\n Scenario")
+axis(2)
+axis(1, at=seq_along(RRmean),labels=mylabel, las=2)
+box()
+arrows(x0=1:6, y0=RRmean+RRerrMinus, x1=1:6, y1=RRmean-RRerrPlus, code=3, angle=90, length=0.1)
+text(5.5,95,family="A",font=2, paste0("CPM: ", CPMnames[CPM]), pos=3)
+text(5.5,87,family="D",font=2, paste0("DRM: ", DRMnames[DRM]), pos=3)
+}
 #plot(RRdens, type="l", lwd=3, ylab=" ",xlab="Risk Reduction", main="probability of Risk Reduction")
 # segments(RRleft,0, RRleft, RRdens$y[match.closest(RRleft,RRdens$x)], lwd=3, lty=2)
 # segments(RRright,0, RRright, RRdens$y[match.closest(RRright,RRdens$x)], lwd=3, lty=2)

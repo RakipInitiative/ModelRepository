@@ -64,10 +64,13 @@ https://efsa.onlinelibrary.wiley.com/doi/full/10.2903/j.efsa.2020.6090
   * distribute new visualisation code to all CPMs and DRMs ... in progress
     * finishing CPMs ... DONE
     * finishing DRMs ... in progress
-      * creating DRMonly versions
-      * adapting DRM module versions with explanation lowpriority since joiner doesnt work properly
-    * finishing RRM ... pending, waiting for Maartens comments
-   * test CPMs on server as soon as CPM is ready to be tested ... pending, waiting for developres
+      * creating DRMonly versions ... DONE
+      * adapting DRM module versions with explanation: low priority since joiner doesnt work properly
+    * finishing RRM ... in progress
+      * visualisation errorbars ... DONE
+      * random CPM/DRM/MS... DONE
+      * test in FSK-Lab ... in progress
+  * test CPMs on server as soon as CPM is ready to be tested ... pending, waiting for developers
   * finalise RRM annotation (need some input see below) ... in progress
   * fix a number of known errors in CPM/DRM annotation ... DONE
   * review and test of all CPMs, DRMs and RRM fskx files (execution and annotation) ... in progress

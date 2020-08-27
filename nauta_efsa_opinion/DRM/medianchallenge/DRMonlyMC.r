@@ -9,10 +9,10 @@
 #################################
 
 logDoses <- seq(0,8,by=0.1)
-alphaGamma <- 0.38
+alphaGamma <- 0.44
 betaGamma <- 0.51
-rPillinf <- 0.76
-etaPillinf <- 0.0092
+rPillinf <- 0.06
+etaPillinf <- 0.88
 
 
 #################################
