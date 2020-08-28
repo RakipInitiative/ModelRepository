@@ -62,6 +62,25 @@ https://efsa.onlinelibrary.wiley.com/doi/full/10.2903/j.efsa.2020.6090
 
 ##### 27/08
   * distribute new visualisation code to all CPMs and DRMs ... in progress
+    * finishing CPMs ... in progress
+    * finishing DRMs ... in progress
+      * creating DRMonly versions ... in progress
+      * adapting DRM module versions with explanation: low priority since joiner doesnt work properly
+    * finishing RRM ... in progress
+      * visualisation errorbars
+      * random CPM/DRM/MS
+      * test in FSK-Lab 
+  * test CPMs on server as soon as CPM is ready to be tested ... pending, waiting for developers
+  * finalise RRM annotation (need some input see below) ... in progress
+  * fix a number of known errors in CPM/DRM annotation ... DONE
+  * review and test of all CPMs, DRMs and RRM fskx files (execution and annotation) ... in progress
+    * CPMs ... in progress
+    * DRMs ... pending, waiting for Petras review
+    * RRM ... in progress
+  * create a few example CPM/DRM combination as fskx models
+
+##### 28/08
+  * distribute new visualisation code to all CPMs and DRMs ... in progress
     * finishing CPMs ... DONE
     * finishing DRMs ... in progress
       * creating DRMonly versions ... DONE
@@ -69,12 +88,21 @@ https://efsa.onlinelibrary.wiley.com/doi/full/10.2903/j.efsa.2020.6090
     * finishing RRM ... in progress
       * visualisation errorbars ... DONE
       * random CPM/DRM/MS... DONE
-      * test in FSK-Lab ... in progress
+      * test in FSK-Lab ... DONE
   * test CPMs on server as soon as CPM is ready to be tested ... pending, waiting for developers
-  * finalise RRM annotation (need some input see below) ... in progress
+  * finalise RRM annotation (need some input see below) ... DONE
   * fix a number of known errors in CPM/DRM annotation ... DONE
   * review and test of all CPMs, DRMs and RRM fskx files (execution and annotation) ... in progress
-  * create a few example CPM/DRM combination as fskx models
+    * CPMs ... DONE
+    * DRMs ... pending, waiting for Petras review
+    * RRM ... DONE
+  * create a few example CPM/DRM combination as fskx models ... in progress
+
+#### 31/08
+  * table for quantile results as an optional visualisation
+    * insert title (CPM/DRM/MS)
+    * transform probabilities into percentage values with 1 decimal
+    * random CPM/DRM combination (for every MC iteration, may need to restructure code)
 
 
 

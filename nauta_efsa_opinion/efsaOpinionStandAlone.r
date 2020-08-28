@@ -24,21 +24,22 @@
 
 
 
-CPM = 1
+CPM = 5
 DRM = 2
 #Cretlog <- rep(1,91)
 #Pillmean <- rep(1,91)
 niter <- 1000
-slopeMin <- 0.27
+slopeMin <- 0.0
 slopeML <- 0.27
-slopeMax <- 0.27
-tauMin <- 1.0
-tauMax <- 1.0
+slopeMax <- 0.7
+tauMin <- 0.0
+tauMax <- 3.0
 scenarioMeanUser <- 1.0
 scenarioVariabilityUser <- 0.0
 scenarioUncertaintyUser <- 0.0
 # EU stuff
 MS <- "EU"
+myVis <- 0
 #p <- 67.0
 #mu <- 2.44
 #sigma <- 1.24
@@ -125,7 +126,7 @@ CretLogSkin <- log10(CretSkin)
 
 
 # user interface
-slope <- rpert(1,slopeMin,slopeML,slopeMax)
+slope <- rpert(niter,slopeMin,slopeML,slopeMax)
 #slope <- 0.27
 tau <- runif(1, min = tauMin, max = tauMax)
 #tau<-1
@@ -208,7 +209,7 @@ for(scen in 1:(nrow(dfRedScen)+1)) {
 
 
 
-myVis <- 1
+
 
 RRdens <- matrix(NA,niter,nrow(dfRedScen))
 RRerrMinus <- rep(NA,nrow(dfRedScen))
@@ -225,9 +226,10 @@ for(scen in 1:upTo){
    RR2p5 <- 1-RRquant["2.5%"]
    RR50 <- 1-RRquant["50%"]
    RR97p5 <- 1-RRquant["97.5%"]
-   RRerrMinus[scen] <- (RR50-RR2p5)*100
-   RRerrPlus[scen] <- (RR97p5-RR50)*100
    RRmean[scen] <- (1-mean(RR[1:niter,scen]))*100
+   RRerrMinus[scen] <- (RR2p5)*100
+   RRerrPlus[scen] <- (RR97p5)*100
+  
    
    #RRdens[1:niter,scen] <- (1-RR[1:niter,scen])
 }
@@ -287,7 +289,7 @@ mylabel <- append(mylabel,"User\n Scenario")
 axis(2)
 axis(1, at=seq_along(RRmean),labels=mylabel, las=2)
 box()
-arrows(x0=1:6, y0=RRmean+RRerrMinus, x1=1:6, y1=RRmean-RRerrPlus, code=3, angle=90, length=0.1)
+arrows(x0=1:6, y0=RRerrMinus, x1=1:6, y1=RRerrPlus, code=3, angle=90, length=0.1)
 text(5.5,95,family="A",font=2, paste0("CPM: ", CPMnames[CPM]), pos=3)
 text(5.5,87,family="D",font=2, paste0("DRM: ", DRMnames[DRM]), pos=3)
 }
