@@ -3,13 +3,16 @@ Joint project of EFSA, Federal Institute For Risk Assessment, DTU and ANSES to c
 
 # content
 ## Nauta EFSA opinion
-##### Reference
+### Reference
 https://efsa.onlinelibrary.wiley.com/doi/full/10.2903/j.efsa.2020.6090 
 
+## Lindqvist EFSA opinion
+### Reference 
+doi: 10.2903/j.efsa.2020.6092
 
-### plan for next days
+## plan for next days
 
-#### 10/09
+### 10/09
 * lindqvist Listeria
   * visualisation -> table as in results2.xlsx
   * output of xlsx -> remove
@@ -19,7 +22,7 @@ https://efsa.onlinelibrary.wiley.com/doi/full/10.2903/j.efsa.2020.6090
     * tell Lars which packages need to be installed
 
 
-#### 09/09
+### 09/09
 
     * rewrite code for fskx transformation 
       * rewrite m.g.QMRA.R as function inside master.R script
