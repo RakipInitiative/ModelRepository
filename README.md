@@ -98,7 +98,7 @@ https://efsa.onlinelibrary.wiley.com/doi/full/10.2903/j.efsa.2020.6090
     * RRM ... DONE
   * create a few example CPM/DRM combination as fskx models ... in progress
 
-#### 31/08
+#### 31/08 - 01/09
   * review and test of all CPMs, DRMs and RRM fskx files (execution and annotation) ... in progress
     * CPMs insert author list ... DONE
     * CPMonly versions? remove unnecessary input/output parameters ... REJECTED
@@ -106,13 +106,22 @@ https://efsa.onlinelibrary.wiley.com/doi/full/10.2903/j.efsa.2020.6090
     * adapting DRM module versions with explanation ... in progress
     * RRM insert author list
   * test CPMs on server as soon as CPM is ready to be tested ... in progress
+    * DRMs can be uploaded and run properly, but encounters problems in FSK-Web, all models run on server
   * implement Maartens comments ... in progress
     * table for quantile results as an optional visualisation
       * insert title (CPM/DRM/MS)
       * transform probabilities into percentage values with 1 decimal
     * random CPM/DRM combination (for every MC iteration, may need to restructure code)
 
-
+#### 08/09
+  * review and test of all CPMs, DRMs and RRM fskx files (execution and annotation) ... in progress
+    * adapting DRM module versions with explanation ... in progress
+  * test CPMs on server ... DONE
+  * implement Maartens comments ... in progress
+    * table for quantile results as an optional visualisation ... DONE
+      * insert title (CPM/DRM/MS) ... DONE
+      * transform probabilities into percentage values with 1 decimal ... DONE
+    * random CPM/DRM combination (for every MC iteration, may need to restructure code) ... REJECTED (until further notice)
 
 ### Questions for Maarten - call 2
   * visualisation of CPM ... fine, according to Maarten, confirmation?
