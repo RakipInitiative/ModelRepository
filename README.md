@@ -9,7 +9,7 @@ https://efsa.onlinelibrary.wiley.com/doi/full/10.2903/j.efsa.2020.6090
 
 ### plan for next days
 
-#### 09/09
+#### 10/09
 * lindqvist Listeria
   * visualisation -> table as in results2.xlsx
   * output of xlsx -> remove
