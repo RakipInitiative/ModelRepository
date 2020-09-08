@@ -45,7 +45,7 @@ log_red=read_excel(xfile,sheet="log_red", col_names=TRUE) #Log reduction beta-pe
 #Definition of functions needed
 #################################################
 
-runs= 200000 #Define the number of iterations to run the script
+runs= 200 #Define the number of iterations to run the script
 pop=11 #11 is females and 12 is males, age group 65-74 years old
 pop.group <- DRP[pop,1:2]
 pop.group

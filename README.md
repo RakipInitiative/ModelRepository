@@ -22,16 +22,19 @@ doi: 10.2903/j.efsa.2020.6092
     * tell Lars which packages need to be installed
 
 
-### 09/09
 
-    * rewrite code for fskx transformation 
+### done so far
+
+#### 09/09
+
+    * rewrite code for fskx transformation ... DONE
       * rewrite m.g.QMRA.R as function inside master.R script
-    * Define input parameters
+    * Define input parameters ... DONE
       * number of runs
       * population group
 
 
-### done so far
+
 
 #### 08/09
   * nauta efsa opinion
