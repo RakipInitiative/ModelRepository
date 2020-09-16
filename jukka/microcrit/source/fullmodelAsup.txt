@@ -1,0 +1,116 @@
+model{
+##############
+# Lindblad data:
+for(i in 1:NBpos){  # number of batches
+for(j in 1:SB[i]){  # number of samples in batch
+# concentration data in pos samples:
+# conversion of cfu, subtract 2:
+logcfu2[i,j] <- (logcfu[i,j]-2)  
+logcfu2[i,j] ~ dnorm(Lmub[i],tau_w) 
+}
+Lmub[i] ~ dnorm(mu,tau_b)
+}
+# pos/neg-data:
+# probability to sample a positive carcass from a positive batch
+NBpos ~  dbin(prpos,N); prpos <- q*mpw
+N <- NBpos+NBneg     
+
+# Hansson data:
+for(i in 1:Nbatches){
+# sample means reported as data in each batch:
+# conversion of cfu, add log10(4):
+mlogcfu2[i] <- (mlogcfu[i]+0.60206)    
+mlogcfu2[i] ~ dnorm(Hmub[i],tau_sample[i])
+tau_sample[i] <- 1/(var_w/pos.carcass[i])
+Hmub[i] ~ dnorm(mu,tau_b)
+# sample SDs reported as data:
+# expression to be used for paramater in full conditional for tau_w:
+expression[i] <- (pos.carcass[i]-1)*sdlogcfu[i]+
+                  pos.carcass[i]*pow(mlogcfu2[i]-Hmub[i],2)
+pos.carcass[i] ~ dbin(pwithin[i],n.carcass[i])
+}
+tau_w ~ dgamma(alphatw,betatw) # full conditional for tau_w 
+alphatw <- 0.5*(sum(pos.carcass[]))  
+betatw <- 0.5*(sum(expression[]))  
+sigma_w <- 1/sqrt(tau_w); var_w <- 1/tau_w
+
+# prediction (for a positive carcass only):
+logcfupredpos ~ dnorm(mu,tau_tot)
+cfupredpos <- pow(10,logcfupredpos)
+# prediction (for any carcass):
+cfupred <- cfupredpos*IB; IB ~ dbern(prpos)
+
+# priors:
+q ~ dunif(0,1)
+mu ~ dnorm(0,0.001)
+tau_tot <- 1/(var_b+var_w) 
+sigma_b <- sqrt(var_b); var_b <- 1/tau_b
+tau_b ~ dgamma(0.001,0.001) # basically the same for tau_w
+phi <- var_w/(var_b+var_w)
+for(i in 1:Nbatches){pwithin[i] ~ dbeta(apw,2)}
+apw ~  dunif(1,10000)
+mpw <- apw/(apw+2)
+#############################
+# Modeling weight of a serving: 
+     m <- 189; s2 <- 127
+     # parameters for log-normal distribution:
+     wmean <- log(m)-0.5*log(1+s2/(m*m)) 
+     wtau <- 1/(  log(1+s2/(m*m))  ) 
+##############################
+# Modeling probability of bacteria to transfer in a salad making:
+for(i in 1:55){ 
+       ptr[i] <- pow(10,-minuslogptr[i])  # from salad experiment
+       ptr[i] ~ dbeta(2,ptrb) 
+   }
+   ptrb ~ dunif(1,10000)
+#############################
+# Model of the outcome of  MC-criteria for a single batch,
+# conditionally on  I, pw, mub, mtau_w in that batch
+# criteria "n=5,c=1,m=1000", met if "c<=1"
+# for example: MCn <- 5; MCc <- 1; MCm <- 3 
+         
+for(j in 1:repsB){ # integration over batch variables pw, mub
+      	
+        mub[j] ~ dnorm(mu,tau_b);            
+        pw[j] ~ dbeta(apw,2);
+	pmet[j]  <- phi((MCm-mub[j])*sqrt(tau_w))  # P(MCm<1000) 
+        campycarcasses[j] ~ dbin(pw[j],MCn); # for a contaminated batch 
+        notmet[j] ~ dbin(pnotmet[j],campycarcasses[j]) 
+        pnotmet[j] <- 1-pmet[j]  
+           # simulate how many times MC is not met
+        MCmetconbatch[j] <- step(MCc-notmet[j]) 
+           # MC is (or not) met for a contaminated batch 
+    
+for(i in 1:repsS){  # integration over (contaminated) servings from a batch
+logcfus[j,i] ~ dnorm(mub[j],tau_w)
+ws[j,i] ~ dlnorm(wmean,wtau)
+lambda[j,i] <- ws[j,i]*pow(10,logcfus[j,i]-1)*ptrnew[j,i]  
+d[j,i] ~ dpois(lambda[j,i])
+ptrnew[j,i] ~ dbeta(2,ptrb)
+P.ill0[j,i] <- 0.33*(1-exp(loggam(a+b)+loggam(b+d[j,i])-loggam(b)-
+                           loggam(a+b+d[j,i])))
+}
+#################################
+# Calculating risk for a given contaminated batch:
+P.ill[j] <- pw[j]*mean(P.ill0[j,])
+# Calculating joint probability of 'risk' and 'MC met' 
+# for a contaminated batch:
+P.illMCmet[j] <- step(MCc-notmet[j])*pw[j]*mean(P.ill0[j,])                          
+        }
+a <- 0.145; b <- 7.59   # assumed dose resp parameters  	  
+# calculating mean risk:
+mP.ill <- q*mean(P.ill[])
+
+# calculating MRRR:  
+mP.illMCmet <- q*mean(P.illMCmet[])
+mrrr <- mP.illMCmet/mP.ill 
+#=P(ill & MCmet | population parameters)/P(ill | population parameters) 
+# calculating RR: 
+mP.illgivenMCmet <- mP.illMCmet/PMCmet  
+PMCmet <- q*mean(MCmetconbatch[])+(1-q)
+rr <- mP.illgivenMCmet/mP.ill
+#=P(ill | MCmet, population parameters)/P(ill | population parameters) 
+}
+
+
+

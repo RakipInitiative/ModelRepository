@@ -12,18 +12,36 @@ doi: 10.2903/j.efsa.2020.6092
 
 ## plan for next days
 
-### 10/09
-* lindqvist Listeria
-  * visualisation -> table as in results2.xlsx
-  * output of xlsx -> remove
-  * contact lindqvist with Maarten in cc for support
-  * test on server: 
-    * check which packages are needed after rewrite of code
-    * tell Lars which packages need to be installed
 
+### 18/09
+* jukka microbial criterion model
+  * transfer R code to fskx
+  * general functionality with openBUGS? on server?
+  * annotate
+
+
+### 17/09
+* nauta
+  * 3 example models CPM/DRM combinations
+    * copy&paste R code into fskx
+    * test functionality
+    * annotate
+    * test on server
 
 
 ### done so far
+
+### 10/09
+* lindqvist Listeria
+  * visualisation -> table as in results2.xlsx ... DONE
+  * output of xlsx -> remove ... DONE
+  * contact lindqvist with Maarten in cc for support ... DONE
+  * test on server: ... DONE
+    * check which packages are needed after rewrite of code ... DONE
+    * tell Lars which packages need to be installed ... DONE
+
+
+
 
 #### 09/09
 
