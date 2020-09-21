@@ -13,11 +13,25 @@ doi: 10.2903/j.efsa.2020.6092
 ## plan for next days
 
 
+### 22/09
+* jukka microbial criterion model
+  * annotate
+
+
+### 21/09
+* nauta
+  * 3 example models CPM/DRM combinations
+    * annotate
+    * test on server
+
+
+## done so far
+
+
 ### 18/09
 * jukka microbial criterion model
   * transfer R code to fskx
   * general functionality with openBUGS? on server?
-  * annotate
 
 
 ### 17/09
@@ -25,11 +39,8 @@ doi: 10.2903/j.efsa.2020.6092
   * 3 example models CPM/DRM combinations
     * copy&paste R code into fskx
     * test functionality
-    * annotate
-    * test on server
 
 
-### done so far
 
 ### 10/09
 * lindqvist Listeria
