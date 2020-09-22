@@ -1,8 +1,9 @@
 #parameters
-dose <- rep(1,100000)
-alphaGamma <- 0.44
+#dose <- rep(1,100000)
+
 Pprev <- 0.25
 #condPillinf <- 0.33
+alphaGamma <- 0.44
 betaGamma <- 0.51
 rPillinf <- 0.06
 etaPillinf <- 0.88
@@ -22,8 +23,8 @@ modDoseResponseMedianChallenge <- function(dose, Pprev, condPillinf, alphaGamma,
   Qill <- Pillmean*Pprev
   PrevExp <- Pprev*(sum(dose>0)/niter)
   
-  #return(list(Pill=Pill, Pillmean=Pillmean, Qill=Qill, PrevExp=PrevExp))
-  return(list(Qill=Qill, PrevExp=PrevExp))
+  return(list(Pill=Pill, Pillmean=Pillmean, Qill=Qill, PrevExp=PrevExp))
+  #return(list(Qill=Qill, PrevExp=PrevExp))
 }
 
 runDoseResponseMedianChallenge <- modDoseResponseMedianChallenge(dose, Pprev, condPillinf, alphaGamma, betaGamma)

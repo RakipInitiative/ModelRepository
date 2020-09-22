@@ -1,0 +1,16 @@
+RTE category;RTE subcategory;Packaging;group;N;S;groupc
+Fish products;Cold smoked fish;ROP;1;613;94;Smoked fish
+Fish products;Hot smoked fish;ROP;2;512;32;Smoked fish
+Fish products;Gravad fish;ROP;3;252;30;Gravad fish
+Meat products;Cooked meat;ROP;4;2490;46;Cooked meat
+Meat products;Sausage;ROP;5;762;13;Sausage
+Meat products;Pâté;ROP;6;184;9;Pâté
+Frozen vegs;fv-RTE;ROP;7;1288;147;fv-RTE
+Fish products;Cold smoked fish;normal;8;613;94;Smoked fish
+Fish products;Hot smoked fish;normal;9;512;32;Smoked fish
+Fish products;Gravad fish;normal;10;252;30;Gravad fish
+Meat products;Cooked meat;normal;11;2490;46;Cooked meat
+Meat products;Sausage;normal;12;762;13;Sausage
+Meat products;Pâté;normal;13;184;9;Pâté
+Cheese;Soft and semi-soft cheese;normal;14;3114;13;Soft and semi-soft cheese
+Frozen vegs;fv-cook;normal;15;1288;147;fv-cook

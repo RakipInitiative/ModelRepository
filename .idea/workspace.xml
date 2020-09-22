@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="BranchesTreeState">
+    <expand>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="LOCAL_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="GROUP_NODE:origin" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+    </expand>
+    <select />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="211805a8-046d-42d7-ac03-9f11edd9d2a0" name="Default Changelist" comment="progress update: nauta efsa opinion: update README.md with current tasks">
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nauta_efsa_opinion/CPM/christensen/christensenCPM_modified.R" beforeDir="false" afterPath="$PROJECT_DIR$/nauta_efsa_opinion/CPM/christensen/christensenCPM_modified.R" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nauta_efsa_opinion/CPM/nauta/nautaCPM_modified.R" beforeDir="false" afterPath="$PROJECT_DIR$/nauta_efsa_opinion/CPM/nauta/nautaCPM_modified.R" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nauta_efsa_opinion/DRM/medianchallenge/medianchallenge.r" beforeDir="false" afterPath="$PROJECT_DIR$/nauta_efsa_opinion/DRM/medianchallenge/medianchallenge.r" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectId" id="1gEZ3Unz3E7DUN650thSY6R661f" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="211805a8-046d-42d7-ac03-9f11edd9d2a0" name="Default Changelist" comment="" />
+      <created>1597681512042</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1597681512042</updated>
+    </task>
+    <task id="LOCAL-00001" summary="progress update: nauta efsa opinion: updated to do list, updated risk reduction model code incl. visualisation code">
+      <created>1597681951363</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1597681951363</updated>
+    </task>
+    <task id="LOCAL-00002" summary="progress update: nauta efsa opinion: current CPM visualisation version">
+      <created>1597682688929</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1597682688929</updated>
+    </task>
+    <task id="LOCAL-00003" summary="progress update: nauta efsa opinion: unifying all CPMs, DRMs and the risk reduction model in 1 knime workflow">
+      <created>1597683819072</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1597683819072</updated>
+    </task>
+    <task id="LOCAL-00004" summary="progress update: nauta efsa opinion: update README.md with current tasks">
+      <created>1597856727416</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1597856727416</updated>
+    </task>
+    <task id="LOCAL-00005" summary="update README.md with work plan for the next few days">
+      <created>1597934566139</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1597934566140</updated>
+    </task>
+    <task id="LOCAL-00006" summary="time plan update, fixes for CPM, DRM, RRM visualisation, RRM stand alone model,">
+      <created>1598029829415</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1598029829415</updated>
+    </task>
+    <task id="LOCAL-00007" summary="time plan update, fixes for CPM, DRM, RRM visualisation, RRM stand alone model,">
+      <created>1598029973762</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1598029973762</updated>
+    </task>
+    <task id="LOCAL-00008" summary="update todo-list, uploaded new cpm visualisation">
+      <created>1598299621790</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1598299621790</updated>
+    </task>
+    <task id="LOCAL-00009" summary="update README.md with progress report">
+      <created>1598516297802</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1598516297802</updated>
+    </task>
+    <task id="LOCAL-00010" summary="update README.md with progress report, DRM only version with the 1st DRMonly model">
+      <created>1598536484798</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1598536484798</updated>
+    </task>
+    <task id="LOCAL-00011" summary="update README.md with progress report, RRM stand alone R-code done with new visualisation, fixed parameter names, new randomization of CPM,DRM,MS parameters">
+      <created>1598546918673</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1598546918673</updated>
+    </task>
+    <task id="LOCAL-00012" summary="progress update, finalized fskx models upload, minor bugfixes in R code, to do list in README.md">
+      <created>1598626789975</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1598626789975</updated>
+    </task>
+    <task id="LOCAL-00013" summary="update planning">
+      <created>1600779002785</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1600779002785</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
+    <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="progress update: nauta efsa opinion: updated to do list, updated risk reduction model code incl. visualisation code" />
+    <MESSAGE value="progress update: nauta efsa opinion: current CPM visualisation version" />
+    <MESSAGE value="progress update: nauta efsa opinion: unifying all CPMs, DRMs and the risk reduction model in 1 knime workflow" />
+    <MESSAGE value="progress update: nauta efsa opinion: update README.md with current tasks" />
+    <MESSAGE value="update README.md with work plan for the next few days" />
+    <MESSAGE value="time plan update, fixes for CPM, DRM, RRM visualisation, RRM stand alone model," />
+    <MESSAGE value="update todo-list, uploaded new cpm visualisation" />
+    <MESSAGE value="update README.md with progress report" />
+    <MESSAGE value="update README.md with progress report, DRM only version with the 1st DRMonly model" />
+    <MESSAGE value="update README.md with progress report, RRM stand alone R-code done with new visualisation, fixed parameter names, new randomization of CPM,DRM,MS parameters" />
+    <MESSAGE value="progress update, finalized fskx models upload, minor bugfixes in R code, to do list in README.md" />
+    <MESSAGE value="update planning" />
+    <option name="LAST_COMMIT_MESSAGE" value="update planning" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="187" y="117" width="1536" height="879" key="MergeDialog" timestamp="1600778663157">
+      <screen x="0" y="27" width="1920" height="1053" />
+    </state>
+    <state x="187" y="117" width="1536" height="879" key="MergeDialog/0.27.1920.1053@0.27.1920.1053" timestamp="1600778663157" />
+    <state x="355" y="164" width="1200" height="785" key="Vcs.Push.Dialog.v2" timestamp="1600779008715">
+      <screen x="0" y="27" width="1920" height="1053" />
+    </state>
+    <state x="355" y="164" width="1200" height="785" key="Vcs.Push.Dialog.v2/0.27.1920.1053@0.27.1920.1053" timestamp="1600779008715" />
+    <state x="651" y="431" width="618" height="272" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1600778654910">
+      <screen x="0" y="27" width="1920" height="1053" />
+    </state>
+    <state x="651" y="431" width="618" height="272" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.27.1920.1053@0.27.1920.1053" timestamp="1600778654910" />
+    <state x="453" y="25" key="search.everywhere.popup" timestamp="1597681741844">
+      <screen x="0" y="27" width="1920" height="1053" />
+    </state>
+    <state x="453" y="25" key="search.everywhere.popup/0.27.1920.1053@0.27.1920.1053" timestamp="1597681741844" />
+  </component>
+</project>

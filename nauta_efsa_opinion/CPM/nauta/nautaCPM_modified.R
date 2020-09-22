@@ -14,8 +14,9 @@ meanPortion <- 189.0
 stdPortion <- 126.9
 upperPortion <- 1000.0
 logPtr <- c(2.24, 2.36, 2.37, 2.58, 2.82, 2.86, 3.16, 3.17, 3.47, 3.52, 3.57, 3.83, 3.83, 3.84, 3.87, 3.89, 3.89, 3.90, 3.94, 4.03, 4.09, 4.42, 4.53, 4.54, 4.54, 4.62, 4.62, 4.68, 4.73, 4.76,4.84, 4.92, 4.93, 4.95, 4.97, 5.20, 5.25, 5.27, 5.39, 5.47, 5.60, 5.83, 5.89, 5.95, 5.96, 6.02, 6.23, 6.38, 6.96, 7.37, 7.90, 8.20, 9.00, 9.00, 9.00)
-maxDistsShown = 5 # number of distribution of doses shown
-
+condPillinf <- 0.33
+betaGamma <- 7.59
+alphaGamma <- 0.145
 #############################
 
 
@@ -115,64 +116,64 @@ PrevExp <- runConsumerPhaseNauta$PrevExp
 
 
 
-#################################
-#visualisation
-#################################
-library(ggridges)
-library(ggplot2)
-library(viridis)
-
-# if the user restricts the number of dose distributions shown:
-# dhelp becomes a subset of dose
-# chelp becomes a subset of Cretlog
-dhelp <- dose
-chelp <- Cretlog
-
-totalNrOfDists <- length(Cretlog)
-
-# take 1st and last Cretlog and a number of distributions in between
-if (totalNrOfDists>maxDistsShown){
-  totalNrOfDists = length(Cretlog)
-  
-  stepSize = round((totalNrOfDists-1)/(maxDistsShown-1))
-  steps = seq(1,totalNrOfDists,by=stepSize)
-  
-  #consistency check
-  if(length(steps)<maxDistsShown) maxDistsShown <- length(steps)
-
-  steps[maxDistsShown] <- length(Cretlog)
-  
-  chelp <- Cretlog[steps]
-  dhelp <- dose[steps,1:niter]
-}
-dvec <- as.vector(t(log10(dhelp+0.001)))
-cvec <- sort(rep(chelp,niter))
-d <- data.frame(cvec,dvec)
-colnames(d)<-c("log of contamination at retail (log C_ret)","log of dose of contamination at consumer")
-ggplot(d, aes(x = `log of dose of contamination at consumer`, y = `log of contamination at retail (log C_ret)`, fill = ..x.., group=`log of contamination at retail (log C_ret)`)) +
-  geom_density_ridges_gradient(scale = 3, rel_min_height = 0.01) +
-  scale_fill_viridis(name = "color scale", option = "C") +
-  labs(title = 'doses of campylobacter in chicken salad as function of contamination of chicken meat bought at retail')
-
-
-library(gridExtra)
-library(gridGraphics)
-resultsCPM <- cbind(round(dosemean,0), round(PrevExp*100,1))
-rownames(resultsCPM) <- myCPMname
-colnames(resultsCPM) <- c("Mean dose", 'Prevalence of exposure [%]')
-
-
-tableCPM <- matrix(round(dose,0))
-
-rownames(tableCPM) <- rownames(tableCPM, do.NULL=FALSE, prefix="Value.")
-colnames(tableCPM) <- c('Dose')
-#write.csv(tableCPM, file="doses-consumer-phase-Nauta.csv")
-
-pushViewport(viewport(x = .6, y = .2, height = .2, width = .2))    
-grid.table(resultsCPM)										
-
-
-
+# #################################
+# #visualisation
+# #################################
+# library(ggridges)
+# library(ggplot2)
+# library(viridis)
+# 
+# # if the user restricts the number of dose distributions shown:
+# # dhelp becomes a subset of dose
+# # chelp becomes a subset of Cretlog
+# dhelp <- dose
+# chelp <- Cretlog
+# 
+# totalNrOfDists <- length(Cretlog)
+# 
+# # take 1st and last Cretlog and a number of distributions in between
+# if (totalNrOfDists>maxDistsShown){
+#   totalNrOfDists = length(Cretlog)
+#   
+#   stepSize = round((totalNrOfDists-1)/(maxDistsShown-1))
+#   steps = seq(1,totalNrOfDists,by=stepSize)
+#   
+#   #consistency check
+#   if(length(steps)<maxDistsShown) maxDistsShown <- length(steps)
+# 
+#   steps[maxDistsShown] <- length(Cretlog)
+#   
+#   chelp <- Cretlog[steps]
+#   dhelp <- dose[steps,1:niter]
+# }
+# dvec <- as.vector(t(log10(dhelp+0.001)))
+# cvec <- sort(rep(chelp,niter))
+# d <- data.frame(cvec,dvec)
+# colnames(d)<-c("log of contamination at retail (log C_ret)","log of dose of contamination at consumer")
+# ggplot(d, aes(x = `log of dose of contamination at consumer`, y = `log of contamination at retail (log C_ret)`, fill = ..x.., group=`log of contamination at retail (log C_ret)`)) +
+#   geom_density_ridges_gradient(scale = 3, rel_min_height = 0.01) +
+#   scale_fill_viridis(name = "color scale", option = "C") +
+#   labs(title = 'doses of campylobacter in chicken salad as function of contamination of chicken meat bought at retail')
+# 
+# 
+# library(gridExtra)
+# library(gridGraphics)
+# resultsCPM <- cbind(round(dosemean,0), round(PrevExp*100,1))
+# rownames(resultsCPM) <- myCPMname
+# colnames(resultsCPM) <- c("Mean dose", 'Prevalence of exposure [%]')
+# 
+# 
+# tableCPM <- matrix(round(dose,0))
+# 
+# rownames(tableCPM) <- rownames(tableCPM, do.NULL=FALSE, prefix="Value.")
+# colnames(tableCPM) <- c('Dose')
+# #write.csv(tableCPM, file="doses-consumer-phase-Nauta.csv")
+# 
+# pushViewport(viewport(x = .6, y = .2, height = .2, width = .2))    
+# grid.table(resultsCPM)										
+# 
+# 
+# 
 
 #################################
 #################################
@@ -187,10 +188,10 @@ grid.table(resultsCPM)
 #parameters
 #################################
 # dose <- matrix(1,3,4)
- Pprev <- 0.25
-  condPillinf <- 0.33
-  betaGamma <- 7.59
-  alphaGamma <- 0.145
+#  Pprev <- 0.25
+ #condPillinf <- 0.33
+#betaGamma <- 7.59
+#alphaGamma <- 0.145
   
   #################################  
   #model
@@ -224,7 +225,9 @@ grid.table(resultsCPM)
   #################################
   #visualisation
   #################################
-#plot(Cretlog, Pillmean, xlab = "log(C_ret)", ylab = "P_ill", main = "probability of getting ill based on contamination of chicken meat bought at retail")
-  #################################
+plot(Cretlog, Pillmean, xlab = "log(C_ret)", ylab = "P_ill", main = "probability of getting ill based on\ncontamination of chicken meat bought at retail")
+text(5,0.05,family="A",font=2, "CPM: Nauta", pos=3)
+text(5,0.02,family="D",font=2, "DRM: Classical", pos=3)
+    #################################
   
   

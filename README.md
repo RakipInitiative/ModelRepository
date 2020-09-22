@@ -12,7 +12,9 @@ doi: 10.2903/j.efsa.2020.6092
 
 ## plan for next days
 
+* test all finished models on VRE
 * jukka microbial criterion model
+  * finish annotating
   * test on server (all servers: intern, extern, VRE)
   * contact jukka about dose response
 * tubs model
@@ -40,7 +42,6 @@ doi: 10.2903/j.efsa.2020.6092
 ### 18/09
 * jukka microbial criterion model
   * transfer R code to fskx
-  * general functionality with openBUGS? on server?
   * annotate
 
 

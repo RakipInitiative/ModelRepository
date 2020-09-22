@@ -1,0 +1,312 @@
+Return-path: <Jukka.Ranta@ruokavirasto.fi>
+Received: from vm-maslxpostfix01.bfr.bund.de ([10.100.64.147])
+	by vm-maslxgwia01.bfr.bund.de with ESMTP (TLS encrypted); Wed, 06 May 2020 15:49:43 +0200
+Received: from argusgate01.bfr.bund.de (argusgate01-intern.bfr.bund.de [172.27.6.106])
+	by vm-maslxpostfix01.bfr.bund.de (Postfix) with ESMTPS id EBD29400C8
+	for <Matthias.Filter@bfr.bund.de>; Wed,  6 May 2020 15:49:37 +0200 (CEST)
+Received: from argusgate01.bfr.bund.de (localhost [127.0.0.1])
+	by argusgate01.bfr.bund.de (Postfix) with ESMTP id E77D89182BC
+	for <Matthias.Filter@bfr.bund.de>; Wed,  6 May 2020 15:49:37 +0200 (CEST)
+Received: from tele400.bund400.de (10.250.1.3)
+ by argusgate01.bfr.bund.de (smtprelay) with ESMTP; Wed, 06 May 2020 15:49:25 +0200
+X-P350-Id: 7596032870b60dee
+Received: from mx1.bund.de (fw-bln-alg4-tx.ivbb.bund.de [10.250.7.248])
+	by blnescn03.adm.ivbb.bund.de (Postfix) with ESMTP id 36DF29003B8
+	for <Matthias.Filter@bfr.bund.de>; Wed,  6 May 2020 15:49:25 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+	by dlsea31en22.sc.bund.de (Postfix) with ESMTP id 49HHyF1Rbsz1xnp
+	for <Matthias.Filter@bfr.bund.de>; Wed,  6 May 2020 15:49:25 +0200 (CEST)
+Authentication-Results: dlsea31en22.sc.bund.de;
+	spf=pass reason="ruokavirasto.fi: 185.74.174.132 is authorized to use 'ruokavirasto.fi' in 'mfrom' identity (mechanism 'ip4:185.74.174.128/25' matched)"
+	smtp.mailfrom=ruokavirasto.fi
+X-Virus-Scanned: by amavisd-new at standard-no-quaran.de
+X-Spam-Flag: NO
+X-Spam-Score: -1.899
+X-Spam-Level:
+X-Spam-Status: No, score=-1.899 tagged_above=-10000 required=5.5
+	tests=[BAYES_00=-1.9, HTML_MESSAGE=0.001, SPF_HELO_NONE=0.001,
+	SPF_PASS=-0.001] autolearn=ham autolearn_force=no
+Received: from dlsea31en22.sc.bund.de ([127.0.0.1])
+	by localhost (dlsea31en22.sc.bund.de [127.0.0.1]) (amavisd-new, port 10024)
+	with LMTP id P0L2TzwSBgeN for <Matthias.Filter@bfr.bund.de>;
+	Wed,  6 May 2020 15:49:22 +0200 (CEST)
+Received: from emaila1.vy-verkko.fi (mail-out.vy-verkko.fi [185.74.174.132])
+	by dlsea31en22.sc.bund.de (Postfix) with ESMTPS id 49HHyB5Wpwz3wbW
+	for <Matthias.Filter@bfr.bund.de>; Wed,  6 May 2020 15:49:22 +0200 (CEST)
+Received: from C119S212VM039.msvyvi.vaha.local ([10.45.0.61])
+	by emaila1.vy-verkko.fi  with ESMTP id 046DnIVG024181-046DnIVI024181
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=CAFAIL)
+	for <Matthias.Filter@bfr.bund.de>; Wed, 6 May 2020 16:49:22 +0300
+Received: from C119S212VM034.msvyvi.vaha.local (10.45.0.56) by
+ C119S212VM039.msvyvi.vaha.local (10.45.0.61) with Microsoft SMTP Server (TLS)
+ id 15.0.1497.2; Wed, 6 May 2020 16:49:15 +0300
+Received: from C119S212VM034.msvyvi.vaha.local ([44.131.16.184]) by
+ C119S212VM034.msvyvi.vaha.local ([44.131.16.184]) with mapi id
+ 15.00.1497.006; Wed, 6 May 2020 16:49:15 +0300
+From: "Ranta Jukka (Ruoka)" <Jukka.Ranta@ruokavirasto.fi>
+To: Matthias Filter <Matthias.Filter@bfr.bund.de>
+Subject: Microbial criterion model
+Thread-Topic: Microbial criterion model
+Thread-Index: AdYjqsSXrtWz4uRdQVy0Y6/bZPGBpQ==
+Date: Wed, 6 May 2020 13:49:14 +0000
+Message-ID: <4c3fd807bc7742d5986756b2cd3db556@C119S212VM034.msvyvi.vaha.local>
+Accept-Language: fi-FI, en-US
+Content-Language: fi-FI
+X-MS-Has-Attach: yes
+X-MS-TNEF-Correlator:
+x-ms-exchange-transport-fromentityheader: Hosted
+x-originating-ip: [10.23.140.149]
+Content-Type: multipart/mixed;
+	boundary="_005_4c3fd807bc7742d5986756b2cd3db556C119S212VM034msvyvivaha_"
+MIME-Version: 1.0
+
+--_005_4c3fd807bc7742d5986756b2cd3db556C119S212VM034msvyvivaha_
+Content-Type: multipart/alternative;
+	boundary="_000_4c3fd807bc7742d5986756b2cd3db556C119S212VM034msvyvivaha_"
+
+--_000_4c3fd807bc7742d5986756b2cd3db556C119S212VM034msvyvivaha_
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
+
+Dear Matthias,
+
+after some archive digging I found a work file that was used to run several=
+ versions and experiments with the microbial model. Obviously, somewhere am=
+ong the code lines for those test runs was also the final version.
+
+Here's the extract, a bit edited. This should run for one of the criteria. =
+You can try adjust R-code for different inputs. Easiest is to change the cr=
+iteria specification n/c/m, but harder to change baseline data because depe=
+nding on what the data are, different likelihood-function  expressions need=
+ to be built in the BUGS code. This one is specific for the data from the t=
+wo publications. (Well, the data numbers are easy to change, but I mean if =
+a new data structure implies a different statistical distribution as a basi=
+s for the likelihood function, then the code needs rewriting).
+
+BR,
+Jukka
+
+--_000_4c3fd807bc7742d5986756b2cd3db556C119S212VM034msvyvivaha_
+Content-Type: text/html; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
+
+<html xmlns:v=3D"urn:schemas-microsoft-com:vml" xmlns:o=3D"urn:schemas-micr=
+osoft-com:office:office" xmlns:w=3D"urn:schemas-microsoft-com:office:word" =
+xmlns:m=3D"http://schemas.microsoft.com/office/2004/12/omml" xmlns=3D"http:=
+//www.w3.org/TR/REC-html40">
+<head>
+<meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3Dus-ascii"=
+>
+<meta name=3D"Generator" content=3D"Microsoft Word 15 (filtered medium)">
+<style><!--
+/* Font Definitions */
+@font-face
+	{font-family:"Cambria Math";
+	panose-1:2 4 5 3 5 4 6 3 2 4;}
+@font-face
+	{font-family:Calibri;
+	panose-1:2 15 5 2 2 2 4 3 2 4;}
+/* Style Definitions */
+p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin:0cm;
+	margin-bottom:.0001pt;
+	font-size:11.0pt;
+	font-family:"Calibri",sans-serif;
+	mso-fareast-language:EN-US;}
+a:link, span.MsoHyperlink
+	{mso-style-priority:99;
+	color:#0563C1;
+	text-decoration:underline;}
+a:visited, span.MsoHyperlinkFollowed
+	{mso-style-priority:99;
+	color:#954F72;
+	text-decoration:underline;}
+span.Shkpostityyli17
+	{mso-style-type:personal-compose;
+	font-family:"Calibri",sans-serif;
+	color:windowtext;}
+.MsoChpDefault
+	{mso-style-type:export-only;
+	font-family:"Calibri",sans-serif;
+	mso-fareast-language:EN-US;}
+@page WordSection1
+	{size:612.0pt 792.0pt;
+	margin:70.85pt 2.0cm 70.85pt 2.0cm;}
+div.WordSection1
+	{page:WordSection1;}
+--></style><!--[if gte mso 9]><xml>
+<o:shapedefaults v:ext=3D"edit" spidmax=3D"1026" />
+</xml><![endif]--><!--[if gte mso 9]><xml>
+<o:shapelayout v:ext=3D"edit">
+<o:idmap v:ext=3D"edit" data=3D"1" />
+</o:shapelayout></xml><![endif]-->
+</head>
+<body lang=3D"FI" link=3D"#0563C1" vlink=3D"#954F72">
+<div class=3D"WordSection1">
+<p class=3D"MsoNormal">Dear Matthias,<o:p></o:p></p>
+<p class=3D"MsoNormal"><o:p>&nbsp;</o:p></p>
+<p class=3D"MsoNormal"><span lang=3D"EN-US">after some archive digging I fo=
+und a work file that was used to run several versions and experiments with =
+the microbial model. Obviously, somewhere among the code lines for those te=
+st runs was also the final version.
+<o:p></o:p></span></p>
+<p class=3D"MsoNormal"><span lang=3D"EN-US"><o:p>&nbsp;</o:p></span></p>
+<p class=3D"MsoNormal"><span lang=3D"EN-US">Here&#8217;s the extract, a bit=
+ edited. This should run for one of the criteria. You can try adjust R-code=
+ for different inputs. Easiest is to change the criteria specification n/c/=
+m, but harder to change baseline data because
+ depending on what the data are, different likelihood-function&nbsp; expres=
+sions need to be built in the BUGS code. This one is specific for the data =
+from the two publications. (Well, the data numbers are easy to change, but =
+I mean if a new data structure implies
+ a different statistical distribution as a basis for the likelihood functio=
+n, then the code needs rewriting).<o:p></o:p></span></p>
+<p class=3D"MsoNormal"><span lang=3D"EN-US"><o:p>&nbsp;</o:p></span></p>
+<p class=3D"MsoNormal"><span lang=3D"EN-US">BR,<o:p></o:p></span></p>
+<p class=3D"MsoNormal"><span lang=3D"EN-US">Jukka &nbsp;&nbsp;<o:p></o:p></=
+span></p>
+</div>
+</body>
+</html>
+
+--_000_4c3fd807bc7742d5986756b2cd3db556C119S212VM034msvyvivaha_--
+
+--_005_4c3fd807bc7742d5986756b2cd3db556C119S212VM034msvyvivaha_
+Content-Type: application/octet-stream; name="exampleCriterionModel.R"
+Content-Description: exampleCriterionModel.R
+Content-Disposition: attachment; filename="exampleCriterionModel.R";
+	size=2664; creation-date="Wed, 06 May 2020 13:32:30 GMT";
+	modification-date="Wed, 06 May 2020 13:31:01 GMT"
+Content-Transfer-Encoding: base64
+
+DQpsaWJyYXJ5KCJSMk9wZW5CVUdTIikNCg0KIyBEYXRhIHNwZWNpZmljYXRpb25zIGJhc2VkIG9u
+IDIgcHVibGlzaGVkIHBhcGVycyAoTGluZGJsYWQgZXQgYWwsIEhhbnNzb24gZXQgYWwpLg0KTkJw
+b3M9ODgNCk5CbmVnPTUyOQ0KU0I9YygxLDEsMSwxLDEsMSwxLDEsMSwxLDEsMSwxLDEsMSwxLDEs
+MSwxLDEsMSwxLDEsMSwxLDEsMSwxLDEsMSwxLDEsMSwxLDEsMSwxLDEsMSwxLDEsMSwxLDEsMSwx
+LDEsMSwxLDEsMSwxLDEsMSwxLDEsMSwxLDEsMSwxLDEsMSwxLDEsMSwxLDEsMSwxLDEsMSwxLDEs
+MSwxLDEsMSwxLDEsMSwxLDEsMSwxLDEsMSwxKQ0KbG9nY2Z1PXN0cnVjdHVyZSguRGF0YT1jKA0K
+Mi42MCwyLjYwLDIuNjAsMi42MCwyLjYwLDIuNjAsMi42MCwyLjYwLDIuOTAsMi45MCwyLjkwLDMu
+MDgsDQozLjA4LDMuMjAsMy4yNiwzLjM0LDMuNDAsMy40MSwzLjUxLDMuNTEsMy41NiwzLjU2LDMu
+NjAsMy42NCwNCjMuNjQsMy42NCwzLjY4LDMuODgsMy44OCwzLjkyLDMuOTIsMy45NCwzLjk0LDMu
+OTQsMy45NCwzLjk2LA0KMy45Nyw0LjAxLDQuMDIsNC4wMiw0LjA2LDQuMDcsNC4wOSw0LjEwLDQu
+MTYsNC4xNiw0LjE4LDQuMTksDQo0LjIzLDQuMjUsNC4yNiw0LjI2LDQuMjksNC4zMCw0LjMxLDQu
+MzIsNC4zNiw0LjM4LDQuNDEsNC40MSwNCjQuNTAsNC42MCw0LjYwLDQuNjQsNC42NSw0LjY4LDQu
+NzAsNC43MSw0LjcxLDQuNzYsNC43Nyw0LjgyLA0KNC44Niw0LjkwLDQuOTYsNC45OCw0Ljk5LDQu
+OTksNS4wMiw1LjA2LDUuMTQsNS4yNiw1LjMyLDUuNDAsDQo1LjQyLDUuNDIsNi4xNyw3LjE1KSwu
+RGltPWMoODgsMSkpDQpOYmF0Y2hlcz0yMA0KbWxvZ2NmdT1jKDIuMzEsMS45NiwxLjM4LDIuOTgs
+Mi44NywyLjc2LDMuMDIsMi42OSwzLjE1LDIuNjMsMi43NCwyLjMyLDIuNjIsMi42MiwxLjM1LDEu
+MjEsMi4xOSwxLjM5LDIuMTMsMi4xMSkNCnNkbG9nY2Z1PWMoMC42MSwwLjUxLDAuNjAsMC40OCww
+LjcxLDAuMzksMC41OCwwLjQwLDAuNDksMC4zNywwLjM3LDAuMjYsMC40OSwwLjM1LDAuODEsMC44
+MCwwLjQ4LDAuNzUsMC42OSwwLjYxKQ0KcG9zLmNhcmNhc3M9YygyNCwxMCwyMSwxNiwxMiwxMyw1
+LDEwLDIwLDExLDIwLDE1LDE3LDE3LDE3LDE4LDIzLDIwLDE5LDExKQ0Kbi5jYXJjYXNzPSAgYygy
+NSwxMCwyMywxNiwxMiwxMyw1LDEwLDIwLDExLDIwLDE1LDE3LDE3LDIwLDIxLDIzLDIwLDIwLDEx
+KQ0KbWludXNsb2dwdHI9YyggMi4yNCwgMi4zNiwgMi4zNywgMi41OCwgMi44MiwgMi44NiwgMy4x
+NiwgMy4xNywgMy40NywgMy41MiwgMy41NywgMy44MywgMy44MywgMy44NCwgDQozLjg3LCAzLjg5
+LCAzLjg5LCAzLjkwLCAzLjk0LCA0LjAzLCA0LjA5LCA0LjQyLCA0LjUzLCA0LjU0LCA0LjU0LCA0
+LjYyLCA0LjYyLCA0LjY4LCA0LjczLCA0Ljc2LCA0Ljg0LCANCjQuOTIsIDQuOTMsIDQuOTUsIDQu
+OTcsIDUuMjAsIDUuMjUsIDUuMjcsIDUuMzksIDUuNDcsIDUuNjAsIDUuODMsIDUuODksIDUuOTUs
+IDUuOTYsIDYuMDIsIDYuMjMsIDYuMzgsIA0KNi45NiwgNy4zNywgNy45MCwgOC4yMCwgOS4wMCwg
+OS4wMCwgOS4wMCkNClNETCA8LSAwLjg1NDkyOTkgICMgU0QgaW4gTGluZGJsYWQgZGF0YQ0KbWVh
+bkwgPC0gMi4xMTI3MjcgICMgbWVhbiBpbiBMaW5kYmxhZCBkYXRhDQoNCg0KIyBmdWxsIG1vZGVs
+IHdpdGggUlIgKGFuZCBtcnJyKQ0KcmVwc0IgPC0gNDA7IHJlcHNTIDwtIDEwOyAjYWRqdXN0IDJE
+IE1vbnRlIENhcmxvOiByZXBzQj1udW1iZXIgb2YgcmVwbGljYXRlZCBiYXRjaGVzLCByZXBzUz1u
+dW1iZXIgb2YgcmVwbGljYXRlZCBzZXJ2aW5ncw0KTUNuIDwtIDU7IE1DYyA8LSAwOyBNQ20gPC0g
+MyAgIyBNaWNyb2Jpb2xvZ2ljYWwgQ3JpdGVyaW9uIHVzZWQuICJuL2MvbSINCmRhdGEgPC0gbGlz
+dCgicmVwc0IiLCJyZXBzUyIsIk1DbiIsIk1DYyIsIk1DbSIsIk5CcG9zIiwiTkJuZWciLCJTQiIs
+ImxvZ2NmdSIsIk5iYXRjaGVzIiwibWxvZ2NmdSIsInNkbG9nY2Z1IiwicG9zLmNhcmNhc3MiLCJu
+LmNhcmNhc3MiLCJtaW51c2xvZ3B0ciIpDQpwYXJhbWV0ZXJzIDwtIGMoInJyIiwibXJyciIsInEi
+LCJtdSIsInNpZ21hX2IiLCJzaWdtYV93IiwicGhpIiwiUE1DbWV0IiwiUC5pbGwiLCJtUC5pbGwi
+KQ0KaW5pdHMgPC0gZnVuY3Rpb24oKXtsaXN0KGNhbXB5Y2FyY2Fzc2VzPXJlcChNQ24scmVwc0Ip
+LE5DPXN0cnVjdHVyZSguRGF0YT1yZXAoMixyZXBzQipyZXBzUyksLkRpbT1jKHJlcHNCLHJlcHNT
+KSksTG11Yj1ydW5pZig4OCwxLDIpLEhtdWI9cnVuaWYoMjAsMSwyKSxtdT0xLHRhdV93PTMsdGF1
+X2I9MyxxPTAuMTQsYXB3PTEwLHB3aXRoaW49cmJldGEoMjAsOSwxKSxwdHJiPTIwMDApfQ0KcmVz
+TTVfMDMgPC0gYnVncyhkYXRhLGluaXRzLHBhcmFtZXRlcnMsImZ1bGxtb2RlbEFzdXAudHh0Iixu
+LmNoYWlucz0xLG4uaXRlcj02MTAwLG4uYnVybmluPTEwMCxuLnRoaW49MikNCmF0dGFjaC5idWdz
+KHJlc001XzAzKQ0KcGxvdCgxLVBNQ21ldCxycixjZXg9MC41LHBjaD0xNixtYWluPSJDcml0ZXJp
+b246IG49NSxjPTAsbT0zIix4bGFiPSJQKE1DIG5vdCBtZXQpID0gJXJlamVjdGVkIGJhdGNoZXMi
+LHlsYWI9IlJSIiwNCmNvbD1kZW5zQ29scygxLVBNQ21ldCxycixjb2xyYW1wPWNvbG9yUmFtcFBh
+bGV0dGUoYygiZGFya2dyZWVuIiwieWVsbG93IiwicmVkIikpKSkNCg0K
+
+--_005_4c3fd807bc7742d5986756b2cd3db556C119S212VM034msvyvivaha_
+Content-Type: text/plain; name="fullmodelAsup.txt"
+Content-Description: fullmodelAsup.txt
+Content-Disposition: attachment; filename="fullmodelAsup.txt"; size=4124;
+	creation-date="Wed, 06 May 2020 13:32:37 GMT";
+	modification-date="Wed, 27 May 2015 14:02:44 GMT"
+Content-Transfer-Encoding: base64
+
+bW9kZWx7DQojIyMjIyMjIyMjIyMjIw0KIyBMaW5kYmxhZCBkYXRhOg0KZm9yKGkgaW4gMTpOQnBv
+cyl7ICAjIG51bWJlciBvZiBiYXRjaGVzDQpmb3IoaiBpbiAxOlNCW2ldKXsgICMgbnVtYmVyIG9m
+IHNhbXBsZXMgaW4gYmF0Y2gNCiMgY29uY2VudHJhdGlvbiBkYXRhIGluIHBvcyBzYW1wbGVzOg0K
+IyBjb252ZXJzaW9uIG9mIGNmdSwgc3VidHJhY3QgMjoNCmxvZ2NmdTJbaSxqXSA8LSAobG9nY2Z1
+W2ksal0tMikgIA0KbG9nY2Z1MltpLGpdIH4gZG5vcm0oTG11YltpXSx0YXVfdykgDQp9DQpMbXVi
+W2ldIH4gZG5vcm0obXUsdGF1X2IpDQp9DQojIHBvcy9uZWctZGF0YToNCiMgcHJvYmFiaWxpdHkg
+dG8gc2FtcGxlIGEgcG9zaXRpdmUgY2FyY2FzcyBmcm9tIGEgcG9zaXRpdmUgYmF0Y2gNCk5CcG9z
+IH4gIGRiaW4ocHJwb3MsTik7IHBycG9zIDwtIHEqbXB3DQpOIDwtIE5CcG9zK05CbmVnICAgICAN
+Cg0KIyBIYW5zc29uIGRhdGE6DQpmb3IoaSBpbiAxOk5iYXRjaGVzKXsNCiMgc2FtcGxlIG1lYW5z
+IHJlcG9ydGVkIGFzIGRhdGEgaW4gZWFjaCBiYXRjaDoNCiMgY29udmVyc2lvbiBvZiBjZnUsIGFk
+ZCBsb2cxMCg0KToNCm1sb2djZnUyW2ldIDwtIChtbG9nY2Z1W2ldKzAuNjAyMDYpICAgIA0KbWxv
+Z2NmdTJbaV0gfiBkbm9ybShIbXViW2ldLHRhdV9zYW1wbGVbaV0pDQp0YXVfc2FtcGxlW2ldIDwt
+IDEvKHZhcl93L3Bvcy5jYXJjYXNzW2ldKQ0KSG11YltpXSB+IGRub3JtKG11LHRhdV9iKQ0KIyBz
+YW1wbGUgU0RzIHJlcG9ydGVkIGFzIGRhdGE6DQojIGV4cHJlc3Npb24gdG8gYmUgdXNlZCBmb3Ig
+cGFyYW1hdGVyIGluIGZ1bGwgY29uZGl0aW9uYWwgZm9yIHRhdV93Og0KZXhwcmVzc2lvbltpXSA8
+LSAocG9zLmNhcmNhc3NbaV0tMSkqc2Rsb2djZnVbaV0rDQogICAgICAgICAgICAgICAgICBwb3Mu
+Y2FyY2Fzc1tpXSpwb3cobWxvZ2NmdTJbaV0tSG11YltpXSwyKQ0KcG9zLmNhcmNhc3NbaV0gfiBk
+YmluKHB3aXRoaW5baV0sbi5jYXJjYXNzW2ldKQ0KfQ0KdGF1X3cgfiBkZ2FtbWEoYWxwaGF0dyxi
+ZXRhdHcpICMgZnVsbCBjb25kaXRpb25hbCBmb3IgdGF1X3cgDQphbHBoYXR3IDwtIDAuNSooc3Vt
+KHBvcy5jYXJjYXNzW10pKSAgDQpiZXRhdHcgPC0gMC41KihzdW0oZXhwcmVzc2lvbltdKSkgIA0K
+c2lnbWFfdyA8LSAxL3NxcnQodGF1X3cpOyB2YXJfdyA8LSAxL3RhdV93DQoNCiMgcHJlZGljdGlv
+biAoZm9yIGEgcG9zaXRpdmUgY2FyY2FzcyBvbmx5KToNCmxvZ2NmdXByZWRwb3MgfiBkbm9ybSht
+dSx0YXVfdG90KQ0KY2Z1cHJlZHBvcyA8LSBwb3coMTAsbG9nY2Z1cHJlZHBvcykNCiMgcHJlZGlj
+dGlvbiAoZm9yIGFueSBjYXJjYXNzKToNCmNmdXByZWQgPC0gY2Z1cHJlZHBvcypJQjsgSUIgfiBk
+YmVybihwcnBvcykNCg0KIyBwcmlvcnM6DQpxIH4gZHVuaWYoMCwxKQ0KbXUgfiBkbm9ybSgwLDAu
+MDAxKQ0KdGF1X3RvdCA8LSAxLyh2YXJfYit2YXJfdykgDQpzaWdtYV9iIDwtIHNxcnQodmFyX2Ip
+OyB2YXJfYiA8LSAxL3RhdV9iDQp0YXVfYiB+IGRnYW1tYSgwLjAwMSwwLjAwMSkgIyBiYXNpY2Fs
+bHkgdGhlIHNhbWUgZm9yIHRhdV93DQpwaGkgPC0gdmFyX3cvKHZhcl9iK3Zhcl93KQ0KZm9yKGkg
+aW4gMTpOYmF0Y2hlcyl7cHdpdGhpbltpXSB+IGRiZXRhKGFwdywyKX0NCmFwdyB+ICBkdW5pZigx
+LDEwMDAwKQ0KbXB3IDwtIGFwdy8oYXB3KzIpDQojIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMj
+Iw0KIyBNb2RlbGluZyB3ZWlnaHQgb2YgYSBzZXJ2aW5nOiANCiAgICAgbSA8LSAxODk7IHMyIDwt
+IDEyNw0KICAgICAjIHBhcmFtZXRlcnMgZm9yIGxvZy1ub3JtYWwgZGlzdHJpYnV0aW9uOg0KICAg
+ICB3bWVhbiA8LSBsb2cobSktMC41KmxvZygxK3MyLyhtKm0pKSANCiAgICAgd3RhdSA8LSAxLygg
+IGxvZygxK3MyLyhtKm0pKSAgKSANCiMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIw0KIyBN
+b2RlbGluZyBwcm9iYWJpbGl0eSBvZiBiYWN0ZXJpYSB0byB0cmFuc2ZlciBpbiBhIHNhbGFkIG1h
+a2luZzoNCmZvcihpIGluIDE6NTUpeyANCiAgICAgICBwdHJbaV0gPC0gcG93KDEwLC1taW51c2xv
+Z3B0cltpXSkgICMgZnJvbSBzYWxhZCBleHBlcmltZW50DQogICAgICAgcHRyW2ldIH4gZGJldGEo
+MixwdHJiKSANCiAgIH0NCiAgIHB0cmIgfiBkdW5pZigxLDEwMDAwKQ0KIyMjIyMjIyMjIyMjIyMj
+IyMjIyMjIyMjIyMjIyMNCiMgTW9kZWwgb2YgdGhlIG91dGNvbWUgb2YgIE1DLWNyaXRlcmlhIGZv
+ciBhIHNpbmdsZSBiYXRjaCwNCiMgY29uZGl0aW9uYWxseSBvbiAgSSwgcHcsIG11YiwgbXRhdV93
+IGluIHRoYXQgYmF0Y2gNCiMgY3JpdGVyaWEgIm49NSxjPTEsbT0xMDAwIiwgbWV0IGlmICJjPD0x
+Ig0KIyBmb3IgZXhhbXBsZTogTUNuIDwtIDU7IE1DYyA8LSAxOyBNQ20gPC0gMyANCiAgICAgICAg
+IA0KZm9yKGogaW4gMTpyZXBzQil7ICMgaW50ZWdyYXRpb24gb3ZlciBiYXRjaCB2YXJpYWJsZXMg
+cHcsIG11Yg0KICAgICAgCQ0KICAgICAgICBtdWJbal0gfiBkbm9ybShtdSx0YXVfYik7ICAgICAg
+ICAgICAgDQogICAgICAgIHB3W2pdIH4gZGJldGEoYXB3LDIpOw0KCXBtZXRbal0gIDwtIHBoaSgo
+TUNtLW11YltqXSkqc3FydCh0YXVfdykpICAjIFAoTUNtPDEwMDApIA0KICAgICAgICBjYW1weWNh
+cmNhc3Nlc1tqXSB+IGRiaW4ocHdbal0sTUNuKTsgIyBmb3IgYSBjb250YW1pbmF0ZWQgYmF0Y2gg
+DQogICAgICAgIG5vdG1ldFtqXSB+IGRiaW4ocG5vdG1ldFtqXSxjYW1weWNhcmNhc3Nlc1tqXSkg
+DQogICAgICAgIHBub3RtZXRbal0gPC0gMS1wbWV0W2pdICANCiAgICAgICAgICAgIyBzaW11bGF0
+ZSBob3cgbWFueSB0aW1lcyBNQyBpcyBub3QgbWV0DQogICAgICAgIE1DbWV0Y29uYmF0Y2hbal0g
+PC0gc3RlcChNQ2Mtbm90bWV0W2pdKSANCiAgICAgICAgICAgIyBNQyBpcyAob3Igbm90KSBtZXQg
+Zm9yIGEgY29udGFtaW5hdGVkIGJhdGNoIA0KICAgIA0KZm9yKGkgaW4gMTpyZXBzUyl7ICAjIGlu
+dGVncmF0aW9uIG92ZXIgKGNvbnRhbWluYXRlZCkgc2VydmluZ3MgZnJvbSBhIGJhdGNoDQpsb2dj
+ZnVzW2osaV0gfiBkbm9ybShtdWJbal0sdGF1X3cpDQp3c1tqLGldIH4gZGxub3JtKHdtZWFuLHd0
+YXUpDQpsYW1iZGFbaixpXSA8LSB3c1tqLGldKnBvdygxMCxsb2djZnVzW2osaV0tMSkqcHRybmV3
+W2osaV0gIA0KZFtqLGldIH4gZHBvaXMobGFtYmRhW2osaV0pDQpwdHJuZXdbaixpXSB+IGRiZXRh
+KDIscHRyYikNClAuaWxsMFtqLGldIDwtIDAuMzMqKDEtZXhwKGxvZ2dhbShhK2IpK2xvZ2dhbShi
+K2RbaixpXSktbG9nZ2FtKGIpLQ0KICAgICAgICAgICAgICAgICAgICAgICAgICAgbG9nZ2FtKGEr
+YitkW2osaV0pKSkNCn0NCiMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIw0KIyBDYWxj
+dWxhdGluZyByaXNrIGZvciBhIGdpdmVuIGNvbnRhbWluYXRlZCBiYXRjaDoNClAuaWxsW2pdIDwt
+IHB3W2pdKm1lYW4oUC5pbGwwW2osXSkNCiMgQ2FsY3VsYXRpbmcgam9pbnQgcHJvYmFiaWxpdHkg
+b2YgJ3Jpc2snIGFuZCAnTUMgbWV0JyANCiMgZm9yIGEgY29udGFtaW5hdGVkIGJhdGNoOg0KUC5p
+bGxNQ21ldFtqXSA8LSBzdGVwKE1DYy1ub3RtZXRbal0pKnB3W2pdKm1lYW4oUC5pbGwwW2osXSkg
+ICAgICAgICAgICAgICAgICAgICAgICAgIA0KICAgICAgICB9DQphIDwtIDAuMTQ1OyBiIDwtIDcu
+NTkgICAjIGFzc3VtZWQgZG9zZSByZXNwIHBhcmFtZXRlcnMgIAkgIA0KIyBjYWxjdWxhdGluZyBt
+ZWFuIHJpc2s6DQptUC5pbGwgPC0gcSptZWFuKFAuaWxsW10pDQoNCiMgY2FsY3VsYXRpbmcgTVJS
+UjogIA0KbVAuaWxsTUNtZXQgPC0gcSptZWFuKFAuaWxsTUNtZXRbXSkNCm1ycnIgPC0gbVAuaWxs
+TUNtZXQvbVAuaWxsIA0KIz1QKGlsbCAmIE1DbWV0IHwgcG9wdWxhdGlvbiBwYXJhbWV0ZXJzKS9Q
+KGlsbCB8IHBvcHVsYXRpb24gcGFyYW1ldGVycykgDQojIGNhbGN1bGF0aW5nIFJSOiANCm1QLmls
+bGdpdmVuTUNtZXQgPC0gbVAuaWxsTUNtZXQvUE1DbWV0ICANClBNQ21ldCA8LSBxKm1lYW4oTUNt
+ZXRjb25iYXRjaFtdKSsoMS1xKQ0KcnIgPC0gbVAuaWxsZ2l2ZW5NQ21ldC9tUC5pbGwNCiM9UChp
+bGwgfCBNQ21ldCwgcG9wdWxhdGlvbiBwYXJhbWV0ZXJzKS9QKGlsbCB8IHBvcHVsYXRpb24gcGFy
+YW1ldGVycykgDQp9DQoNCg0KDQo=
+
+--_005_4c3fd807bc7742d5986756b2cd3db556C119S212VM034msvyvivaha_--
