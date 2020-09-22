@@ -1,27 +1,27 @@
 #############################
 # Input Parameters
 #############################
-sims = 250#The number of simulations of script mgQMRA 
+sims = 50#The number of simulations of script mgQMRA 
 pop=11 #11 is females and 12 is males, age group 65-74 years old
-runs= 200000 #Define the number of iterations to run the script
+runs= 100000 #Define the number of iterations to run the script
 
 #############################
 # Model Script
 #############################
 ###########################################
 #Libraries used in the script
-library(readr)
-library(readxl)
-library(msm)
-library(tidyverse)
-library(plotly)
-library(mc2d)
-library(knitr)
-library(ggplot2)
-library(readr)
-library(dplyr)
-library(xlsx)
-library(Matrix)
+# library(readr)
+# library(readxl)
+# library(msm)
+# library(tidyverse)
+# library(plotly)
+# library(mc2d)
+# library(knitr)
+# library(ggplot2)
+# library(readr)
+# library(dplyr)
+# library(xlsx)
+# library(Matrix)
 
 set.seed(3333) #Arbitrary number but should be set so differences are due only to differencs in input data
 
@@ -46,7 +46,7 @@ set.seed(3333) #Arbitrary number but should be set so differences are due only t
   #################################################
   #Extract input data to xfile
   #################################################
-  xfile="~/Projects/ModelRepository/lindqvist_list/originalfiles/input.data.xlsx"
+  xfile="~/PycharmProjects/ModelRepository/lindqvist_list/originalfiles/input.data.xlsx"
   prev=read_excel(xfile,sheet="prev", col_names=TRUE)
   conc=read_excel(xfile,sheet="conc", col_names=TRUE)
   EGR=read_excel(xfile,sheet="EGR", col_names=TRUE)

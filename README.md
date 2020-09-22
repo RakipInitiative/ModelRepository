@@ -12,6 +12,17 @@ doi: 10.2903/j.efsa.2020.6092
 
 ## plan for next days
 
+* jukka microbial criterion model
+  * test on server (all servers: intern, extern, VRE)
+  * contact jukka about dose response
+* tubs model
+* source attribution (ask Esther if she finds the time for that)
+* toxoplasma model (ask Esther if she can contact Arno)
+* Taenia model
+* Gropin
+
+
+## done so far
 
 ### 22/09
 * jukka microbial criterion model
@@ -25,13 +36,12 @@ doi: 10.2903/j.efsa.2020.6092
     * test on server
 
 
-## done so far
-
 
 ### 18/09
 * jukka microbial criterion model
   * transfer R code to fskx
   * general functionality with openBUGS? on server?
+  * annotate
 
 
 ### 17/09
@@ -39,8 +49,8 @@ doi: 10.2903/j.efsa.2020.6092
   * 3 example models CPM/DRM combinations
     * copy&paste R code into fskx
     * test functionality
-
-
+    * annotate
+    * test on server
 
 ### 10/09
 * lindqvist Listeria
