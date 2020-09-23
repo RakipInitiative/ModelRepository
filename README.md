@@ -18,13 +18,20 @@ doi: 10.2903/j.efsa.2020.6092
   * test on server (all servers: intern, extern, VRE)
   * contact jukka about dose response
 * tubs model
-* source attribution (ask Esther if she finds the time for that)
-* toxoplasma model (ask Esther if she can contact Arno)
 * Taenia model
+* involving Esther
+  * source attribution (ask Esther if she finds the time for that)
+  * toxoplasma model (ask Esther if she can contact Arno) 
 * Gropin
 
 
 ## done so far
+
+### 23/09
+* fixing minor mistakes in DRM metadata schema 
+* jukka model
+  * test on server - failed, investigating
+* general tests on VRE
 
 ### 22/09
 * jukka microbial criterion model
