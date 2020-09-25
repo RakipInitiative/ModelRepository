@@ -27,6 +27,15 @@ doi: 10.2903/j.efsa.2020.6092
 
 ## done so far
 
+### 25/09
+* jukka model
+  * tests on internal server fine
+  * tests on external server: weird behaviour with openBUGS communication between knime, R and openBUGS - investigating
+
+### 24/09
+* jukka model
+  * finished annotating
+
 ### 23/09
 * fixing minor mistakes in DRM metadata schema 
 * jukka model
