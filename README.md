@@ -13,10 +13,6 @@ doi: 10.2903/j.efsa.2020.6092
 ## plan for next days
 
 * test all finished models on VRE
-* jukka microbial criterion model
-  * finish annotating
-  * test on server (all servers: intern, extern, VRE)
-  * contact jukka about dose response
 * tubs model
 * Taenia model
 * involving Esther
@@ -27,10 +23,16 @@ doi: 10.2903/j.efsa.2020.6092
 
 ## done so far
 
+### 28/09
+* tubs model
+  * code testing and transfer assessment
+
+
 ### 25/09
 * jukka model
   * tests on internal server fine
   * tests on external server: weird behaviour with openBUGS communication between knime, R and openBUGS - investigating
+  * contacted Jukka and told him about models to check out
 
 ### 24/09
 * jukka model
