@@ -13,7 +13,6 @@ doi: 10.2903/j.efsa.2020.6092
 ## plan for next days
 
 * test all finished models on VRE
-* tubs model
 * Taenia model
 * involving Esther
   * source attribution (ask Esther if she finds the time for that)
@@ -24,13 +23,19 @@ doi: 10.2903/j.efsa.2020.6092
 ## done so far
 
 ### 28/09
+* Taenia model
+  * code testing and transfer effort assessment
 * tubs model
-  * code testing and transfer assessment
+  * code testing and transfer assessment -> no easy way of integrating COMSOL models into fskx, would need to familiarize with COMSOL, then rewrite of models -> estimate 10-20d of work and access to COMSOL license
+* jukka models and openBUGS
+  * found openBUGS problem, 2 jobs using openBUGS running on the server simultaneously: reproducable problem -> Lars
+* bugfixing lindqvist model
+  * minor update to match image output with publication format
 
 
 ### 25/09
 * jukka model
-  * tests on internal server fine
+  * tests on internal server: fine
   * tests on external server: weird behaviour with openBUGS communication between knime, R and openBUGS - investigating
   * contacted Jukka and told him about models to check out
 
