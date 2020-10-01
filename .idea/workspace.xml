@@ -20,9 +20,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="211805a8-046d-42d7-ac03-9f11edd9d2a0" name="Default Changelist" comment="progress update: nauta efsa opinion: update README.md with current tasks">
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_22_09_20,_14_44_[Default_Changelist]/shelved.patch" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_22_09_20__14_44__Default_Changelist_.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -159,7 +156,14 @@
       <option name="project" value="LOCAL" />
       <updated>1601036119716</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="progress update: nauta efsa opinion: update README.md with current tasks">
+      <created>1601542219630</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1601542219630</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -178,7 +182,6 @@
     <MESSAGE value="progress update: nauta efsa opinion: updated to do list, updated risk reduction model code incl. visualisation code" />
     <MESSAGE value="progress update: nauta efsa opinion: current CPM visualisation version" />
     <MESSAGE value="progress update: nauta efsa opinion: unifying all CPMs, DRMs and the risk reduction model in 1 knime workflow" />
-    <MESSAGE value="progress update: nauta efsa opinion: update README.md with current tasks" />
     <MESSAGE value="update README.md with work plan for the next few days" />
     <MESSAGE value="time plan update, fixes for CPM, DRM, RRM visualisation, RRM stand alone model," />
     <MESSAGE value="update todo-list, uploaded new cpm visualisation" />
@@ -189,17 +192,18 @@
     <MESSAGE value="update planning" />
     <MESSAGE value="update nauta combination models" />
     <MESSAGE value="update README.md" />
-    <option name="LAST_COMMIT_MESSAGE" value="update README.md" />
+    <MESSAGE value="progress update: nauta efsa opinion: update README.md with current tasks" />
+    <option name="LAST_COMMIT_MESSAGE" value="progress update: nauta efsa opinion: update README.md with current tasks" />
   </component>
   <component name="WindowStateProjectService">
     <state x="187" y="117" width="1536" height="879" key="MergeDialog" timestamp="1600778663157">
       <screen x="0" y="27" width="1920" height="1053" />
     </state>
     <state x="187" y="117" width="1536" height="879" key="MergeDialog/0.27.1920.1053@0.27.1920.1053" timestamp="1600778663157" />
-    <state x="355" y="164" width="1200" height="785" key="Vcs.Push.Dialog.v2" timestamp="1601036127018">
+    <state x="355" y="164" width="1200" height="785" key="Vcs.Push.Dialog.v2" timestamp="1601542228658">
       <screen x="0" y="27" width="1920" height="1053" />
     </state>
-    <state x="355" y="164" width="1200" height="785" key="Vcs.Push.Dialog.v2/0.27.1920.1053@0.27.1920.1053" timestamp="1601036127018" />
+    <state x="355" y="164" width="1200" height="785" key="Vcs.Push.Dialog.v2/0.27.1920.1053@0.27.1920.1053" timestamp="1601542228658" />
     <state x="651" y="431" width="618" height="272" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1601542003430">
       <screen x="0" y="27" width="1920" height="1053" />
     </state>

@@ -23,8 +23,11 @@ doi: 10.2903/j.efsa.2020.6092
 ## done so far
 
 ### 01/10
-* continuing Taenia model analyis and transfer assessment
-
+* Taenia model
+  * continuing  analyis and transfer assessment
+  * code adaptations done --> functioning fskx file
+  * annotation
+  
 ### 30/09
 * supporting Petra with 
   * testing new FSK Lab version
