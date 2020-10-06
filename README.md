@@ -2,13 +2,6 @@
 Joint project of EFSA, Federal Institute For Risk Assessment, DTU and ANSES to create an online model repository.
 
 # content
-## Nauta EFSA opinion
-### Reference
-https://efsa.onlinelibrary.wiley.com/doi/full/10.2903/j.efsa.2020.6090 
-
-## Lindqvist EFSA opinion
-### Reference 
-doi: 10.2903/j.efsa.2020.6092
 
 ## plan for next days
 
@@ -254,6 +247,13 @@ doi: 10.2903/j.efsa.2020.6092
 
 
 
+## Nauta EFSA opinion
+### Reference
+https://efsa.onlinelibrary.wiley.com/doi/full/10.2903/j.efsa.2020.6090 
+
+## Lindqvist EFSA opinion
+### Reference 
+doi: 10.2903/j.efsa.2020.6092
 
 
 

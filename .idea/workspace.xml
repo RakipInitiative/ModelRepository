@@ -19,7 +19,7 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="211805a8-046d-42d7-ac03-9f11edd9d2a0" name="Default Changelist" comment="progress update: nauta efsa opinion: update README.md with current tasks">
+    <list default="true" id="211805a8-046d-42d7-ac03-9f11edd9d2a0" name="Default Changelist" comment="progress update: update work plan">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
     </list>
@@ -171,7 +171,14 @@
       <option name="project" value="LOCAL" />
       <updated>1601568876800</updated>
     </task>
-    <option name="localTasksCounter" value="18" />
+    <task id="LOCAL-00018" summary="progress update: update work plan">
+      <created>1601972190047</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1601972190047</updated>
+    </task>
+    <option name="localTasksCounter" value="19" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -201,17 +208,18 @@
     <MESSAGE value="update nauta combination models" />
     <MESSAGE value="update README.md" />
     <MESSAGE value="progress update: nauta efsa opinion: update README.md with current tasks" />
-    <option name="LAST_COMMIT_MESSAGE" value="progress update: nauta efsa opinion: update README.md with current tasks" />
+    <MESSAGE value="progress update: update work plan" />
+    <option name="LAST_COMMIT_MESSAGE" value="progress update: update work plan" />
   </component>
   <component name="WindowStateProjectService">
     <state x="187" y="117" width="1536" height="879" key="MergeDialog" timestamp="1600778663157">
       <screen x="0" y="27" width="1920" height="1053" />
     </state>
     <state x="187" y="117" width="1536" height="879" key="MergeDialog/0.27.1920.1053@0.27.1920.1053" timestamp="1600778663157" />
-    <state x="355" y="164" width="1200" height="785" key="Vcs.Push.Dialog.v2" timestamp="1601568883344">
+    <state x="355" y="164" width="1200" height="785" key="Vcs.Push.Dialog.v2" timestamp="1601972195969">
       <screen x="0" y="27" width="1920" height="1053" />
     </state>
-    <state x="355" y="164" width="1200" height="785" key="Vcs.Push.Dialog.v2/0.27.1920.1053@0.27.1920.1053" timestamp="1601568883344" />
+    <state x="355" y="164" width="1200" height="785" key="Vcs.Push.Dialog.v2/0.27.1920.1053@0.27.1920.1053" timestamp="1601972195969" />
     <state x="651" y="431" width="618" height="272" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1601972048441">
       <screen x="0" y="27" width="1920" height="1053" />
     </state>
