@@ -12,15 +12,29 @@ doi: 10.2903/j.efsa.2020.6092
 
 ## plan for next days
 
+* support Petra on supply chain models
+* Gropin
 * test all finished models on VRE
-* Taenia model
 * involving Esther
   * source attribution (ask Esther if she finds the time for that)
   * toxoplasma model (ask Esther if she can contact Arno) 
-* Gropin
 
 
 ## done so far
+
+### 06/10
+* supply chain models
+  * support Petra
+* Gropin
+  * assessment and transfer analysis
+
+
+### 05/10
+* Gropin
+  * assessment and transfer analysis
+
+### 02/10
+* Taenia model finished, sent Arno related mail
 
 ### 01/10
 * Taenia model
