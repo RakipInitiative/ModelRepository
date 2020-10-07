@@ -15,6 +15,14 @@ Joint project of EFSA, Federal Institute For Risk Assessment, DTU and ANSES to c
 
 ## done so far
 
+### 07/10
+* supply chain models
+  * created roadmap for Petra
+  * model code review
+* Lindqvist model
+  * review of comments
+* testing recording equipment
+
 ### 06/10
 * supply chain models
   * support Petra
