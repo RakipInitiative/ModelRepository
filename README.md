@@ -3,6 +3,32 @@ Joint project of EFSA, Federal Institute For Risk Assessment, DTU and ANSES to c
 
 # content
 
+## currently implemented models
+
+## currently implemented models
+### Nauta EFSA opinion Risk Reduction model of campylobacter in ready-to-eat chicken salad
+containing
+* 8 Consumer phase models
+* 3 Dose Response models
+* 1 Relative Risk Reduction Model based on above mentioned CPMs and DRMs
+* 3 examples of joined CPM/DRM models 
+#### Reference
+https://efsa.onlinelibrary.wiley.com/doi/full/10.2903/j.efsa.2020.6090 
+
+### Lindqvist EFSA opinion
+containing qmra model on listeria in several food types
+#### Reference 
+doi: 10.2903/j.efsa.2020.6092
+
+### Swart Taenia model
+containing Taenia solium risk analysis model
+
+### Ranta models
+containing
+* chemical dose response model
+* bayesian consumer phase model on campylobacter in chicken
+
+
 ## plan for next days
 
 * support Petra on supply chain models
@@ -14,6 +40,20 @@ Joint project of EFSA, Federal Institute For Risk Assessment, DTU and ANSES to c
 
 
 ## done so far
+
+### 08/10
+* gropin
+  * transfer analysis -> start with 1 group of models and only 1 simple part of the modeling: response surface
+  * plan for adopting a 1st part of the models:
+    * creating knime workflow for creating R script
+      * extract equations and parameters of GRT (growth models) and create response surface models
+      * model script contains transformed equation
+      * visualisation script contains a switch which response surface should be shown 
+    * creating knime workflow for editing metadata schema
+      * check if all mandatory fields are filled
+      * parameters!
+      * in a 2nd iteration fill all optional fields with information from database
+  * next steps for GRT: kinetic models contain parameters, that are not explained in the user guide, maybe i'll find something in the corresponding papers
 
 ### 07/10
 * supply chain models
@@ -255,9 +295,6 @@ Joint project of EFSA, Federal Institute For Risk Assessment, DTU and ANSES to c
 
 
 
-## Nauta EFSA opinion
-### Reference
-https://efsa.onlinelibrary.wiley.com/doi/full/10.2903/j.efsa.2020.6090 
 
 ## Lindqvist EFSA opinion
 ### Reference 
