@@ -33,6 +33,10 @@ containing
 
 * support Petra on supply chain models
 * Gropin
+  * finish response surface growth model
+  * decide how to proceed, either
+    * kinetic modelling for growth models OR
+    * simple implementation for other type of models?
 * test all finished models on VRE
 * involving Esther
   * source attribution (ask Esther if she finds the time for that)
@@ -40,6 +44,29 @@ containing
 
 
 ## done so far
+
+### 09/10
+* gropin
+  * change of plans after first tests with knime -> simpler to create an R script to transfer all gropin models to R
+  * successfully extracted data from gropin DB and ordered all models by type:
+    * growth models
+    * growth / no growth models
+    * gamma models with interaction
+    * inactivation models
+    * lethality models
+    * integrated models not included, they seem to need data -> investigation for later
+  * findings: 
+    * every model type needs their own transfer script!
+    * within one model type, there several different applications and models in itself
+    * starting small: applying transfer script to growth models and concentrating on response surface model application
+    * kinetic model application (differential equation) has some parameters that seem to be hardcoded into the macro of gropin, no documentation available, maybe need to investigate in publications
+    * finished response surface growth model with 3 parameters
+    * problems with 
+      * 1 parameter -> different plot type
+      * 2 parameters -> no subset to choose
+      * 4 or more parameters -> subset to choose is more than 1D
+    
+  
 
 ### 08/10
 * gropin
