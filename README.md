@@ -4,8 +4,6 @@ Joint project of EFSA, Federal Institute For Risk Assessment, DTU and ANSES to c
 # content
 
 ## currently implemented models
-
-## currently implemented models
 ### Nauta EFSA opinion Risk Reduction model of campylobacter in ready-to-eat chicken salad
 containing
 * 8 Consumer phase models
