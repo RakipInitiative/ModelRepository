@@ -26,6 +26,9 @@ Max_prop_rtime <- 1.1
 lowerTemp <- -2.0
 upperTemp <- 15.0
 Tmin <- -1.18
+
+
+
 #############################
 # Model Script
 #############################

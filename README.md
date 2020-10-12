@@ -43,6 +43,12 @@ containing
 
 ## done so far
 
+### 12/10
+* gropin
+  * reproducing kinetic models failed
+* supply chain models
+  * support for expanding network model
+
 ### 09/10
 * gropin
   * change of plans after first tests with knime -> simpler to create an R script to transfer all gropin models to R
