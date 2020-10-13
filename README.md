@@ -31,7 +31,7 @@ containing
 
 * support Petra on supply chain models
 * Gropin
-  * finish response surface growth model
+  * finish response surface growth model -> need to look into macro coding itself -> problem with BfR's "no macro!" policy
   * decide how to proceed, either
     * kinetic modelling for growth models OR
     * simple implementation for other type of models?
@@ -43,9 +43,20 @@ containing
 
 ## done so far
 
+### 13/10
+* gropin
+  * implementing conditions for growth models with 1,2 variables
+  * bugfixing model creation for 3-variable-models
+  * found non-functioning models, compiling a list of models not ready for transfer
+  * ongoing: checking conditions for models with 4 variables and more
+  
+
 ### 12/10
 * gropin
   * reproducing kinetic models failed
+    * model equations are not shown in excel DB, probably hard coded into macros
+    * looked into reference given in manual, recreated kinetic model, values are similar but not a match (differences 10-50%)
+    * -> need to look into macro coding itself -> problem with BfR's "no macro!" policy -> Lars suggests to use VK-notebook
 * supply chain models
   * support for expanding network model
 
