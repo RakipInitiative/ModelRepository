@@ -26,7 +26,7 @@ gammaModelsWithInteraction <- gropinDB %>% filter(grepl('AUG',AUG_ZU))
 inactivationModels <- gropinDB %>% filter(grepl('INA',INACTIVE))
 
 
-run <- 9
+run <- 1
 
 if(growthModels$Microorganism[run] %in% listOfNonfunctioningModels) {print("Nope")} 
 
@@ -44,6 +44,7 @@ if("not used" %in% myVarNames) {
 # different models have different number of variables (rest is NA)
 nrOfVariables <- length(table(myVarNames))
 mymy <- rep(NA,nrOfVariables)
+myVal <- rep(NA,nrOfVariables)
 
 
 # set boundaries of sequence to inner boundaries to catch cases
@@ -69,8 +70,17 @@ for(myVarOrder in 1:nrOfVariables){
 # create the R script text file with only regular variables
 for (j in 1:nrOfVariables) {
   mymy[j] <- paste0(myVarNames[j], 
-                    " <- seq(" , myVarMin[j], ",",myVarMax[j],
+                    " <- seq(" , 
+                    myVarMin[j], 
+                    ",",
+                    myVarMax[j],
                     ",length.out=21)")
+  myVal[j] <- paste0("seq(" , 
+                     myVarMin[j], 
+                     ",",
+                     myVarMax[j],
+                     ",length.out=21)")
+  
 }
 
 
@@ -102,9 +112,10 @@ if (nrOfVariables>2) {
 mymy <- append(mymy,"#############################\n# start of Parameter script\n#############################", after=0)
 mymy <- append(mymy,"#############################\n# end of Parameter script\n#############################")
 
+myParScript <- mymy
 mymy <- append(mymy," ")
 # comments to identify for model script
-mymy <- append(mymy,"#############################\n# start of Model script\n#############################")
+mymy <- "#############################\n# start of Model script\n#############################"
 if(nrOfVariables>2) {
   mymy <- append(mymy,"library(hash)")
   myString<-replicate(2,myVarNames[1:nrOfVariables])
@@ -207,9 +218,10 @@ if (nrOfVariables>1){
   mymy <- append(mymy,"rownames(result)<-multVar1")
 }
 mymy <- append(mymy,"#############################\n# End of Model script\n#############################")
-mymy <- append(mymy," ")
+myModelScript <- mymy
+#mymy <- append(mymy," ")
 # comments to identify for Visualisation script
-mymy <- append(mymy,"#############################\n# start of Visualisation script\n#############################")
+mymy <- "#############################\n# start of Visualisation script\n#############################"
 if (nrOfVariables>2) {
   mymy <- append(mymy,"persp(as.double(values(myHash[visVar1])),as.double(values(myHash[visVar2])),result,col = 'green',xlab=keys(myHash[visVar1]),ylab=keys(myHash[visVar2]),zlab='mu_max',theta=35,phi=20,shade=0.25,ticktype = 'detailed')")
 }
@@ -229,10 +241,71 @@ if (nrOfVariables==1){
                         "',ylab='mu_max')"))
 }
 mymy <- append(mymy,"#############################\n# End of Visualisation script\n#############################")
-
+myVisScript <- mymy
 
 # store to disk
-fileConn<-file("output.r")
-writeLines(mymy, fileConn)
+fileConn<-file("par.r")
+writeLines(myParScript, fileConn)
 close(fileConn)
 
+
+fileConn<-file("mod.r")
+writeLines(myModelScript, fileConn)
+close(fileConn)
+
+fileConn<-file("vis.r")
+writeLines(myVisScript, fileConn)
+close(fileConn)
+
+
+###################################################################
+# editing Annotation spreadsheet
+##################################################################
+MetaData <- read_excel("ModelAnnotationExceltemplateV1.04.xlsx", sheet = "Generic Metadata Schema")
+
+# mandatory fields
+#Name of the Model
+MetaData$Data[1] <-paste("Gropin Model Nr.",growthModels$Microorganism[run])
+#Identifier
+MetaData$Data[3] <-paste0("gropin",growthModels$Model[run],growthModels$Microorganism[run])
+MetaData$Data[8] <-"Value"
+MetaData$Data[26] <-"R 3"
+
+
+
+# parameters
+firstRow <- 132
+thisRow <- firstRow
+for(fskPar in 1:nrOfVariables){
+  MetaData$...12[thisRow] <- myVarNames[fskPar]
+  MetaData$...13[thisRow] <- "Input"
+  MetaData$...14[thisRow] <- myVarNames[fskPar]
+  MetaData$...15[thisRow] <- "my dummy description"
+  MetaData$...16[thisRow] <- "[]"
+  MetaData$...17[thisRow] <- "double"
+  MetaData$...18[thisRow] <- "double"
+  MetaData$...19[thisRow] <- "my source"
+  MetaData$...20[thisRow] <- "my subject"
+  MetaData$...21[thisRow] <- "mydist"
+  MetaData$...22[thisRow] <- myVal[fskPar]
+  thisRow <- thisRow+1
+}
+if (namesOfCoeffsList[1]!='not used') {
+  for(fskCoeff in 1:nrOfCoeffs){
+    MetaData$...12[thisRow] <- namesOfCoeffs[fskCoeff]
+    MetaData$...13[thisRow] <- "Input"
+    MetaData$...14[thisRow] <- namesOfCoeffs[fskCoeff]
+    MetaData$...15[thisRow] <- "my dummy description"
+    MetaData$...16[thisRow] <- "[]"
+    MetaData$...17[thisRow] <- "double"
+    MetaData$...18[thisRow] <- "double"
+    MetaData$...19[thisRow] <- "my source"
+    MetaData$...20[thisRow] <- "my subject"
+    MetaData$...21[thisRow] <- "mydist"
+    MetaData$...22[thisRow] <- valuesOfCoeffs[fskCoeff]
+    thisRow <- thisRow+1
+  }
+}
+
+
+write_xlsx(list("Generic Metadata Schema"=MetaData),path="test.xlsx")

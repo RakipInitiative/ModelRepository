@@ -48,7 +48,8 @@ containing
   * implementing conditions for growth models with 1,2 variables
   * bugfixing model creation for 3-variable-models
   * found non-functioning models, compiling a list of models not ready for transfer
-  * ongoing: checking conditions for models with 4 variables and more
+  * ongoing: checking conditions for models with 4 variables and more... done
+  * finished first draft of creating model scripts, visualisation scripts and metadata schema sheets for fskx -> next step: write knime workflow for creator node to create fskx files!
   
 
 ### 12/10
