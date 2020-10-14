@@ -26,7 +26,7 @@ gammaModelsWithInteraction <- gropinDB %>% filter(grepl('AUG',AUG_ZU))
 inactivationModels <- gropinDB %>% filter(grepl('INA',INACTIVE))
 
 
-run <- 9
+run <- 37
 
 if(growthModels$Microorganism[run] %in% listOfNonfunctioningModels) {print("Nope")} 
 
@@ -35,6 +35,10 @@ if(growthModels$Microorganism[run] %in% listOfNonfunctioningModels) {print("Nope
 myVarNames <- c(growthModels$x[run],growthModels$y[run],growthModels$z[run],
                 growthModels$d[run],growthModels$e[run],growthModels$f[run],
                 growthModels$g[run],growthModels$h[run],growthModels$i[run])
+
+myVarNames <- gsub("[+]","",myVarNames)
+myVarNames <- gsub(" ","",myVarNames)
+
 
 if("not used" %in% myVarNames) {
   myVarNames[which(myVarNames %in% "not used")] <- NA
@@ -78,8 +82,12 @@ for (j in 1:nrOfVariables) {
 namesOfCoeffsList<-growthModels[run,names(growthModels)[53:92][c(TRUE,FALSE)]]
 valuesOfCoeffsList<-growthModels[run,names(growthModels)[53:92][c(FALSE,TRUE)]]
 
+
+
 if (namesOfCoeffsList[1]!='not used') {
   namesOfCoeffs <- as.character(namesOfCoeffsList)[!is.na(as.character(namesOfCoeffsList))]
+  namesOfCoeffs <- gsub("[+]","",namesOfCoeffs)
+  namesOfCoeffs <- gsub(" ","",namesOfCoeffs)
   valuesOfCoeffs <- as.character(valuesOfCoeffsList)[!is.na(as.character(valuesOfCoeffsList))]
   nrOfCoeffs <- length(namesOfCoeffs)
   

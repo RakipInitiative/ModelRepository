@@ -31,17 +31,22 @@ containing
 
 * support Petra on supply chain models
 * Gropin
-  * finish response surface growth model -> need to look into macro coding itself -> problem with BfR's "no macro!" policy
-  * decide how to proceed, either
-    * kinetic modelling for growth models OR
-    * simple implementation for other type of models?
+  * create test-toy-model with response surface, time to multiply and kinetic growth model
+  * transfer complete annotation data to all models
+  * bugfixing rare cases model script transfer errors due to inconsistencies in gropin database
+  * create transfer script for "time to multiply by X log steps"-models
+  * analyse macros in gropin 
+  * create transfer script for "kinetic modelling" for growth models
+  * GNG models
 * test all finished models on VRE
-* involving Esther
-  * source attribution (ask Esther if she finds the time for that)
-  * toxoplasma model (ask Esther if she can contact Arno) 
-
 
 ## done so far
+
+### 14/10
+* gropin
+  * bugfixing transfer script (creating 360 annotation schemas, modelscripts and visualisation scripts) for response surface model
+  * created knime workflow for taking these 360*3 fsk model components to build fskx models
+* support Petra on supply chain models
 
 ### 13/10
 * gropin
