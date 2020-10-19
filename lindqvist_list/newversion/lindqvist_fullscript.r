@@ -1,32 +1,50 @@
 ###################################################
 ### Parameter set 
 ###################################################
-# default
-sims <- 100
-pop <- 11
-runs <- 1000
-shift <- 0.0
-meanTemp <- 5.9
-sdTemp <- 2.9
-Mode_prop_rtime <- 0.3
-Max_prop_rtime <- 1.1
-lowerTemp <- -2.0
-upperTemp <- 15.0
-Tmin <- -1.18
-###################################################
-# full simulation run
-sims <- 200
-pop <- 11
-runs <- 200000
-shift <- 0.0
-meanTemp <- 5.9
-sdTemp <- 2.9
-Mode_prop_rtime <- 0.3
-Max_prop_rtime <- 1.1
-lowerTemp <- -2.0
-upperTemp <- 15.0
-Tmin <- -1.18
+#default parameter set => parSet=0, 
+#full simulation run => parSet=1
+parSet <- 0
 
+
+if(parSet==0) {
+  # default
+  sims <- 100
+  pop <- 11
+  runs <- 1000
+  shift <- 0.0
+  meanTemp <- 5.9
+  sdTemp <- 2.9
+  Mode_prop_rtime <- 0.3
+  Max_prop_rtime <- 1.1
+  lowerTemp <- -2.0
+  upperTemp <- 15.0
+  Tmin <- -1.18
+  prev_unc <-1
+  prev_fv <- 0.025#0.975
+  prev_cfv <- 0.025#0.975#
+  seedVal <- 3333
+  lag <- 0
+}
+###################################################
+if(parSet==1){
+  # full simulation run
+  sims <- 200
+  pop <- 11
+  runs <- 200000
+  shift <- 0.0
+  meanTemp <- 5.9
+  sdTemp <- 2.9
+  Mode_prop_rtime <- 0.3
+  Max_prop_rtime <- 1.1
+  lowerTemp <- -2.0
+  upperTemp <- 15.0
+  Tmin <- -1.18
+  prev_unc <-1
+  prev_fv <- 0.025#0.975
+  prev_cfv <- 0.025#0.975
+  seedVal <- 3333
+  lag <- 0
+}
 
 
 #############################
@@ -46,10 +64,29 @@ library(mc2d)
 # library(dplyr)
 # library(xlsx)
 # library(Matrix)
+set.seed(seedVal) #Arbitrary number but should be set so differences are due only to differencs in input data
+
+#increase time before R decides to cancel 
+# the simulation run (happens on slower systems if sims >150 & runs >100000)
 setSessionTimeLimit(cpu=Inf, elapsed = Inf)
 setTimeLimit(cpu=Inf, elapsed = Inf)
-set.seed(3333) #Arbitrary number but should be set so differences are due only to differencs in input data
 
+#set working directory for file input to where the script is run from
+setwd(dirname(sys.frame(1)$ofile))
+
+
+
+
+##########################################
+##########################################
+##########################################
+##########################################
+##########################################
+##########################################
+##########################################
+##########################################
+##########################################
+##########################################
 ##########################################
 # START imported script: m.g.QMRA.R
 
@@ -82,6 +119,7 @@ set.seed(3333) #Arbitrary number but should be set so differences are due only t
 #r_time=read_excel(xfile,sheet="r_time", col_names=TRUE)
 #log_red=read_excel(xfile,sheet="log_red", col_names=TRUE) #Log reduction beta-pert disribution
 
+#RAKIP only reads csv files
 prev <- read.table("prev.data.csv", header=TRUE, sep=";", encoding="UTF-8")  
 conc <- read.table("conc.data.csv", header=TRUE, sep=";", encoding="UTF-8")
 EGR <- read.table("EGR.data.csv", header=TRUE, sep=";", encoding="UTF-8")  
@@ -92,6 +130,9 @@ size <- read.table("size.data.csv", header=TRUE, sep=";", encoding="UTF-8")
 r_time <- read.table("r_time.data.csv", header=TRUE, sep=";", encoding="UTF-8")  
 log_red <- read.table("log_red.data.csv", header=TRUE, sep=";", encoding="UTF-8")  
 
+
+
+# run other script as a function with result as return value
 modelPill_out <- function(sims, pop, runs,
                           prev, conc, EGR, ROP, DRP, conso, size, r_time, log_red){
   #################################################
@@ -112,7 +153,7 @@ modelPill_out <- function(sims, pop, runs,
     c(mu,sigma)
   }
   #Primary growth model
-  rosso=function(time,egrm,lag=0,x0,xmax){ 
+  rosso=function(time,egrm,lag=lag,x0,xmax){ 
     x0=10^x0 
     xmax=10^xmax
     den=1+(xmax/x0 -1)*exp(-egrm*(time-lag))
@@ -219,7 +260,7 @@ modelPill_out <- function(sims, pop, runs,
     ######################################
     f_concfun=function(i){
       Nmax=EGR$Nmax.mean[i]+shift
-      rosso(s_time[,i],EGRr[,i],C0r[,i],lag=0,Nmax)
+      rosso(s_time[,i],EGRr[,i],C0r[,i],lag=lag,Nmax)
     }
     f_concr=sapply(1:length(unique(r_time$group)),f_concfun)
     ff_concr= sapply(1:length(unique(r_time$group)), LRD)
@@ -269,14 +310,15 @@ modelPill_out <- function(sims, pop, runs,
   #(best, probs=0.025, or worst case, probs=0.975).group 7 is frozen vegetables as RTE,
   #and 15 cooked frozen vegetables. Se input data table 
   
-  #Edit (best or worst and group 7 and 15) and run appropriate next four lines to evalaute
-  #uncertainty of prevalence
-  #scen.prev <- quantile(prev_group[7,],probs=0.025 or 0.975) #Prevalence best case scenario 
-  #scen.prev <- quantile(prev_group[15,],probs=0.025 or 0.975) #Prevalence worst case scenario
-  
-  #Replace prevalence of frozen vegetables with the best or worst case estimate
-  #prev_fgroup[7,] <- replicate(runs, scen.prev) #If uncertainty scenario leave
-  #prev_fgroup[15,] <- replicate(runs, scen.prev) #If uncertainty scenario leave
+  #Edit (best or worst and group 7 and 15) and run appropriate next four lines to 
+  #evalaute uncertainty of prevalence
+  if(prev_unc==1){
+    scen.prev <- quantile(prev_group[7,],probs=prev_fv) #Prevalence best case scenario 
+    scen.prev <- quantile(prev_group[15,],probs=prev_cfv) #Prevalence worst case scenario
+    #Replace prevalence of frozen vegetables with the best or worst case estimate
+    prev_fgroup[7,] <- replicate(runs, scen.prev) #If uncertainty scenario leave
+    prev_fgroup[15,] <- replicate(runs, scen.prev) #If uncertainty scenario leave
+  }
   
   #The prevalence of the different food sub categories used in the simulation
   prev_fdgroup <- t(prev_fgroup) 
@@ -314,8 +356,17 @@ modelPill_out <- function(sims, pop, runs,
 
 
 # END imported script: m.g.QMRA.R
-##############################################
-
+##########################################
+##########################################
+##########################################
+##########################################
+##########################################
+##########################################
+##########################################
+##########################################
+##########################################
+##########################################
+##########################################
 
 
 
@@ -342,7 +393,7 @@ colnames(Pill_df) <- c("Cold-smoked fish, ROP",
                        "Cooked meat, NAP",
                        "Sausage, ROP",
                        "Pate, ROP",
-                       "frozen vegetables, ROP",
+                       "Frozen vegetables, ROP",
                        "Cold-smoked fish, NAP",
                        "Hot-smoked fish, NAP",
                        "Gravad fish, NAP",
@@ -350,7 +401,7 @@ colnames(Pill_df) <- c("Cold-smoked fish, ROP",
                        "Sausage, NAP",
                        "Pate, NAP",
                        "Soft and semi-soft cheese",
-                       "frozen vegetables, cooked")
+                       "Frozen vegetables, cooked")
 #Pill_df #Data frame with the probability of illness per serving per simulation per food subcategory
 
 #Write the mean probability of illness per serving for the food_category for each simulation 
@@ -396,16 +447,18 @@ library(gridExtra)
 library(gridGraphics)
 library(gtable)
 
+# result
 mytheme <- gridExtra::ttheme_default(
-  core = list(fg_params=list(cex = 0.76)),
+  core = list(fg_params=list(cex = 1.0)),
   colhead = list(fg_params=list(cex = 1.0)),
-  rowhead = list(fg_params=list(cex = 1.0)))
+  rowhead = list(fg_params=list(cex = 0.95)))
 
+Pill_mean_Extract <- Pill_mean_r[,4:5]
 
-myt <- gridExtra::tableGrob(signif(Pill_mean_r,digits=3), theme = mytheme)
+myt <- gridExtra::tableGrob(signif(Pill_mean_Extract,digits=3), theme = mytheme)
 if (pop==11) {myGroup <- "female"} else {myGroup <- "male"}
 myTitle <- paste("Probability of illness per serving\nfor population group:",myGroup)
-title <- textGrob(myTitle, gp = gpar(fontsize = 20))
+title <- textGrob(myTitle, gp = gpar(fontsize = 18))
 padding <- unit(0.5,"line")
 table <- gtable_add_rows(
   myt, heights = grobHeight(title) + padding, pos = 0
@@ -414,7 +467,40 @@ table <- gtable_add_grob(
   table, list(title),
   t = 1, l = 1, r = ncol(table)
 )
-frame()
-grid.draw(table)
-grid.draw(table)
-grid.draw(table)
+
+# selected input parameters
+parNames <- c("Number of Simulations",
+              "Population group",
+              "Number of iterations\nper simulation",
+              "Shift of maximum\npopulation density",
+              "Mean of Temperature",
+              "Standard deviation\nof Temperature",
+              "Mode of storage time",
+              "Max of storage time",
+              "Minimum of Temperature",
+              "Maximum of Temperature",
+              "Tmin?")
+parValues <- c(sims,pop,runs,shift,meanTemp,sdTemp,
+               Mode_prop_rtime,Max_prop_rtime,lowerTemp,
+               upperTemp,Tmin)
+
+parTable <-  as.data.frame(parValues)
+rownames(parTable) <- parNames
+parTable <- gridExtra::tableGrob(parTable, theme = mytheme)
+parTitle <- "Selected\ninput parameters"
+parTitle <- textGrob(parTitle, gp = gpar(fontsize = 16))
+padding <- unit(0.5,"line")
+parTable <- gtable_add_rows(
+  parTable, heights = grobHeight(parTitle) + padding, pos = 0
+)
+parTable <- gtable_add_grob(
+  parTable, list(parTitle),
+  t = 1, l = 1, r = ncol(parTable)
+)
+
+#frame()
+#par(mfrow=c(2,2))
+#grid.draw(table)
+#grid.draw(parTable)
+grid.arrange(table, parTable, ncol=2)
+#grid.draw(table)

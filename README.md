@@ -5,11 +5,15 @@ Joint project of EFSA, Federal Institute For Risk Assessment, DTU and ANSES to c
 
 ## currently implemented models
 ### Nauta EFSA opinion Risk Reduction model of campylobacter in ready-to-eat chicken salad
+
 containing
 * 8 Consumer phase models
 * 3 Dose Response models
 * 1 Relative Risk Reduction Model based on above mentioned CPMs and DRMs
 * 3 examples of joined CPM/DRM models 
+
+#### Status
+pending... waiting for Expert review (Nauta)
 #### Reference
 https://efsa.onlinelibrary.wiley.com/doi/full/10.2903/j.efsa.2020.6090 
 
@@ -18,14 +22,22 @@ containing qmra model on listeria in several food types
 #### Reference 
 doi: 10.2903/j.efsa.2020.6092
 
+#### Status
+in progress: Expert review is received and integrated into model representation
+
 ### Swart Taenia model
 containing Taenia solium risk analysis model
+
+#### Status
+pending: waiting for expert review (Swart)
 
 ### Ranta models
 containing
 * chemical dose response model
 * bayesian consumer phase model on campylobacter in chicken
 
+#### Status
+pending: waiting for expert review (Ranta)
 
 ## plan for next days
 
@@ -40,7 +52,37 @@ containing
   * GNG models
 * test all finished models on VRE
 
+
+
+### 20/10
+* Lindqvist
+  * finish adaptions to fskx file
+  * write answer
+* gropin
+  * write questions for gropin creator
+  * bugfixing transfer script
+
+
 ## done so far
+
+### 19/10
+* support Petra on supply chain models
+  * concept plan for hdf5 input of model
+  * discussed concept of meta nodes for product conversion 
+* Lindqvist Model
+  * handling comments from lindqvist
+
+
+
+### 16/10
+* gropin
+  * finishing showcase model
+  * bugfixing transfer script: metadata information ist transferred from gropinDB
+
+### 15/10
+* gropin
+  * creating showcase model with all 3 modes: response surface, time2multiply, kinetic model
+  * bugfixing transfer script
 
 ### 14/10
 * gropin

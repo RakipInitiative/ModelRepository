@@ -1,0 +1,16 @@
+Packaging;group;min;max;mode;subcat
+ROP;1;0;0;0;Cold smoked fish
+ROP;2;0;0;0;Hot smoked fish
+ROP;3;0;0;0;Gravad fish
+ROP;4;0;0;0;Cooked meat
+ROP;5;0;0;0;Sausage
+ROP;6;0;0;0;Pâté
+ROP;7;0;0;0;fv-RTE
+normal;8;0;0;0;Cold smoked fish
+normal;9;0;0;0;Hot smoked fish
+normal;10;0;0;0;Gravad fish
+normal;11;0;0;0;Cooked meat
+normal;12;0;0;0;Sausage
+normal;13;0;0;0;Pâté
+normal;14;0;0;0;Soft and semi-soft cheese
+normal;15;1;9;5;fv-cook
