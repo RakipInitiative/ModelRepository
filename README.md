@@ -28,6 +28,9 @@ in progress: Expert review is received and integrated into model representation
 ### Swart Taenia model
 containing Taenia solium risk analysis model
 
+#### Reference
+...
+
 #### Status
 pending: waiting for expert review (Swart)
 
@@ -36,6 +39,9 @@ containing
 * chemical dose response model
 * bayesian consumer phase model on campylobacter in chicken
 
+#### Reference
+....
+
 #### Status
 pending: waiting for expert review (Ranta)
 
@@ -43,12 +49,13 @@ pending: waiting for expert review (Ranta)
 
 * support Petra on supply chain models
 * Gropin
-  * create test-toy-model with response surface, time to multiply and kinetic growth model
   * transfer complete annotation data to all models
+    * mostly done, bugfixing for rare cases and parameter annotation
   * bugfixing rare cases model script transfer errors due to inconsistencies in gropin database
-  * create transfer script for "time to multiply by X log steps"-models
+  * bugfixing visualisation for 4 or more variables
+  * create transfer script for "time to multiply by X log steps"-models for all models
   * analyse macros in gropin 
-  * create transfer script for "kinetic modelling" for growth models
+  * create transfer script for "kinetic modelling" for growth models for all models
   * GNG models
 * test all finished models on VRE
 
@@ -59,6 +66,7 @@ pending: waiting for expert review (Ranta)
   * finish adaptions to fskx file
   * write answer
 * gropin
+  * edit uploaded model
   * write questions for gropin creator
   * bugfixing transfer script
 
@@ -68,11 +76,9 @@ pending: waiting for expert review (Ranta)
 ### 19/10
 * support Petra on supply chain models
   * concept plan for hdf5 input of model
-  * discussed concept of meta nodes for product conversion 
+  * discussed concept of super/meta nodes network for product conversion 
 * Lindqvist Model
   * handling comments from lindqvist
-
-
 
 ### 16/10
 * gropin
@@ -81,7 +87,7 @@ pending: waiting for expert review (Ranta)
 
 ### 15/10
 * gropin
-  * creating showcase model with all 3 modes: response surface, time2multiply, kinetic model
+  * creating showcase model with all 3 modes: response surface, time2multiply, kinetic model 
   * bugfixing transfer script
 
 ### 14/10
@@ -98,7 +104,6 @@ pending: waiting for expert review (Ranta)
   * ongoing: checking conditions for models with 4 variables and more... done
   * finished first draft of creating model scripts, visualisation scripts and metadata schema sheets for fskx -> next step: write knime workflow for creator node to create fskx files!
   
-
 ### 12/10
 * gropin
   * reproducing kinetic models failed
