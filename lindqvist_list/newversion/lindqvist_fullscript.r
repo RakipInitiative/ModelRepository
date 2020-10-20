@@ -3,10 +3,52 @@
 ###################################################
 #default parameter set => parSet=0, 
 #full simulation run => parSet=1
+#prevalence uncertainty switched on, best case scenario => parSet=2
+#prevalence uncertainty switched on, worst case scenario => parSet=3
 parSet <- 0
 
 
 if(parSet==0) {
+  # default
+  sims <- 100
+  pop <- 11
+  runs <- 1000
+  shift <- 0.0
+  meanTemp <- 5.9
+  sdTemp <- 2.9
+  Mode_prop_rtime <- 0.3
+  Max_prop_rtime <- 1.1
+  lowerTemp <- -2.0
+  upperTemp <- 15.0
+  Tmin <- -1.18
+  prev_unc <-0
+  prev_fv <- 0.025#0.975
+  prev_cfv <- 0.025#0.975#
+  seedVal <- 3333
+  lag <- 0
+}
+###################################################
+if(parSet==1){
+  # full simulation run
+  sims <- 250
+  pop <- 11
+  runs <- 200000
+  shift <- 0.0
+  meanTemp <- 5.9
+  sdTemp <- 2.9
+  Mode_prop_rtime <- 0.3
+  Max_prop_rtime <- 1.1
+  lowerTemp <- -2.0
+  upperTemp <- 15.0
+  Tmin <- -1.18
+  prev_unc <-0
+  prev_fv <- 0.025#0.975
+  prev_cfv <- 0.025#0.975
+  seedVal <- 3333
+  lag <- 0
+}
+###################################################
+if(parSet==2) {
   # default
   sims <- 100
   pop <- 11
@@ -26,11 +68,11 @@ if(parSet==0) {
   lag <- 0
 }
 ###################################################
-if(parSet==1){
-  # full simulation run
-  sims <- 200
+if(parSet==3) {
+  # default
+  sims <- 100
   pop <- 11
-  runs <- 200000
+  runs <- 1000
   shift <- 0.0
   meanTemp <- 5.9
   sdTemp <- 2.9
@@ -40,8 +82,8 @@ if(parSet==1){
   upperTemp <- 15.0
   Tmin <- -1.18
   prev_unc <-1
-  prev_fv <- 0.025#0.975
-  prev_cfv <- 0.025#0.975
+  prev_fv <- 0.975#0.025#
+  prev_cfv <- 0.975#0.025#
   seedVal <- 3333
   lag <- 0
 }

@@ -345,11 +345,11 @@ MetaData <- read_excel("ModelAnnotationExceltemplateV1.04.xlsx", sheet = "Generi
 
 # mandatory fields
 #Name of the Model
-MetaData$Data[1] <-paste("Gropin Model Nr.",growthModels$Microorganism[run])
+MetaData$Data[1] <-paste("Gropin growth model for",growthModels$M_O[run],"in/on",growthModels$Product[run],"(gropin ID:",growthModels$Microorganism[run],")")
 MetaData$Data[2] <- "PUBLISHED SCIENTIFIC STUDIES"
 #Identifier
 MetaData$Data[3] <- paste0("gropin",growthModels$Model[run],growthModels$Microorganism[run])
-MetaData$Data[6] <- "15.10.2020"
+MetaData$Data[6] <- "15/10/2020"
 MetaData$Data[8] <- "Value"
 MetaData$Data[9] <- "Open access" 
 MetaData$Data[10] <- "https://www.aua.gr/psomas/gropin/"
@@ -425,13 +425,13 @@ for(fskPar in 1:nrOfVariables){
   MetaData$...12[thisRow] <- myVarNames[fskPar]
   MetaData$...13[thisRow] <- "Input"
   MetaData$...14[thisRow] <- myVarNames[fskPar]
-  MetaData$...15[thisRow] <- "my dummy description"
+  MetaData$...15[thisRow] <- "Only applicaple in either mode 'responsesurface' or 'time2multiply'. Environmental factors for growth model."#"my dummy description"
   MetaData$...16[thisRow] <- "[]"
   MetaData$...17[thisRow] <- "double"
-  MetaData$...18[thisRow] <- "double"
-  MetaData$...19[thisRow] <- "my source"
-  MetaData$...20[thisRow] <- "my subject"
-  MetaData$...21[thisRow] <- "mydist"
+  MetaData$...18[thisRow] <- "DOUBLE"
+  MetaData$...19[thisRow] <- ""#"my source"
+  MetaData$...20[thisRow] <- ""#"my subject"
+  MetaData$...21[thisRow] <- ""#"mydist"
   MetaData$...22[thisRow] <- myVal[fskPar]
   thisRow <- thisRow+1
 }
@@ -441,13 +441,13 @@ if (namesOfCoeffsList[1]!='not used') {
     MetaData$...12[thisRow] <- namesOfCoeffs[fskCoeff]
     MetaData$...13[thisRow] <- "Input"
     MetaData$...14[thisRow] <- namesOfCoeffs[fskCoeff]
-    MetaData$...15[thisRow] <- "my dummy description"
+    MetaData$...15[thisRow] <- "coefficient of this particular model"#"my dummy description"
     MetaData$...16[thisRow] <- "[]"
     MetaData$...17[thisRow] <- "double"
     MetaData$...18[thisRow] <- "double"
-    MetaData$...19[thisRow] <- "my source"
-    MetaData$...20[thisRow] <- "my subject"
-    MetaData$...21[thisRow] <- "mydist"
+    MetaData$...19[thisRow] <- ""#"my source"
+    MetaData$...20[thisRow] <- ""#"my subject"
+    MetaData$...21[thisRow] <- ""#"mydist"
     MetaData$...22[thisRow] <- valuesOfCoeffs[fskCoeff]
     thisRow <- thisRow+1
   }
@@ -475,23 +475,32 @@ valuesOfAddPars <- c(paste0("'",myVarNames[1],"'"),
                     "0",
                     "10",
                     "1000")
+descrOfAddPars <- c(paste("For visualisation purposes in either mode 'time2multiply' or 'responsesurface'. visualisation axis. Enter string with '<variable ID>'. Strings that are accepted:",paste(myVarNames[!is.na(myVarNames)],collapse = ", ")),
+                    paste("For visualisation purposes in either mode 'time2multiply' or 'responsesurface'. visualisation axis. Enter string with '<variable ID>'. Strings that are accepted:",paste(myVarNames[!is.na(myVarNames)],collapse = ", ")),
+                    "three different modes are available: 'responsesurface' is running the secondary model calculating mumax only. 'time2multiply' returns a 2D-plot of the time the microorganism needs to increase N by a logstep of 'logIncrease'(free parameter to choose). 'kinetic' runs the tertiary model, based on the variables chosen (with '_kinetic'-suffix).",
+                    "Only applicaple in either mode 'time2multiply' or 'kinetic' is chosen. This is the time the microorganism needs for adjusting to its environment before multiplying.",
+                    "Only applicaple in mode 'time2multiply'. Free parameter to calculate the time the microorganism needs to increase its numbers by the log step increase indictated by this value.",
+                    "Only applicaple in either mode 'kinetic'. Choose the number of microorganisms at the beginning of this simulation. (log step!)",
+                    "Only applicaple in either mode 'kinetic'. Choose the number of microorganisms at the end of this simulation. (log step!)",
+                    paste("time of simulation, unit is",growthModels$mumaxUn[run]))
 
 for(addVal in 1:nrOfVariables) {
   valuesOfAddPars <- append(valuesOfAddPars,(myVarMax[addVal]+myVarMin[addVal])/2)
+  descrOfAddPars <- append(descrOfAddPars,"Only applicaple in either mode 'kinetic'. Choose variable for prediction of growth depending on environmental factors.")
 }
 
 
-for(morePars in 1:length(namesofAddPars)){
-  MetaData$...12[thisRow] <- namesofAddPars[morePars]
+for(morePars in 1:length(namesOfAddPars)){
+  MetaData$...12[thisRow] <- namesOfAddPars[morePars]
   MetaData$...13[thisRow] <- "Input"
-  MetaData$...14[thisRow] <- namesofAddPars[morePars]
-  MetaData$...15[thisRow] <- "my dummy description"
+  MetaData$...14[thisRow] <- namesOfAddPars[morePars]
+  MetaData$...15[thisRow] <- descrOfAddPars[morePars]
   MetaData$...16[thisRow] <- "[]"
   MetaData$...17[thisRow] <- "double"
   MetaData$...18[thisRow] <- "double"
-  MetaData$...19[thisRow] <- "my source"
-  MetaData$...20[thisRow] <- "my subject"
-  MetaData$...21[thisRow] <- "mydist"
+  MetaData$...19[thisRow] <- ""#"my source"
+  MetaData$...20[thisRow] <- ""#"my subject"
+  MetaData$...21[thisRow] <- ""#"mydist"
   MetaData$...22[thisRow] <- valuesOfAddPars[morePars]
   thisRow <- thisRow+1
   

@@ -59,19 +59,28 @@ pending: waiting for expert review (Ranta)
   * GNG models
 * test all finished models on VRE
 
+### 21/10
+* gropin
+  * asking developers about fsk-lab behaviour(Editor deletes simulations that are not default)
+  * bugfixing transfer script
+    * questions for devs:
+      * MD schema editing data type for parameter DOUBLE or what?
+      * MD schema date format?
 
+
+## done so far
 
 ### 20/10
 * Lindqvist
   * finish adaptions to fskx file
   * write answer
 * gropin
-  * edit uploaded model
+  * edit uploaded model, done but due to unexpected fsk-lab behaviour, cannot be edited properly -> ask developers!
   * write questions for gropin creator
   * bugfixing transfer script
 
 
-## done so far
+
 
 ### 19/10
 * support Petra on supply chain models
