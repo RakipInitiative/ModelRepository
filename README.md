@@ -59,8 +59,9 @@ pending: waiting for expert review (Ranta)
   * GNG models
 * test all finished models on VRE
 
-### 21/10
+### 22/10
 * gropin
+  * visualisation for 4 or more parameters
   * asking developers about fsk-lab behaviour(Editor deletes simulations that are not default)
   * bugfixing transfer script
     * questions for devs:
@@ -69,6 +70,13 @@ pending: waiting for expert review (Ranta)
 
 
 ## done so far
+
+
+### 21/10
+* gropin
+  * bugfixing metadata schema editing
+  * visualisation for 4 parameters approach, but still buggy
+
 
 ### 20/10
 * Lindqvist
