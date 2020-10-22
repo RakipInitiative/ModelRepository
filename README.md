@@ -58,17 +58,27 @@ pending: waiting for expert review (Ranta)
   * GNG models
 * test all finished models on VRE
 
-### 22/10
+### 26/10
 * gropin
-  * visualisation for 4 or more parameters
-  * asking developers about fsk-lab behaviour(Editor deletes simulations that are not default)
-  * bugfixing transfer script
-    * questions for devs:
-      * MD schema editing data type for parameter DOUBLE or what?
-      * MD schema date format?
+  * visualisation for 4 or more parameters and therefore finishing growth models
+  * look into inactivation models
+  * look into GNG models
+* support Petra on supply chain models
+### 23/10
+* gropin
+  * bugfixing automatic transfer script for all growth models of 3 or less variables
 
 
 ## done so far
+
+### 22/10
+* support Petra on supply chain models
+* gropin
+  * asking developers about fsk-lab behaviour(Editor deletes simulations that are not default) -> opened a new ticket
+  * bugfixing showcase transfer script... DONE
+    * questions for devs:
+      * MD schema editing data type for parameter DOUBLE or what? ... Answered
+      * MD schema date format? ... pending
 
 
 ### 21/10
@@ -85,8 +95,7 @@ pending: waiting for expert review (Ranta)
   * edit uploaded model, done but due to unexpected fsk-lab behaviour, cannot be edited properly -> ask developers!
   * write questions for gropin creator
   * bugfixing transfer script
-
-
+* support Petra on supply chain models
 
 
 ### 19/10

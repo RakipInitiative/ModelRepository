@@ -349,7 +349,7 @@ MetaData$Data[1] <-paste("Gropin growth model for",growthModels$M_O[run],"in/on"
 MetaData$Data[2] <- "PUBLISHED SCIENTIFIC STUDIES"
 #Identifier
 MetaData$Data[3] <- paste0("gropin",growthModels$Model[run],growthModels$Microorganism[run])
-MetaData$Data[6] <- "15/10/2020"
+MetaData$Data[6] <- "22-10-2020"
 MetaData$Data[8] <- "Value"
 MetaData$Data[9] <- "Open access" 
 MetaData$Data[10] <- "https://www.aua.gr/psomas/gropin/"
@@ -427,8 +427,8 @@ for(fskPar in 1:nrOfVariables){
   MetaData$...14[thisRow] <- myVarNames[fskPar]
   MetaData$...15[thisRow] <- "Only applicaple in either mode 'responsesurface' or 'time2multiply'. Environmental factors for growth model."#"my dummy description"
   MetaData$...16[thisRow] <- "[]"
-  MetaData$...17[thisRow] <- "double"
-  MetaData$...18[thisRow] <- "DOUBLE"
+  MetaData$...17[thisRow] <- ""#unit
+  MetaData$...18[thisRow] <- "Vector[number]"
   MetaData$...19[thisRow] <- ""#"my source"
   MetaData$...20[thisRow] <- ""#"my subject"
   MetaData$...21[thisRow] <- ""#"mydist"
@@ -443,8 +443,8 @@ if (namesOfCoeffsList[1]!='not used') {
     MetaData$...14[thisRow] <- namesOfCoeffs[fskCoeff]
     MetaData$...15[thisRow] <- "coefficient of this particular model"#"my dummy description"
     MetaData$...16[thisRow] <- "[]"
-    MetaData$...17[thisRow] <- "double"
-    MetaData$...18[thisRow] <- "double"
+    MetaData$...17[thisRow] <- ""#unit
+    MetaData$...18[thisRow] <- "Double"
     MetaData$...19[thisRow] <- ""#"my source"
     MetaData$...20[thisRow] <- ""#"my subject"
     MetaData$...21[thisRow] <- ""#"mydist"
@@ -455,7 +455,7 @@ if (namesOfCoeffsList[1]!='not used') {
 
 # inserting all other parameters
 namesOfAddPars <- c("visVar1",
-                    "visVar1",
+                    "visVar2",
                     "mode",
                     "lagTime",
                     "logIncrease",
@@ -496,8 +496,12 @@ for(morePars in 1:length(namesOfAddPars)){
   MetaData$...14[thisRow] <- namesOfAddPars[morePars]
   MetaData$...15[thisRow] <- descrOfAddPars[morePars]
   MetaData$...16[thisRow] <- "[]"
-  MetaData$...17[thisRow] <- "double"
-  MetaData$...18[thisRow] <- "double"
+  MetaData$...17[thisRow] <- ""#unit
+  if(morePars<4){
+    MetaData$...18[thisRow] <- "String"
+  } else {
+    MetaData$...18[thisRow] <- "Double"
+  }
   MetaData$...19[thisRow] <- ""#"my source"
   MetaData$...20[thisRow] <- ""#"my subject"
   MetaData$...21[thisRow] <- ""#"mydist"
@@ -521,4 +525,5 @@ for(morePars in 1:length(namesOfAddPars)){
 #growthModels$`Reference equation`[run] #units for variables? ->?
 
 
-write_xlsx(list("Generic Metadata Schema"=MetaData),path="showcase/showcase_MD.xlsx")
+write_xlsx(list("Generic Metadata Schema"=MetaData),
+           path="showcase/showcase_MD.xlsx")
