@@ -23,8 +23,7 @@ containing qmra model on listeria in several food types
 doi: 10.2903/j.efsa.2020.6092
 
 #### Status
-in progress: Expert review is received and integrated into model representation
-
+pending: waiting for Expert response (Lindqvist)
 ### Swart Taenia model
 containing Taenia solium risk analysis model
 
