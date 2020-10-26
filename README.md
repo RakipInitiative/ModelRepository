@@ -58,18 +58,33 @@ pending: waiting for expert review (Ranta)
   * GNG models
 * test all finished models on VRE
 
-### 26/10
+
+### 27/10
 * gropin
+  
   * visualisation for 4 or more parameters and therefore finishing growth models
   * look into inactivation models
   * look into GNG models
-* support Petra on supply chain models
-### 23/10
-* gropin
   * bugfixing automatic transfer script for all growth models of 3 or less variables
 
 
 ## done so far
+
+### 26/10
+* gropin
+  * schedule webcall with Panos
+  * rewriting showcase models to run without including a library
+  * bugfixing automatic transfer script for all growth models of 3 or less variables
+* cristinas model
+  * initial discussion on paper and code
+* support Petra on supply chain models
+
+
+
+### 23/10
+* gropin
+  * bugfixing automatic transfer script for all growth models of 3 or less variables
+
 
 ### 22/10
 * support Petra on supply chain models

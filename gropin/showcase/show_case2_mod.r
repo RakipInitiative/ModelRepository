@@ -3,14 +3,13 @@
 #############################
  
 response_surface <- function(T) {
-   (-0.150*(T-0.173))
+   (a*(T-Tmin))^2
 } 
 result <- response_surface(T)
 if(mode=='time2multiply') {
   time2Xlog <- lagTime + logIncrease/result
 }
 if(mode=='kinetic') {
-  time2Xlog <- lagTime + logIncrease/result
   q0 <- 1/(exp(lagTime)-1)
   mumax <- response_surface(T_kinetic)
   t <- seq(0,simTime,length.out = 71)

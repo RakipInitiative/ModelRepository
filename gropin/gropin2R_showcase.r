@@ -2,11 +2,11 @@
 #setwd("~/BfR/EFSA/gropin")
 #setwd("G:/Abteilung-4/Public/FoodRisk-Labs/EFSA-FPA/Area2-SA7/models/gropin")#
 #print(getwd())
-listOfNonfunctioningModels <- c(128)
-run <- 2
+listOfNonfunctioningModels <- c(128,256)
+run <- 348
 innerBound <- F
-#showCase <- 'responsesurface'
-showCase <- 'time2multiply'
+showCase <- 'responsesurface'
+#showCase <- 'time2multiply'
 #showCase <- 'kinetic'
 
 
