@@ -61,7 +61,6 @@ pending: waiting for expert review (Ranta)
 
 ### 27/10
 * gropin
-  
   * visualisation for 4 or more parameters and therefore finishing growth models
   * look into inactivation models
   * look into GNG models
