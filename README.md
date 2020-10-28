@@ -46,8 +46,18 @@ pending: waiting for expert review (Ranta)
 
 ## plan for next days
 
+* write report for EFSA
 * support Petra on supply chain models
 * Gropin
+  * Variables used for scales -> "scale_" as prefix and made const in metadata
+  * Variables used for kinetic modelling (currently with suffix "_kinetic"): remove suffix and introduce as Parameter
+  * any parameter used for not all modes gets a prefix for which mode it is used
+    * Mode_response
+    * Mode_time2multiply: lagTime, logIncrease
+    * Mode_kinetic: logN0, lagTime, logNEnd, simTime
+  * create workflow editing fskx to fix all problems with excel sheet
+    * creation date: edit medata.json 
+    * additional simulation parameter sets: edit sim.sedml and add new simulation parameter set
   * transfer complete annotation data to all models
     * mostly done, bugfixing for rare cases and parameter annotation
   * bugfixing rare cases model script transfer errors due to inconsistencies in gropin database
@@ -56,11 +66,17 @@ pending: waiting for expert review (Ranta)
   * analyse macros in gropin 
   * create transfer script for "kinetic modelling" for growth models for all models
   * GNG models
+* Lindqvist
+  * fix visualisation as newly introduced parameters are not shown
 * test all finished models on VRE
+* transfer Possas model(Cristina) to fskx
+  * discussed to be done in 9 steps
+  * sending Cristina R scripts for development, afterwards transporting into fskx
 
 
-### 27/10
+### 29/10
 * gropin
+  * webcall with Panos
   * visualisation for 4 or more parameters and therefore finishing growth models
   * look into inactivation models
   * look into GNG models
@@ -68,6 +84,17 @@ pending: waiting for expert review (Ranta)
 
 
 ## done so far
+
+### 28/10
+* gropin
+  * showcase models adapted by hand
+  * work plan edited with new requests
+* supply chain models
+  * supported Petra on modelling efforts
+
+### 27/10
+* gropin
+  * showcase models adapted by hand
 
 ### 26/10
 * gropin
