@@ -84,9 +84,12 @@ pending: waiting for expert review (Ranta)
 
 ### 02/11
 * tech test of new recording equipment
-* implemt first part of Cristinas Model, further called Possas Model
 
 ## done so far
+
+### 02/11
+* implement first part of Cristinas Model, further called Possas Model
+
 
 ### 30/10
 * EFSA MRA network meeting
