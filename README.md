@@ -74,7 +74,7 @@ pending: waiting for expert review (Ranta)
   * sending Cristina R scripts for development, afterwards transporting into fskx
 
 
-### 29/10
+### 03/11
 * gropin
   * webcall with Panos
   * visualisation for 4 or more parameters and therefore finishing growth models
@@ -82,8 +82,19 @@ pending: waiting for expert review (Ranta)
   * look into GNG models
   * bugfixing automatic transfer script for all growth models of 3 or less variables
 
+### 02/11
+* tech test of new recording equipment
+* implemt first part of Cristinas Model, further called Possas Model
 
 ## done so far
+
+### 30/10
+* EFSA MRA network meeting
+
+### 29/10
+* started working on visualisation for 4 or more parameters and therefore finishing growth models
+* testing Ahmads new FSK-version
+* preparing for EFSA MRA network meeting
 
 ### 28/10
 * gropin
