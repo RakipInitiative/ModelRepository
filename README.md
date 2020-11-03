@@ -46,9 +46,13 @@ pending: waiting for expert review (Ranta)
 
 ## plan for next days
 
-* write report for EFSA
+* write report for EFSA, as short as possible
+* double check reference and authorship for all models
+* contact Maarten for support
+* share current state of FIID paper with MF
 * support Petra on supply chain models
 * Gropin
+  * annotate code
   * Variables used for scales -> "scale_" as prefix and made const in metadata
   * Variables used for kinetic modelling (currently with suffix "_kinetic"): remove suffix and introduce as Parameter
   * any parameter used for not all modes gets a prefix for which mode it is used
