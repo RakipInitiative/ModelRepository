@@ -38,23 +38,45 @@ containing
 * chemical dose response model
 * bayesian consumer phase model on campylobacter in chicken
 
+#### Status
+pending: waiting for expert review (Ranta)
+
+
+#### Reference
+....
+
+### gropin modelling database
+containing 747 models in total, which are divided into
+* 360 growth models
+* 122 growth/no-growth models
+* 58 inactivation models
+* 196 lethality models
+* 11 gamma models with interaction
+
 #### Reference
 ....
 
 #### Status
-pending: waiting for expert review (Ranta)
+ongoing transfer, currently focussing on growth models
 
-## plan for next days
+## plan for near future
 
 * write report for EFSA, as short as possible
 * double check reference and authorship for all models
-* contact Maarten for support
+* reply to Panos and thank him and inform about Elternzeit
+* reply to Cristina about Possas and include Petra into loop, Elternzeit
+* contact Maarten for support, Elternzeit
 * share current state of FIID paper with MF
-* support Petra on supply chain models
+* Lindqvist
+  * fix visualisation as newly introduced parameters are not shown
 * Gropin
   * annotate code
-  * Variables used for scales -> "scale_" as prefix and made const in metadata
-  * Variables used for kinetic modelling (currently with suffix "_kinetic"): remove suffix and introduce as Parameter
+  * fix response surface mode which sets unused variables to zero, but should set to input value
+  * wait for Panos to send kinetic model equations
+  * look into new gropin update and share with MF
+  * include into knime R2fskx workflow
+    * Variables used for scales -> "scale_" as prefix and made const in metadata
+    * Variables used for kinetic modelling (currently with suffix "_kinetic"): remove suffix and introduce as Parameter
   * any parameter used for not all modes gets a prefix for which mode it is used
     * Mode_response
     * Mode_time2multiply: lagTime, logIncrease
@@ -69,26 +91,42 @@ pending: waiting for expert review (Ranta)
   * create transfer script for "time to multiply by X log steps"-models for all models
   * analyse macros in gropin 
   * create transfer script for "kinetic modelling" for growth models for all models
-  * GNG models
-* Lindqvist
-  * fix visualisation as newly introduced parameters are not shown
+  * look into inactivation models
+  * look into GNG models
+  * bugfixing automatic transfer script for all growth models of 3 or less variables
 * test all finished models on VRE
 * transfer Possas model(Cristina) to fskx
   * discussed to be done in 9 steps
   * sending Cristina R scripts for development, afterwards transporting into fskx
+* support Petra on supply chain models
 
   
-### 04/11
-  * look into inactivation models
-  * look into GNG models
-  * bugfixing automatic transfer script for all growth models of 3 or less variables
+### 04/11 - 10/11
+
+* write report for EFSA, as short as possible
+* double check reference and authorship for all models
+* reply to Panos and thank him and inform about Elternzeit
+* reply to Cristina about Possas and include Petra into loop, Elternzeit
+* contact Maarten for support, Elternzeit
+* share current state of FIID paper with MF
+* Lindqvist
+  * fix visualisation as newly introduced parameters are not shown
+* Gropin
+  * annotate code
 
 
-### 03/11
-* gropin
-  * visualisation for 4 or more parameters and therefore finishing growth models
 
 ## done so far
+
+ 
+### 03/11
+* Possas
+  * bugfixing 
+* gropin
+  * visualisation for 4 or more parameters and therefore finishing growth models
+  * webcall with Panos
+* support Petra on supply chain models
+
 
 ### 02/11
 * implement first part of Cristinas Model, further called Possas Model
