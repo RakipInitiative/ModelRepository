@@ -73,22 +73,25 @@ pending: waiting for expert review (Ranta)
   * discussed to be done in 9 steps
   * sending Cristina R scripts for development, afterwards transporting into fskx
 
-
-### 03/11
-* gropin
-  * webcall with Panos
-  * visualisation for 4 or more parameters and therefore finishing growth models
+  
+### 04/11
   * look into inactivation models
   * look into GNG models
   * bugfixing automatic transfer script for all growth models of 3 or less variables
 
-### 02/11
-* tech test of new recording equipment
+
+### 03/11
+* gropin
+  * visualisation for 4 or more parameters and therefore finishing growth models
 
 ## done so far
 
 ### 02/11
 * implement first part of Cristinas Model, further called Possas Model
+* tech test of new recording equipment
+* gropin
+  * visualisation for 4 or more parameters and therefore finishing growth models
+  * webcall with Panos
 
 
 ### 30/10
