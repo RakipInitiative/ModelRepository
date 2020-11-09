@@ -104,7 +104,13 @@ ongoing transfer, currently focussing on growth models
 ### 04/11 - 10/11
 
 * write report for EFSA, as short as possible
+  * coordinate with esther...done
+  * collaboration with which people?
+  * table as querformat
+* support Petra on video tutorials
+* tech sound support for Person X
 * double check reference and authorship for all models
+* reply to ahmad
 * reply to Panos and thank him and inform about Elternzeit
 * reply to Cristina about Possas and include Petra into loop, Elternzeit
 * contact Maarten for support, Elternzeit
