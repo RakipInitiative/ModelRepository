@@ -100,29 +100,37 @@ ongoing transfer, currently focussing on growth models
   * sending Cristina R scripts for development, afterwards transporting into fskx
 * support Petra on supply chain models
 
-  
-### 04/11 - 10/11
 
-* write report for EFSA, as short as possible
-  * coordinate with esther...done
-  * collaboration with which people?
-  * table as querformat
-* support Petra on video tutorials
-* tech sound support for Person X
-* double check reference and authorship for all models
-* reply to ahmad
-* reply to Panos and thank him and inform about Elternzeit
-* reply to Cristina about Possas and include Petra into loop, Elternzeit
-* contact Maarten for support, Elternzeit
+### 10/11
+
+* report for EFSA
+  * send to Esther/Matthias -> feedback? ... done
+* reply to ahmad ... done
+* reply to Panos and thank him and inform about Elternzeit...done
+* reply to Cristina about Possas and include Petra into loop, Elternzeit... done
+* contact Maarten for support, Elternzeit... done
 * share current state of FIID paper with MF
 * Lindqvist
   * fix visualisation as newly introduced parameters are not shown
 * Gropin
   * annotate code
 
-
-
 ## done so far
+
+
+### 09/11
+
+* report for EFSA
+  * coordinate with esther...done
+  * collaboration with which people?... done
+  * table as querformat...done
+* Video tutorial support
+  * support Petra on video tutorials...done
+  * tech sound support for Esther and Petra ... done
+
+
+
+
 
  
 ### 03/11

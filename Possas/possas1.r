@@ -32,6 +32,7 @@ p1 <- 1- NmixCum(prevTarget)
 #######################################
 library(gridBase)
 library(gridExtra)
+library(grid)
 
 
 # prevalence as a table
