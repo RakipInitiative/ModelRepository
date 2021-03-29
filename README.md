@@ -5,15 +5,13 @@ Joint project of EFSA, Federal Institute For Risk Assessment, DTU and ANSES to c
 
 ## currently implemented models
 ### Nauta EFSA opinion Risk Reduction model of campylobacter in ready-to-eat chicken salad
-
 containing
 * 8 Consumer phase models
 * 3 Dose Response models
 * 1 Relative Risk Reduction Model based on above mentioned CPMs and DRMs
 * 3 examples of joined CPM/DRM models 
-
 #### Status
-pending... waiting for Expert review (Nauta)
+in progress, see TODO list
 #### Reference
 https://efsa.onlinelibrary.wiley.com/doi/full/10.2903/j.efsa.2020.6090 
 
@@ -21,15 +19,13 @@ https://efsa.onlinelibrary.wiley.com/doi/full/10.2903/j.efsa.2020.6090
 containing qmra model on listeria in several food types
 #### Reference 
 doi: 10.2903/j.efsa.2020.6092
-
 #### Status
-pending: waiting for Expert response (Lindqvist)
+in progress, see TODO list
+
 ### Swart Taenia model
 containing Taenia solium risk analysis model
-
 #### Reference
 ...
-
 #### Status
 pending: waiting for expert review (Swart)
 
@@ -37,43 +33,40 @@ pending: waiting for expert review (Swart)
 containing
 * chemical dose response model
 * bayesian consumer phase model on campylobacter in chicken
-
 #### Status
-pending: waiting for expert review (Ranta)
-
-
+pending: waiting for expert review (Ranta, Ganas?)
 #### Reference
 ....
 
 ### gropin modelling database
-containing 747 models in total, which are divided into
+containing 747 models in total, which are divided into (old version, needs update!)
 * 360 growth models
 * 122 growth/no-growth models
 * 58 inactivation models
 * 196 lethality models
 * 11 gamma models with interaction
-
 #### Reference
-....
-
+https://www.aua.gr/psomas/gropin/
 #### Status
-ongoing transfer, currently focussing on growth models
+ongoing transfer, currently focussing on growth models, details see TODO
 
-## plan for near future
-
-* write report for EFSA, as short as possible
-* double check reference and authorship for all models
-* reply to Panos and thank him and inform about Elternzeit
-* reply to Cristina about Possas and include Petra into loop, Elternzeit
-* contact Maarten for support, Elternzeit
-* share current state of FIID paper with MF
+## TODO
+* Nauta
+  * create output for RRM 
+  * check up ifthenjoined, check if Petras work creates correct results
 * Lindqvist
   * fix visualisation as newly introduced parameters are not shown
+* Possas -> check up
 * Gropin
+  * showcasing
+    * output!
+    * everything needs to be calculated and stored in data cube
+    * parameters "days"?
   * annotate code
   * fix response surface mode which sets unused variables to zero, but should set to input value
-  * wait for Panos to send kinetic model equations
-  * look into new gropin update and share with MF
+  * implement kinetic model equations Panos sent
+  * look into new gropin update and note new models -> adaptations necessary? 
+    * new count of models necessary, total nearly 1k
   * include into knime R2fskx workflow
     * Variables used for scales -> "scale_" as prefix and made const in metadata
     * Variables used for kinetic modelling (currently with suffix "_kinetic"): remove suffix and introduce as Parameter
@@ -100,6 +93,12 @@ ongoing transfer, currently focussing on growth models
   * sending Cristina R scripts for development, afterwards transporting into fskx
 * support Petra on supply chain models
 
+## DONE
+* write report for EFSA, as short as possible
+* double check reference and authorship for all models
+* reply to Panos and thank him and inform about Elternzeit
+* reply to Cristina about Possas and include Petra into loop, Elternzeit
+* contact Maarten for support, Elternzeit
 
 ### 10/11
 
