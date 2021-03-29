@@ -93,15 +93,42 @@ ongoing transfer, currently focussing on growth models, details see TODO
   * sending Cristina R scripts for development, afterwards transporting into fskx
 * support Petra on supply chain models
 
-## DONE
+## DONE 2021
+
+### 31/3
+* 
+### 30/3
+* Lindqvist Telco
+* finish Lindqvist model
+### 29/3
+* updated project TODO list
+* Taras PhD
+
+* Lindqvist model adaptations and updates
+* finishing RRM check
+* finishing DRM check
+* gropin 
+  * showcase update
+  * transfer annotation and update to do list
+  * transfer cleanup
+  * update todo
+### 22/3 - 26/3
+* update/orientation of state of things
+* created workflow for trasferring gropin model output to javascript plotting node
+* output for RRM standalone
+* check Petras work for CPM/DRM/RRM updates
+* created workflow for efficient testing of CPM/DRM/RRM updates
+* testing new FSK build
+
+
+## DONE 2020
+### 11/11/20
 * write report for EFSA, as short as possible
 * double check reference and authorship for all models
 * reply to Panos and thank him and inform about Elternzeit
 * reply to Cristina about Possas and include Petra into loop, Elternzeit
 * contact Maarten for support, Elternzeit
-
 ### 10/11
-
 * report for EFSA
   * send to Esther/Matthias -> feedback? ... done
 * reply to ahmad ... done
@@ -113,12 +140,7 @@ ongoing transfer, currently focussing on growth models, details see TODO
   * fix visualisation as newly introduced parameters are not shown
 * Gropin
   * annotate code
-
-## done so far
-
-
 ### 09/11
-
 * report for EFSA
   * coordinate with esther...done
   * collaboration with which people?... done
@@ -126,12 +148,6 @@ ongoing transfer, currently focussing on growth models, details see TODO
 * Video tutorial support
   * support Petra on video tutorials...done
   * tech sound support for Esther and Petra ... done
-
-
-
-
-
- 
 ### 03/11
 * Possas
   * bugfixing 
@@ -139,35 +155,27 @@ ongoing transfer, currently focussing on growth models, details see TODO
   * visualisation for 4 or more parameters and therefore finishing growth models
   * webcall with Panos
 * support Petra on supply chain models
-
-
 ### 02/11
 * implement first part of Cristinas Model, further called Possas Model
 * tech test of new recording equipment
 * gropin
   * visualisation for 4 or more parameters and therefore finishing growth models
   * webcall with Panos
-
-
 ### 30/10
 * EFSA MRA network meeting
-
 ### 29/10
 * started working on visualisation for 4 or more parameters and therefore finishing growth models
 * testing Ahmads new FSK-version
 * preparing for EFSA MRA network meeting
-
 ### 28/10
 * gropin
   * showcase models adapted by hand
   * work plan edited with new requests
 * supply chain models
   * supported Petra on modelling efforts
-
 ### 27/10
 * gropin
   * showcase models adapted by hand
-
 ### 26/10
 * gropin
   * schedule webcall with Panos
@@ -176,14 +184,9 @@ ongoing transfer, currently focussing on growth models, details see TODO
 * cristinas model
   * initial discussion on paper and code
 * support Petra on supply chain models
-
-
-
 ### 23/10
 * gropin
   * bugfixing automatic transfer script for all growth models of 3 or less variables
-
-
 ### 22/10
 * support Petra on supply chain models
 * gropin
@@ -192,14 +195,10 @@ ongoing transfer, currently focussing on growth models, details see TODO
     * questions for devs:
       * MD schema editing data type for parameter DOUBLE or what? ... Answered
       * MD schema date format? ... pending
-
-
 ### 21/10
 * gropin
   * bugfixing metadata schema editing
   * visualisation for 4 parameters approach, but still buggy
-
-
 ### 20/10
 * Lindqvist
   * finish adaptions to fskx file
@@ -209,31 +208,25 @@ ongoing transfer, currently focussing on growth models, details see TODO
   * write questions for gropin creator
   * bugfixing transfer script
 * support Petra on supply chain models
-
-
 ### 19/10
 * support Petra on supply chain models
   * concept plan for hdf5 input of model
   * discussed concept of super/meta nodes network for product conversion 
 * Lindqvist Model
   * handling comments from lindqvist
-
 ### 16/10
 * gropin
   * finishing showcase model
   * bugfixing transfer script: metadata information ist transferred from gropinDB
-
 ### 15/10
 * gropin
   * creating showcase model with all 3 modes: response surface, time2multiply, kinetic model 
   * bugfixing transfer script
-
 ### 14/10
 * gropin
   * bugfixing transfer script (creating 360 annotation schemas, modelscripts and visualisation scripts) for response surface model
   * created knime workflow for taking these 360*3 fsk model components to build fskx models
 * support Petra on supply chain models
-
 ### 13/10
 * gropin
   * implementing conditions for growth models with 1,2 variables
@@ -241,7 +234,6 @@ ongoing transfer, currently focussing on growth models, details see TODO
   * found non-functioning models, compiling a list of models not ready for transfer
   * ongoing: checking conditions for models with 4 variables and more... done
   * finished first draft of creating model scripts, visualisation scripts and metadata schema sheets for fskx -> next step: write knime workflow for creator node to create fskx files!
-  
 ### 12/10
 * gropin
   * reproducing kinetic models failed
@@ -250,7 +242,6 @@ ongoing transfer, currently focussing on growth models, details see TODO
     * -> need to look into macro coding itself -> problem with BfR's "no macro!" policy -> Lars suggests to use VK-notebook
 * supply chain models
   * support for expanding network model
-
 ### 09/10
 * gropin
   * change of plans after first tests with knime -> simpler to create an R script to transfer all gropin models to R
