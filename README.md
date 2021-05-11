@@ -11,7 +11,7 @@ containing
 * 1 Relative Risk Reduction Model based on above mentioned CPMs and DRMs
 * 3 examples of joined CPM/DRM models 
 #### Status
-in progress, see TODO list
+done
 #### Reference
 https://efsa.onlinelibrary.wiley.com/doi/full/10.2903/j.efsa.2020.6090 
 
@@ -20,14 +20,14 @@ containing qmra model on listeria in several food types
 #### Reference 
 doi: 10.2903/j.efsa.2020.6092
 #### Status
-in progress, see TODO list
+done, waiting for last check with author
 
 ### Swart Taenia model
 containing Taenia solium risk analysis model
 #### Reference
 ...
 #### Status
-pending: waiting for expert review (Swart)
+pending: waiting for expert review (Swart, Ganas?)
 
 ### Ranta models
 containing
@@ -39,31 +39,26 @@ pending: waiting for expert review (Ranta, Ganas?)
 ....
 
 ### gropin modelling database
-containing 747 models in total, which are divided into (old version, needs update!)
-* 360 growth models
-* 122 growth/no-growth models
-* 58 inactivation models
-* 196 lethality models
-* 11 gamma models with interaction
+containing 997 models in total, which are divided into (old version, needs update!)
+* 495 growth models
+* 131 growth/no-growth models
+* 72 inactivation models
+* 284 lethality models
+* 15 gamma models with interaction
 #### Reference
 https://www.aua.gr/psomas/gropin/
 #### Status
 ongoing transfer, currently focussing on growth models, details see TODO
 
 ## TODO
-* Nauta
-  * create output for RRM 
-  * check up ifthenjoined, check if Petras work creates correct results
-* Lindqvist
-  * fix visualisation as newly introduced parameters are not shown
-* Possas -> check up
 * Gropin
-  * showcasing
-    * output!
-    * everything needs to be calculated and stored in data cube
-    * parameters "days"?
-  * annotate code
-  * fix response surface mode which sets unused variables to zero, but should set to input value
+  * look into 1 variable bugs:
+    * note of gropin 'notused' is made into a variable
+    * one set of parameters dont need to turned into dataframe
+    * general check of visualisation
+  * units:
+    * create database for units of variables: T in C, CO2 in g, a.s.o.
+    * meta data needs to be adapted for each microorganism separately
   * implement kinetic model equations Panos sent
   * look into new gropin update and note new models -> adaptations necessary? 
     * new count of models necessary, total nearly 1k
@@ -88,15 +83,21 @@ ongoing transfer, currently focussing on growth models, details see TODO
   * look into GNG models
   * bugfixing automatic transfer script for all growth models of 3 or less variables
 * test all finished models on VRE
-* transfer Possas model(Cristina) to fskx
+* Possas -> check up
+  * transfer Possas model(Cristina) to fskx
   * discussed to be done in 9 steps
   * sending Cristina R scripts for development, afterwards transporting into fskx
-* support Petra on supply chain models
 
 ## DONE 2021
 
-### 31/3
-* 
+### May
+* new model version of gropin -> major adaptations were necessary
+* R4.X handles xls sheets differently thant R3.X -> adaptations to the code were done
+* transfer code for 2 variables -> creates model script, visualisation script, metadata schema (not fully tested)
+
+### April 
+* showcases gropin 24,492,256 done -> goal for full transfer code
+
 ### 30/3
 * Lindqvist Telco
 * finish Lindqvist model

@@ -1,15 +1,14 @@
 #############################
 # start of Model script
 #############################
-multVar1 <- T
-multVar2 <- aw
  
+variables <- data.frame(T,aw)
+argumentsPar <- expand.grid(variables)
 response_surface <- function(T,aw) {
-   (a*(aw-awmin)*((T-Tmin)^2))
+   mumax <-matrix(unlist((a*(aw-awmin)*((T-Tmin)^2)),nrow=21))
+return(mumax=mumax)
 } 
-result <- outer(multVar1,multVar2,response_surface)
-colnames(result)<-multVar2
-rownames(result)<-multVar1
+mumax <- response_surface(argumentsPar['T'],argumentsPar['aw'])
 #############################
 # End of Model script
 #############################

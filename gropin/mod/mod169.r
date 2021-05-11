@@ -1,15 +1,14 @@
 #############################
 # start of Model script
 #############################
-multVar1 <- aw
-multVar2 <- notused
  
+variables <- data.frame(aw,notused)
+argumentsPar <- expand.grid(variables)
 response_surface <- function(aw,notused) {
-   (2.86^0.5)*(((aw-1)*(aw-awmin)^2)/((awopt-awmin)*(((awopt-awmin)*(aw-awopt))-((awopt-1)*(awopt+awmin-2*aw)))))^0.5
+   mumax <-matrix(unlist((2.86^0.5)*(((aw-1)*(aw-awmin)^2)/((awopt-awmin)*(((awopt-awmin)*(aw-awopt))-((awopt-1)*(awopt+awmin-2*aw)))))^0.5,nrow=21))
+return(mumax=mumax)
 } 
-result <- outer(multVar1,multVar2,response_surface)
-colnames(result)<-multVar2
-rownames(result)<-multVar1
+mumax <- response_surface(argumentsPar['aw'],argumentsPar['notused'])
 #############################
 # End of Model script
 #############################

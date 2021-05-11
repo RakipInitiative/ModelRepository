@@ -1,52 +1,192 @@
-# set your own path
-#setwd("~/BfR/EFSA/gropin")
-#setwd("G:/Abteilung-4/Public/FoodRisk-Labs/EFSA-FPA/Area2-SA7/models/gropin")#
-#print(getwd())
-setwd(dirname(sys.frame(1)$ofile))
+################################################################################
+# setting a few parameters for potential later adaptations to gropin
+################################################################################
+lenOfVar <- 21
 
-listOfNonfunctioningModels <- c(128)
+################################################################################
+
+
+
+
+
+
+# set your own path
+setwd("~/Projects/ModelRepository/gropin")
+#setwd(dirname(sys.frame(1)$ofile)) # current working directory(only works in source mode)
+
+# finding weird models with lots of exceptions
+# thant one wants to exclude until further notice
+listOfNonfunctioningModels <- NA
 
 library(readxl)
 library(dplyr)
 library(gsubfn)
 library(writexl)
+################################################################################
+# START PART ONE: Preprocessing 
+################################################################################
+
+#renaming table header for transparency purposes
+newNamesForGropinColumns <- c("Model",
+                              "ModelID",
+                              "Var",
+                              "Substrate",
+                              "Var1",
+                              "Var1Min",
+                              "Var1Max",
+                              "Var2",
+                              "Var2Min",
+                              "Var2Max",
+                              "Var3",
+                              "Var3Min",
+                              "Var3Max",
+                              "Var4",
+                              "Var4Min",
+                              "Var4Max",
+                              "Var5",
+                              "Var5Min",
+                              "Var5Max",
+                              "Var6",
+                              "Var6Min",                 
+                              "Var6Max",
+                              "Var7",
+                              "Var7Min",                 
+                              "Var7Max",
+                              "Var8",
+                              "Var8Min",                 
+                              "Var8Max",
+                              "Var9",
+                              "Var9Min",                 
+                              "Var9Max",
+                              "Authors",    
+                              "Paper",        
+                              "Journal",        
+                              "Issue",                 
+                              "Var10",                         
+                              "Var10Min",           
+                              "Var10Max",             
+                              "INACTIVE",                  
+                              "Microorganism",          
+                              "First author",      
+                              "Product",                   
+                              "psicheck",         
+                              "LETHALITY",           
+                              "DMRI",                      
+                              "MODELCATEG",           
+                              "INTEGRATED",           
+                              "mumaxUn",                   
+                              "AUG_ZU",              
+                              "Rate label",            
+                              "Special notes",             
+                              "Reference equation",  
+                              "Co1",              
+                              "Co1val",                    
+                              "Co2",               
+                              "Co2val",            
+                              "Co3",                       
+                              "Co3val",            
+                              "Co4",              
+                              "Co4val",                    
+                              "Co5",             
+                              "Co5val",                  
+                              "Co6",                       
+                              "Co6val", 
+                              "Co7",      
+                              "Co7val", 
+                              "Co8",     
+                              "Co8val", 
+                              "Co9",       
+                              "Co9val", 
+                              "Co10",    
+                              "Co10val",
+                              "Co11",   
+                              "Co11val", 
+                              "Co12",     
+                              "Co12val",          
+                              "Co13",           
+                              "Co13val",                   
+                              "Co14",                 
+                              "Co14val",          
+                              "Co15",                      
+                              "Co15val",              
+                              "Co16",             
+                              "Co16val",                   
+                              "Co17",                 
+                              "Co17val",           
+                              "Co18",                      
+                              "Co18val",              
+                              "Co19",              
+                              "Co19val",                   
+                              "Co20", 
+                              "Co20val",                
+                              "Type of simulation",        
+                              "mumax",                 
+                              "equation")
+
 
 # read in and format certain aspects of database to needs of R
-gropinDB <- read_excel("GroPIN-ver.3.xlsm", sheet = "Nonlinear")
+#gropinDB <- read_excel("GroPIN-ver.3.xlsm", sheet = "Nonlinear") # 1st version we did try to convert
+gropinDB <- read_excel("GroPIN201031.xlsm", sheet = "Nonlinear") # current version
+
+# replace some special characters
 names(gropinDB)<-gsub("/","_",names(gropinDB))
-# replace "(...string....)" but not in the equation column
+# replace "(...string....)" but not in the equation column (column 95 aka last)
 gropinDB[,1:94] <- data.frame(lapply(gropinDB[,1:94], 
                                      function(x) {gsub('[()]', '_', x)}))
 
 
+names(gropinDB) <- newNamesForGropinColumns
 # filtering models according to identifiers in data base
+# currently, only growthModels are considered.
+# future versions of this transfer code will include all types of models
 growthNoGrowthModels <- gropinDB %>% filter(Model == 'GNG')
-growthModels <- gropinDB %>% filter(!grepl('INA',INACTIVE)&Model == 'GRT'&!grepl('AUG',AUG_ZU)&!grepl('LTH',LETHALITY))
+growthModels <- gropinDB %>% filter(!grepl('INA',INACTIVE)&
+                                      Model == 'GRT'&
+                                      !grepl('AUG',AUG_ZU)&
+                                      !grepl('LTH',LETHALITY))
 lethalityModels <- gropinDB %>% filter(grepl('LTH',LETHALITY))
 gammaModelsWithInteraction <- gropinDB %>% filter(grepl('AUG',AUG_ZU))
 inactivationModels <- gropinDB %>% filter(grepl('INA',INACTIVE))
 
+################################################################################
+# END PART ONE: Preprocessing 
+################################################################################
+run <-32
 
-#run <- 1
+
+################################################################################
+# START PART TWO: creating scripts
+################################################################################
 nrModels <- dim(growthModels)[1]
 
-for(run in 1:nrModels){
+#for(run in 1:nrModels){
   
-  if(growthModels$Microorganism[run] %in% listOfNonfunctioningModels) {
+  # exlude model from conversion any model given in list above
+  if(growthModels$ModelID[run] %in% listOfNonfunctioningModels) {
     print("Nope")
     next
   } 
   
-  
   # get all 9 variables from data base
-  myVarNames <- c(growthModels$x[run],growthModels$y[run],growthModels$z[run],
-                  growthModels$d[run],growthModels$e[run],growthModels$f[run],
-                  growthModels$g[run],growthModels$h[run],growthModels$i[run])
+  # variable has the following properties: name, range(from, to)
+  # no unit is given, no description
+  myVarNames <- c(as.character(growthModels$Var1[run]),
+                  as.character(growthModels$Var2[run]),
+                  as.character(growthModels$Var3[run]),
+                  as.character(growthModels$Var4[run]),
+                  as.character(growthModels$Var5[run]),
+                  as.character(growthModels$Var6[run]),
+                  as.character(growthModels$Var7[run]),
+                  as.character(growthModels$Var8[run]),
+                  as.character(growthModels$Var9[run]),
+                  as.character(growthModels$Var10[run]))
+  # some names of parameters have special characters, 
+  # that need to be dealt with -> names of variables will become variable names 
+  # in their own R scripts, therefore must be free of special characters
   myVarNames <- gsub("[+]","",myVarNames)
   myVarNames <- gsub(" ","",myVarNames)
   
-  
-  
+  # phrase of gropin, marks end of list of variables
   if("not used" %in% myVarNames) {
     myVarNames[which(myVarNames %in% "not used")] <- NA
   }
@@ -54,20 +194,32 @@ for(run in 1:nrModels){
   
   # different models have different number of variables (rest is NA)
   nrOfVariables <- length(table(myVarNames))
-  mymy <- rep(NA,nrOfVariables)
-  myVal <- rep(NA,nrOfVariables)
-  
+ 
   
   # set boundaries of sequence to inner boundaries to catch cases
   # where subtraction of variables and coefficents in demoninator happen
-  myVarMin <- as.double(c(growthModels$from...6[run],growthModels$from...9[run],growthModels$from...12[run],
-                growthModels$from...15[run],growthModels$from...18[run],growthModels$from...21[run],
-                growthModels$from...24[run],growthModels$from...27[run],growthModels$from...30[run]))*1.001
-  myVarMax <- as.double(c(growthModels$to...7[run],growthModels$to...10[run],growthModels$to...13[run],
-                growthModels$to...16[run],growthModels$to...19[run],growthModels$to...22[run],
-                growthModels$to...25[run],growthModels$to...28[run],growthModels$to...31[run]))*0.999
+  myVarMin <- c(as.double(as.character(growthModels$Var1Min[run])),
+                as.double(as.character(growthModels$Var2Min[run])),
+                as.double(as.character(growthModels$Var3Min[run])),
+                as.double(as.character(growthModels$Var4Min[run])),
+                as.double(as.character(growthModels$Var5Min[run])),
+                as.double(as.character(growthModels$Var6Min[run])),
+                as.double(as.character(growthModels$Var7Min[run])),
+                as.double(as.character(growthModels$Var8Min[run])),
+                as.double(as.character(growthModels$Var9Min[run])),
+                as.double(as.character(growthModels$Var10Min[run])))
+  myVarMax <- c(as.double(as.character(growthModels$Var1Max[run])),
+                as.double(as.character(growthModels$Var2Max[run])),
+                as.double(as.character(growthModels$Var3Max[run])),
+                as.double(as.character(growthModels$Var4Max[run])),
+                as.double(as.character(growthModels$Var5Max[run])),
+                as.double(as.character(growthModels$Var6Max[run])),
+                as.double(as.character(growthModels$Var7Max[run])),
+                as.double(as.character(growthModels$Var8Max[run])),
+                as.double(as.character(growthModels$Var9Max[run])),
+                as.double(as.character(growthModels$Var10Max[run])))
   
-  # for cases where min & max was put in wrong :(
+  # for cases where min & max was put in wrong in gropin
   for(myVarOrder in 1:nrOfVariables){
     if(myVarMin[myVarOrder]>myVarMax[myVarOrder]){
       help <- myVarMax[myVarOrder]
@@ -77,37 +229,57 @@ for(run in 1:nrModels){
   }
   
   
-  
+  ###########################################################
   # create the R script text file with only regular variables
-  for (j in 1:nrOfVariables) {
-    mymy[j] <- paste0(myVarNames[j], 
+  ###########################################################
+  # setting parameters: variables (1st step defining r script)
+  # later converting this script to fskx
+  # note that parameter script is not used for transfer to fskx
+  # rather it is used to test if this would work as an r-script
+  # for bug fixing purposes
+  ###########################################################
+  # comments to identify for parameter script
+  myParScript <- "#############################\n# start of Parameter script\n#############################"
+  valuesForParameters <- rep(NA,nrOfVariables)
+  #adding all variables to parameter script
+   for (j in 1:nrOfVariables) {
+    myParScript <- append(myParScript,paste0(myVarNames[j], 
                       " <- seq(" , 
                       myVarMin[j], 
                       ",",
                       myVarMax[j],
-                      ",length.out=21)")
-    myVal[j] <- paste0("seq(" , 
-                       myVarMin[j], 
-                       ",",
-                       myVarMax[j],
-                       ",length.out=21)")
+                      ",length.out=",
+                      lenOfVar,
+                      ")")
+    )
     
-  }
+    # create vector of input values for annotation schema later
+    valuesForParameters[j] <- paste0("seq(" , 
+                                  myVarMin[j], 
+                                  ",",
+                                  myVarMax[j],
+                                  ",length.out=",
+                                  lenOfVar,
+                                  ")")
+    
+   }
+  
   
   
   # different models have different coefficients 
   namesOfCoeffsList<-growthModels[run,names(growthModels)[53:92][c(TRUE,FALSE)]]
   valuesOfCoeffsList<-growthModels[run,names(growthModels)[53:92][c(FALSE,TRUE)]]
   
+  # extracting actual names and values only and remove potential special characters
   if (namesOfCoeffsList[1]!='not used') {
-    namesOfCoeffs <- as.character(namesOfCoeffsList)[!is.na(as.character(namesOfCoeffsList))]
+    namesOfCoeffs <- as.character(unlist(namesOfCoeffsList))[!is.na(as.character(unlist(namesOfCoeffsList)))]
     namesOfCoeffs <- gsub("[+]","",namesOfCoeffs)
     namesOfCoeffs <- gsub(" ","",namesOfCoeffs)
-    valuesOfCoeffs <- as.character(valuesOfCoeffsList)[!is.na(as.character(valuesOfCoeffsList))]
+    valuesOfCoeffs <- as.character(unlist(valuesOfCoeffsList))[!is.na(as.character(valuesOfCoeffsList))]
     nrOfCoeffs <- length(namesOfCoeffs)
     
     for (c in 1:nrOfCoeffs) {
-      mymy <- append(mymy,paste0(namesOfCoeffs[c]," <- ",valuesOfCoeffs[c]))
+      myParScript <- append(myParScript,paste0(namesOfCoeffs[c]," <- ",valuesOfCoeffs[c]))
     }
     
   }
@@ -116,36 +288,28 @@ for(run in 1:nrModels){
   # choosing axes to visualize
   if (nrOfVariables>2) {
     # choose visualisation layer
-    mymy <- append(mymy,paste0("visVar1 <- '",myVarNames[1],
+    myParScript <- append(myParScript,paste0("visVar1 <- '",myVarNames[1],
                                "'\nvisVar2 <- '",myVarNames[2],"'"))
   }
+  myParScript <- append(myParScript,"#############################\n# end of Parameter script\n#############################")
+  
+  ##############################################################################
+  # end of setting parameters
+  ##############################################################################
   
   
-  # comments to identify for parameter script
-  mymy <- append(mymy,"#############################\n# start of Parameter script\n#############################", after=0)
-  mymy <- append(mymy,"#############################\n# end of Parameter script\n#############################")
+  ##############################################################################
+  # Start model script
+  ##############################################################################
   
-  myParScript <- mymy
-  mymy <- append(mymy," ")
   # comments to identify for model script
-  mymy <- "#############################\n# start of Model script\n#############################"
-  if(nrOfVariables>2) {
-    mymy <- append(mymy,"library(hash)")
-    myString<-replicate(2,myVarNames[1:nrOfVariables])
-    myString<-paste(myString[,1], myString[,2], sep = "=", collapse = ",")
-    mymy <- append(mymy,paste0("myHash <- hash(",myString,")"))
-  #  mymy <- append(mymy,paste0("expectedAxes <- c('",
-  #                             paste(myVarNames[1:nrOfVariables],collapse = '\',\''),"')"))
-  #  mymy <- append(mymy,"myString <- replicate(2,expectedAxes)"
-    
-  }
-  #mymy <- append(mymy,paste0("myDict <- hash(",
-   #                          t,
-    #                         ")"))
-  
-  
-  
+  myModelScript <- "#############################\n# start of Model script\n#############################"
+
+  # column "equation" is evaluated
   # as for the equation for the response surface model
+  # in gropin excel code, variables are referred to their position in the 
+  # corresponding sheet -> in "equation" positions are converted into 
+  # variable names
   gropinVarNames <- c("B2","C2","D2",
                       "E2","F2","G2",
                       "H2","I2","J2")
@@ -153,14 +317,21 @@ for(run in 1:nrModels){
                         "U2","W2","Y2","AA2","AC2",
                         "AE2","AG2","AH2","AJ2","AL2",
                         "AN2","AP2","AR2","AT2","AV2")
-  gropinFunctionNames <- c("SQRT")
-  FunctionNames <- c("sqrt")
-  
-  # replacing gropin variable names with correct names
+
+  # replacing gropin excel position names with actual variable names
   myEq <- gsubfn("\\w+",as.list(setNames(myVarNames[1:nrOfVariables],
                                          gropinVarNames[1:nrOfVariables])),
                  growthModels$equation[run])
+
+  # gropin uses excel functions to make certain calculations
+  # in order to convert each line to R, these function names
+  # need to be corrected
+  # SOLUTION: collect the names of excel functions and
+  # the names of R functions in a list
+  gropinFunctionNames <- c("SQRT")
+  FunctionNames <- c("sqrt")
   
+  # replacing function names
   myEq <- gsubfn("\\w+",as.list(setNames(FunctionNames,
                                          gropinFunctionNames)),
                  myEq)
@@ -169,151 +340,142 @@ for(run in 1:nrModels){
   # adding coefficients to parameter list
   if (namesOfCoeffsList[1]!='not used') {
     #replacing gropin coeff names with correct names
-    myEq <- gsubfn("\\w+",as.list(setNames(namesOfCoeffs,
+    myEq <- gsubfn("\\w+",
+                   as.list(setNames(namesOfCoeffs,
                                            gropinCoeffNames[1:length(namesOfCoeffs)])),
                    myEq)
   }
   
-  # adding conditional visualisation parameters to model code 
-  # necessary to run here, because needed for equation to run with chosen visPars 
-  # as sequence
-  if (nrOfVariables>2) {
-    for (varrun in 1:nrOfVariables) {
-      mymy <- append(mymy,paste0("if (visVar1 == '",myVarNames[varrun],
-                                 "') {\n  multVar1 <- ",myVarNames[varrun],"\n}"))
-    }
-    mymy <- append(mymy," ")
-    for (varrun in 1:nrOfVariables) {
-      mymy <- append(mymy,paste0("if (visVar2 == '",myVarNames[varrun],
-                                 "') {\n  multVar2 <- ",myVarNames[varrun],"\n}"))
-    }
-    mymy <- append(mymy,"visAxes <- c(visVar1,visVar2)")
-    mymy <- append(mymy,paste0("expectedAxes <- c('",
-                               paste(myVarNames[1:nrOfVariables],collapse = '\',\''),"')"))
-    mymy <- append(mymy,"notPresent<-match(expectedAxes,visAxes)")
-    for (varrun in 1:nrOfVariables) {
-      mymy <- append(mymy,paste0("if('",
-                                 myVarNames[varrun],
-                                 "' %in% expectedAxes[is.na(notPresent)]",
-                                 ") {myHash['",myVarNames[varrun],"'] <- 0}"))
-    }
-  }
-  if (nrOfVariables==2) {
-    for (varrun in 1:nrOfVariables) {
-      mymy <- append(mymy,paste0("multVar",varrun," <- ",myVarNames[varrun]))
-    }
-  }
-    
-  mymy <- append(mymy," ")
+
+  myModelScript <- append(myModelScript," ")
+  myModelScript <- append(myModelScript,
+                          paste0("variables <- data.frame(",
+                                 paste(myVarNames[1:nrOfVariables],collapse = ','),
+                                 ")")
+  )
+  myModelScript <- append(myModelScript,
+                          "argumentsPar <- expand.grid(variables)"
+  )
+  
+  
   # here is the equation to calculate mumax added to the script
-  mymy <- append(mymy,paste0("response_surface <- function(",
-                             paste(myVarNames[1:nrOfVariables],collapse = ','),") {\n   ",myEq,"\n} "))
-  restVariables <- nrOfVariables-2
-  if (nrOfVariables>2) {
-    mymy <- append(mymy," ")
-    mymy <- append(mymy,"notVisibleAxes <- expectedAxes[!expectedAxes %in% visAxes]")
-    mymy <- append(mymy,paste0("result <- outer(as.double(values(myHash[visVar1])),as.double(values(myHash[visVar2])),response_surface,",
-                               paste0(replicate(restVariables,"as.double(values(myHash[notVisibleAxes["),1:restVariables,"]]))",collapse = ","),
-                   ")"))
-  }
-  if (nrOfVariables==2) {
-    mymy <- append(mymy,
-                   paste0("result <- outer(multVar1,multVar2,response_surface)"))
-  }
-  if (nrOfVariables==1) {
-    mymy <- append(mymy,
-                   paste0("result <- response_surface(",
-                          myVarNames[1],
-                          ")"))
-    }
-  if (nrOfVariables>1){
-    mymy <- append(mymy,"colnames(result)<-multVar2")
-    mymy <- append(mymy,"rownames(result)<-multVar1")
-  }
-  mymy <- append(mymy,"#############################\n# End of Model script\n#############################")
-  myModelScript <- mymy
-  #mymy <- append(mymy," ")
+  myModelScript <- append(myModelScript,
+                          paste0("response_surface <- function(",
+                                 paste(myVarNames[1:nrOfVariables],collapse = ','),
+                             ") {\n   mumax <-matrix(unlist(",
+                             myEq,
+                             ",nrow=",
+                             lenOfVar,
+                             "))\nreturn(mumax=mumax)\n} "))
+
+  parametersForFunctionCall <- paste0()
+  myModelScript <- append(myModelScript, 
+                          paste0("mumax <- response_surface(",
+                                 paste0("argumentsPar['",myVarNames[1:nrOfVariables],"']",collapse = ','),
+                          ")")
+                          )
+  myModelScript <- append(myModelScript,"#############################\n# End of Model script\n#############################")
+  
+  ##############################################################################
+  # End of Model Scripting
+  ##############################################################################
+  
+  ##############################################################################
+  # Start of Visualisation Scripting
+  ##############################################################################
+  
   # comments to identify for Visualisation script
-  mymy <- "#############################\n# start of Visualisation script\n#############################"
-  if (nrOfVariables>2) {
-    mymy <- append(mymy,"persp(as.double(values(myHash[visVar1])),as.double(values(myHash[visVar2])),result,col = 'green',xlab=keys(myHash[visVar1]),ylab=keys(myHash[visVar2]),zlab='mu_max',theta=35,phi=20,shade=0.25,ticktype = 'detailed')")
-  }
+  myVisScript <- "#############################\n# start of Visualisation script\n#############################"
+
   if (nrOfVariables==2) {
-    mymy <- append(mymy,paste0("persp(multVar1,multVar2,result,col = 'green',xlab='",
-    myVarNames[1],
-    "',ylab='",
-    myVarNames[2],
-    "',zlab='mu_max',theta=35,phi=20,shade=0.25,ticktype = 'detailed')"))
-  }
+    myVisScript <- append(myVisScript,
+                          paste0("persp(",
+                                 myVarNames[1],
+                                 ",",
+                                 myVarNames[2],
+                                 ",mumax,col = 'green',xlab='",
+                                 myVarNames[1],
+                                 "',ylab='",
+                                 myVarNames[2],
+                                 "',zlab='mu_max',main='Response surface mu_max for\n",
+                                 as.character(growthModels$Microorganism[run]),
+                                 " in/on ",
+                                 as.character(growthModels$Product[run]),
+                                 "\n(gropin ID:",
+                                 as.character(growthModels$ModelID[run]),
+                                 ")",
+                                 "',theta=305,phi=20,shade=0.25,ticktype = 'detailed')")
+                          )
+    }
   if (nrOfVariables==1){
-    mymy <- append(mymy,
+    myVisScript <- append(myVisScript,
                    paste0("plot(",
                           myVarNames[1],
-                          ",result,xlab='",
+                          ",result,
+                          xlab='",
                           myVarNames[1],
-                          "',ylab='mu_max')"))
+                          "',
+                          ylab='mu_max')"))
   }
-  mymy <- append(mymy,"#############################\n# End of Visualisation script\n#############################")
-  myVisScript <- mymy
+  myVisScript <- append(myVisScript,"#############################\n# End of Visualisation script\n#############################")
+
   
-  # store to disk
-  fileNamePar <- paste0("par/par",growthModels$Microorganism[run],".r")
-  fileConn<-file(fileNamePar)
-  writeLines(myParScript, fileConn)
-  close(fileConn)
-  
-  fileNameMod <- paste0("mod/mod",growthModels$Microorganism[run],".r")
-  fileConn<-file(fileNameMod)
-  writeLines(myModelScript, fileConn)
-  close(fileConn)
-  
-  fileNameVis <- paste0("vis/vis",growthModels$Microorganism[run],".r")
-  fileConn<-file(fileNameVis)
-  writeLines(myVisScript, fileConn)
-  close(fileConn)
+ 
   
   
   ###################################################################
   # editing Annotation spreadsheet
+  # but using 'as is' in order to avoid issues when loading into fskx
   ##################################################################
-  MetaData <- read_excel("ModelAnnotationExceltemplateV1.04.xlsx", sheet = "Generic Metadata Schema")
+  MetaData <- read_excel("ModelAnnotationExceltemplateV1.04.xlsx", 
+                         sheet = "Generic Metadata Schema")
   
   # mandatory fields
   #Name of the Model
-  MetaData$Data[1] <-paste("Gropin Model Nr.",growthModels$Microorganism[run])
-  #Identifier
-  MetaData$Data[3] <-paste0("gropin",growthModels$Model[run],growthModels$Microorganism[run])
-  MetaData$Data[8] <-"Value"
+  MetaData$Data[1] <-paste("Gropin growth model for",
+                           as.character(growthModels$Microorganism[run]),
+                           "in/on",
+                           as.character(growthModels$Product[run]),
+                           "(gropin ID:",
+                           as.character(growthModels$ModelID[run]),
+                           ")"
+                           )
+  # Identifier
+  MetaData$Data[3] <-paste0("gropinID",
+                           as.character(growthModels$ModelID[run]))
+  # License
+  MetaData$Data[8] <-"Academic Free License 3.0"
+  
+  # Language Written in
   MetaData$Data[26] <-"R 3"
   
-  
-  
   # parameters
-  firstRow <- 132
+  
+  firstRow <- 132 # location in annotation sheet
   thisRow <- firstRow
   for(fskPar in 1:nrOfVariables){
     MetaData$...12[thisRow] <- myVarNames[fskPar]
     MetaData$...13[thisRow] <- "Input"
     MetaData$...14[thisRow] <- myVarNames[fskPar]
     MetaData$...15[thisRow] <- "my dummy description"
-    MetaData$...16[thisRow] <- "[]"
-    MetaData$...17[thisRow] <- "double"
-    MetaData$...18[thisRow] <- "double"
+    MetaData$...16[thisRow] <- "no idea"
+    MetaData$...17[thisRow] <- "dummy unit category"
+    MetaData$...18[thisRow] <- "Vector[number]"
     MetaData$...19[thisRow] <- "my source"
     MetaData$...20[thisRow] <- "my subject"
     MetaData$...21[thisRow] <- "mydist"
-    MetaData$...22[thisRow] <- myVal[fskPar]
+    MetaData$...22[thisRow] <- valuesForParameters[fskPar]
     thisRow <- thisRow+1
   }
   if (namesOfCoeffsList[1]!='not used') {
     for(fskCoeff in 1:nrOfCoeffs){
       MetaData$...12[thisRow] <- namesOfCoeffs[fskCoeff]
-      MetaData$...13[thisRow] <- "Input"
+      MetaData$...13[thisRow] <- "Constant"
       MetaData$...14[thisRow] <- namesOfCoeffs[fskCoeff]
       MetaData$...15[thisRow] <- "my dummy description"
-      MetaData$...16[thisRow] <- "[]"
-      MetaData$...17[thisRow] <- "double"
-      MetaData$...18[thisRow] <- "double"
+      MetaData$...16[thisRow] <- "no idea"
+      MetaData$...17[thisRow] <- "dummy unit category"
+      MetaData$...18[thisRow] <- "Double"
       MetaData$...19[thisRow] <- "my source"
       MetaData$...20[thisRow] <- "my subject"
       MetaData$...21[thisRow] <- "mydist"
@@ -322,6 +484,34 @@ for(run in 1:nrModels){
     }
   }
   
-  fileNameSchema <- paste0("schema/metadataschema",growthModels$Microorganism[run],".xlsx")
+  ##############################################################################
+  # Creating files for fsk creator node in Knime
+  ##############################################################################
+  # store scripts to disk
+  fileNamePar <- paste0("par/par",growthModels$ModelID[run],".r")
+  fileConn<-file(fileNamePar)
+  writeLines(myParScript, fileConn)
+  close(fileConn)
+  
+  fileNameMod <- paste0("mod/mod",growthModels$ModelID[run],".r")
+  fileConn<-file(fileNameMod)
+  writeLines(myModelScript, fileConn)
+  close(fileConn)
+  
+  fileNameVis <- paste0("vis/vis",growthModels$ModelID[run],".r")
+  fileConn<-file(fileNameVis)
+  writeLines(myVisScript, fileConn)
+  close(fileConn)
+  
+  myFullScript <- myParScript
+  myFullScript <- append(myFullScript,myModelScript)
+  myFullScript <- append(myFullScript,myVisScript)
+  
+  fileNameFull <- paste0("fullScript",growthModels$ModelID[run],".r")
+  fileConn<-file(fileNameFull)
+  writeLines(myFullScript, fileConn)
+  close(fileConn)
+  
+  fileNameSchema <- paste0("schema/metadataschema",growthModels$ModelID[run],".xlsx")
   write_xlsx(list("Generic Metadata Schema"=MetaData),path=fileNameSchema)
-}
+#}
