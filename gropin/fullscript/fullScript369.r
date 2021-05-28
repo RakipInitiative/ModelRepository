@@ -1,0 +1,38 @@
+#############################
+# start of Parameter script
+#############################
+T <- seq(-9.99000999000999,31.5315,length.out=21)
+#############################
+# end of Parameter script
+#############################
+############################# 
+# start of Model script Gropin ID 369 
+#############################
+ 
+# constant coefficients for this model
+ 
+variables <- data.frame(T)
+argumentsPar <- expand.grid(variables)
+ 
+# heart of the model
+response_surface <- function(T) {
+   mumax <-(6.6*(10^-1)*(T-31.5)*((T+10)^2))/((26.2+10)*((26.2+10)*(T-26.2)-(26.2-31.5)*(26.2-10-2*T)))
+
+return(mumax=mumax)
+} 
+
+# output parameters
+mumax <- cbind(argumentsPar,response_surface(argumentsPar['T']))
+colnames(mumax) <- c(colnames(argumentsPar),'mumax')
+#############################
+# End of Model script
+#############################
+############################# 
+# start of Visualisation script Gropin ID 369 
+#############################
+plot(T,mumax$mumax,
+                          xlab='T',
+                          ylab='mu_max')
+#############################
+# End of Visualisation script
+#############################

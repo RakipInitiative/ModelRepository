@@ -1,10 +1,7 @@
 #############################
 # start of Parameter script
 #############################
-aw <- seq(0.856,0.982,length.out=21)
-notused <- seq(0,1,length.out=21)
-awmin <- 0.856
-awopt <- 0.981
+aw <- seq(0.855144855144855,0.982982,length.out=21)
 #############################
 # end of Parameter script
 #############################

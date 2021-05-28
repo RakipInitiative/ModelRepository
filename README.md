@@ -41,6 +41,13 @@ pending: waiting for expert review (Ranta, Ganas?)
 ### gropin modelling database
 containing 997 models in total, which are divided into (old version, needs update!)
 * 495 growth models
+  * 1 variable - 291 models
+  * 2 variable - 99 models
+  * 3 variable - 57 models
+  * 4 variable - 40 models
+  * 5 variable - 2 models
+  * 6 variable - 4 models
+  * 9 variable - 2 models
 * 131 growth/no-growth models
 * 72 inactivation models
 * 284 lethality models
@@ -53,15 +60,16 @@ ongoing transfer, currently focussing on growth models, details see TODO
 ## TODO
 * Gropin
   * look into 1 variable bugs:
-    * note of gropin 'notused' is made into a variable
-    * one set of parameters dont need to turned into dataframe
-    * general check of visualisation
+    * note of gropin 'notused' is made into a variable - FIXED
+    * one set of parameters dont need to be turned into dataframe - FIXED
+    * general check of visualisation - DONE
+  * objective & description fields fill in with info from Matthias - DONE
+  * coefficients should be hardcoded, not parameters of fsk! - DONE
+  * list of authors incomplete - FIXED
   * units:
-    * create database for units of variables: T in C, CO2 in g, a.s.o.
-    * meta data needs to be adapted for each microorganism separately
-  * implement kinetic model equations Panos sent
-  * look into new gropin update and note new models -> adaptations necessary? 
-    * new count of models necessary, total nearly 1k
+    * create database for units of variables: T in C, CO2 in g, a.s.o. - created, but not filled with correct information, support needed!
+    * meta data needs to be adapted for each microorganism separately - open question
+  * implement kinetic model equations Panos sent - checked, and confirmed, not implemented yet
   * include into knime R2fskx workflow
     * Variables used for scales -> "scale_" as prefix and made const in metadata
     * Variables used for kinetic modelling (currently with suffix "_kinetic"): remove suffix and introduce as Parameter
