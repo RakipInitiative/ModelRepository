@@ -1,7 +1,7 @@
 #############################
 # start of Parameter script
 #############################
-T <- seq(0,20.02,length.out=21)
+T <- seq(0,19.98001998002,length.out=21)
 #############################
 # end of Parameter script
 #############################
@@ -35,7 +35,9 @@ colnames(mumax) <- c(colnames(argumentsPar),'mumax')
 #############################
 plot(T,mumax$mumax,
                           xlab='T',
-                          ylab='mu_max')
+                          ylab='mu_max',main='Response surface mu_max for
+Lactic acid bacteria in/on Cooked cured meat products
+(gropin ID:249)')
 #############################
 # End of Visualisation script
 #############################

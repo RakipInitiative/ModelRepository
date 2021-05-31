@@ -1,7 +1,7 @@
 #############################
 # start of Parameter script
 #############################
-T <- seq(10.989010989011,45.8458,length.out=21)
+T <- seq(11.011,45.7542457542458,length.out=21)
 #############################
 # end of Parameter script
 #############################
@@ -32,7 +32,9 @@ colnames(mumax) <- c(colnames(argumentsPar),'mumax')
 #############################
 plot(T,mumax$mumax,
                           xlab='T',
-                          ylab='mu_max')
+                          ylab='mu_max',main='Response surface mu_max for
+Clostridium botulinum in/on Sealed cultures
+(gropin ID:385)')
 #############################
 # End of Visualisation script
 #############################

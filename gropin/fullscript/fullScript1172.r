@@ -1,7 +1,7 @@
 #############################
 # start of Parameter script
 #############################
-T <- seq(8.19180819180819,46.8468,length.out=21)
+T <- seq(8.2082,46.7532467532468,length.out=21)
 #############################
 # end of Parameter script
 #############################
@@ -32,7 +32,9 @@ colnames(mumax) <- c(colnames(argumentsPar),'mumax')
 #############################
 plot(T,mumax$mumax,
                           xlab='T',
-                          ylab='mu_max')
+                          ylab='mu_max',main='Response surface mu_max for
+Bacillus cereus in/on Rice _cooked_
+(gropin ID:1172)')
 #############################
 # End of Visualisation script
 #############################

@@ -1,7 +1,7 @@
 #############################
 # start of Parameter script
 #############################
-T <- seq(15.984015984016,28.028,length.out=21)
+T <- seq(16.016,27.972027972028,length.out=21)
 #############################
 # end of Parameter script
 #############################
@@ -32,7 +32,9 @@ colnames(mumax) <- c(colnames(argumentsPar),'mumax')
 #############################
 plot(T,mumax$mumax,
                           xlab='T',
-                          ylab='mu_max')
+                          ylab='mu_max',main='Response surface mu_max for
+Bysochlamys fulva in/on Papaya pulp
+(gropin ID:1102)')
 #############################
 # End of Visualisation script
 #############################

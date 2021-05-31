@@ -1,7 +1,7 @@
 #############################
 # start of Parameter script
 #############################
-T <- seq(-10.0899100899101,34.034,length.out=21)
+T <- seq(-10.1101,33.966033966034,length.out=21)
 #############################
 # end of Parameter script
 #############################
@@ -32,7 +32,9 @@ colnames(mumax) <- c(colnames(argumentsPar),'mumax')
 #############################
 plot(T,mumax$mumax,
                           xlab='T',
-                          ylab='mu_max')
+                          ylab='mu_max',main='Response surface mu_max for
+Pseudomonas psychrophiles in/on Tryptic Soy Broth
+(gropin ID:405)')
 #############################
 # End of Visualisation script
 #############################

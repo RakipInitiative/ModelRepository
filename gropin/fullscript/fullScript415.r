@@ -1,7 +1,7 @@
 #############################
 # start of Parameter script
 #############################
-T <- seq(1.0989010989011,36.8368,length.out=21)
+T <- seq(1.1011,36.7632367632368,length.out=21)
 #############################
 # end of Parameter script
 #############################
@@ -32,7 +32,9 @@ colnames(mumax) <- c(colnames(argumentsPar),'mumax')
 #############################
 plot(T,mumax$mumax,
                           xlab='T',
-                          ylab='mu_max')
+                          ylab='mu_max',main='Response surface mu_max for
+Xanthomonas pruni in/on Nutrient broth
+(gropin ID:415)')
 #############################
 # End of Visualisation script
 #############################

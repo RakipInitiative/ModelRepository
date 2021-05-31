@@ -3,7 +3,9 @@
 #############################
 plot(T,mumax$mumax,
                           xlab='T',
-                          ylab='mu_max')
+                          ylab='mu_max',main='Response surface mu_max for
+Staphylococcus aureus in/on Whole egg liquid
+(gropin ID:1197)')
 #############################
 # End of Visualisation script
 #############################

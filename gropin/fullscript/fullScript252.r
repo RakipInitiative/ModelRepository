@@ -1,7 +1,7 @@
 #############################
 # start of Parameter script
 #############################
-T <- seq(0,30.03,length.out=21)
+T <- seq(0,29.97002997003,length.out=21)
 #############################
 # end of Parameter script
 #############################
@@ -34,7 +34,9 @@ colnames(mumax) <- c(colnames(argumentsPar),'mumax')
 #############################
 plot(T,mumax$mumax,
                           xlab='T',
-                          ylab='mu_max')
+                          ylab='mu_max',main='Response surface mu_max for
+Listeria monocytogenes in/on Soft cheese _Mizithra_
+(gropin ID:252)')
 #############################
 # End of Visualisation script
 #############################

@@ -1,7 +1,7 @@
 #############################
 # start of Parameter script
 #############################
-T <- seq(9.99000999000999,40.04,length.out=21)
+T <- seq(10.01,39.96003996004,length.out=21)
 #############################
 # end of Parameter script
 #############################
@@ -32,7 +32,9 @@ colnames(mumax) <- c(colnames(argumentsPar),'mumax')
 #############################
 plot(T,mumax$mumax,
                           xlab='T',
-                          ylab='mu_max')
+                          ylab='mu_max',main='Response surface mu_max for
+Staphylococcus aureus in/on Pork, poultry & meat _raw_
+(gropin ID:1186)')
 #############################
 # End of Visualisation script
 #############################

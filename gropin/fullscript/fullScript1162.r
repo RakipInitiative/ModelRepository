@@ -1,7 +1,7 @@
 #############################
 # start of Parameter script
 #############################
-T <- seq(9.99000999000999,51.051,length.out=21)
+T <- seq(10.01,50.949050949051,length.out=21)
 #############################
 # end of Parameter script
 #############################
@@ -32,7 +32,9 @@ colnames(mumax) <- c(colnames(argumentsPar),'mumax')
 #############################
 plot(T,mumax$mumax,
                           xlab='T',
-                          ylab='mu_max')
+                          ylab='mu_max',main='Response surface mu_max for
+Clostridium perfringens in/on Pork _Uncured_
+(gropin ID:1162)')
 #############################
 # End of Visualisation script
 #############################

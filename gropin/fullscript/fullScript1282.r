@@ -1,7 +1,7 @@
 #############################
 # start of Parameter script
 #############################
-T <- seq(4.995004995005,10.01,length.out=21)
+T <- seq(5.005,9.99000999000999,length.out=21)
 #############################
 # end of Parameter script
 #############################
@@ -32,7 +32,9 @@ colnames(mumax) <- c(colnames(argumentsPar),'mumax')
 #############################
 plot(T,mumax$mumax,
                           xlab='T',
-                          ylab='mu_max')
+                          ylab='mu_max',main='Response surface mu_max for
+Aerobic Psychrotrophes in/on hake _Merluccius merluccius_ fillets
+(gropin ID:1282)')
 #############################
 # End of Visualisation script
 #############################

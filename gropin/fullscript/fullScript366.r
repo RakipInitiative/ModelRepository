@@ -1,7 +1,7 @@
 #############################
 # start of Parameter script
 #############################
-T <- seq(5.4945054945055,50.05,length.out=21)
+T <- seq(5.5055,49.95004995005,length.out=21)
 #############################
 # end of Parameter script
 #############################
@@ -32,7 +32,9 @@ colnames(mumax) <- c(colnames(argumentsPar),'mumax')
 #############################
 plot(T,mumax$mumax,
                           xlab='T',
-                          ylab='mu_max')
+                          ylab='mu_max',main='Response surface mu_max for
+Bacillus coli in/on Liquid culture medium
+(gropin ID:366)')
 #############################
 # End of Visualisation script
 #############################

@@ -1,7 +1,7 @@
 #############################
 # start of Parameter script
 #############################
-T <- seq(3.996003996004,15.015,length.out=21)
+T <- seq(4.004,14.985014985015,length.out=21)
 #############################
 # end of Parameter script
 #############################
@@ -32,7 +32,9 @@ colnames(mumax) <- c(colnames(argumentsPar),'mumax')
 #############################
 plot(T,mumax$mumax,
                           xlab='T',
-                          ylab='mu_max')
+                          ylab='mu_max',main='Response surface mu_max for
+Total Viable Counts in/on Chicken breast fillets
+(gropin ID:1322)')
 #############################
 # End of Visualisation script
 #############################

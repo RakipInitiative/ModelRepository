@@ -1,7 +1,7 @@
 #############################
 # start of Parameter script
 #############################
-T <- seq(-9.99000999000999,31.5315,length.out=21)
+T <- seq(-10.01,31.4685314685315,length.out=21)
 #############################
 # end of Parameter script
 #############################
@@ -32,7 +32,9 @@ colnames(mumax) <- c(colnames(argumentsPar),'mumax')
 #############################
 plot(T,mumax$mumax,
                           xlab='T',
-                          ylab='mu_max')
+                          ylab='mu_max',main='Response surface mu_max for
+Achromobacter spp. in/on Ox muscle
+(gropin ID:369)')
 #############################
 # End of Visualisation script
 #############################

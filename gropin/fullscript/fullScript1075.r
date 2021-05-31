@@ -1,7 +1,7 @@
 #############################
 # start of Parameter script
 #############################
-O2 <- seq(0.0999000999000999,6.006,length.out=21)
+O2 <- seq(0.1001,5.99400599400599,length.out=21)
 #############################
 # end of Parameter script
 #############################
@@ -32,7 +32,9 @@ colnames(mumax) <- c(colnames(argumentsPar),'mumax')
 #############################
 plot(O2,mumax$mumax,
                           xlab='O2',
-                          ylab='mu_max')
+                          ylab='mu_max',main='Response surface mu_max for
+Clostridium perfringens in/on Food products _in modified atmosphere packaging_
+(gropin ID:1075)')
 #############################
 # End of Visualisation script
 #############################

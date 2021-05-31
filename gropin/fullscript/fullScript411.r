@@ -1,7 +1,7 @@
 #############################
 # start of Parameter script
 #############################
-T <- seq(36.7632367632368,81.8818,length.out=21)
+T <- seq(36.8368,81.7182817182817,length.out=21)
 #############################
 # end of Parameter script
 #############################
@@ -32,7 +32,9 @@ colnames(mumax) <- c(colnames(argumentsPar),'mumax')
 #############################
 plot(T,mumax$mumax,
                           xlab='T',
-                          ylab='mu_max')
+                          ylab='mu_max',main='Response surface mu_max for
+Thermus aquaticus in/on Nutrient broth
+(gropin ID:411)')
 #############################
 # End of Visualisation script
 #############################

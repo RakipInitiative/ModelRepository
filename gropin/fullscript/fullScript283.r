@@ -1,7 +1,7 @@
 #############################
 # start of Parameter script
 #############################
-T <- seq(6.99300699300699,46.046,length.out=21)
+T <- seq(7.007,45.954045954046,length.out=21)
 #############################
 # end of Parameter script
 #############################
@@ -32,7 +32,9 @@ colnames(mumax) <- c(colnames(argumentsPar),'mumax')
 #############################
 plot(T,mumax$mumax,
                           xlab='T',
-                          ylab='mu_max')
+                          ylab='mu_max',main='Response surface mu_max for
+Escherichia coli in/on BHI
+(gropin ID:283)')
 #############################
 # End of Visualisation script
 #############################

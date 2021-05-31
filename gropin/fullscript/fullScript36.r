@@ -1,7 +1,7 @@
 #############################
 # start of Parameter script
 #############################
-aw <- seq(0.894105894105894,0.982982,length.out=21)
+aw <- seq(0.895895,0.981018981018981,length.out=21)
 #############################
 # end of Parameter script
 #############################
@@ -34,7 +34,9 @@ colnames(mumax) <- c(colnames(argumentsPar),'mumax')
 #############################
 plot(aw,mumax$mumax,
                           xlab='aw',
-                          ylab='mu_max')
+                          ylab='mu_max',main='Response surface mu_max for
+Botrytis cinerea in/on Potato Dextrose Agar
+(gropin ID:36)')
 #############################
 # End of Visualisation script
 #############################

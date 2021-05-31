@@ -1,7 +1,7 @@
 #############################
 # start of Parameter script
 #############################
-aw <- seq(0.85085,0.994005994005994,length.out=21)
+aw <- seq(0.849150849150849,0.995995,length.out=21)
 #############################
 # end of Parameter script
 #############################
@@ -32,7 +32,9 @@ colnames(mumax) <- c(colnames(argumentsPar),'mumax')
 #############################
 plot(aw,mumax$mumax,
                           xlab='aw',
-                          ylab='mu_max')
+                          ylab='mu_max',main='Response surface mu_max for
+Neosartorya fischeri in/on Fruit based products
+(gropin ID:1092)')
 #############################
 # End of Visualisation script
 #############################

@@ -1,7 +1,7 @@
 #############################
 # start of Parameter script
 #############################
-T <- seq(7.89210789210789,43.043,length.out=21)
+T <- seq(7.9079,42.957042957043,length.out=21)
 #############################
 # end of Parameter script
 #############################
@@ -32,7 +32,9 @@ colnames(mumax) <- c(colnames(argumentsPar),'mumax')
 #############################
 plot(T,mumax$mumax,
                           xlab='T',
-                          ylab='mu_max')
+                          ylab='mu_max',main='Response surface mu_max for
+Total Viable Counts in/on Oyster _raw_
+(gropin ID:1168)')
 #############################
 # End of Visualisation script
 #############################

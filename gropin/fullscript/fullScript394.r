@@ -1,7 +1,7 @@
 #############################
 # start of Parameter script
 #############################
-T <- seq(-7.09290709290709,25.5255,length.out=21)
+T <- seq(-7.1071,25.4745254745255,length.out=21)
 #############################
 # end of Parameter script
 #############################
@@ -32,7 +32,9 @@ colnames(mumax) <- c(colnames(argumentsPar),'mumax')
 #############################
 plot(T,mumax$mumax,
                           xlab='T',
-                          ylab='mu_max')
+                          ylab='mu_max',main='Response surface mu_max for
+Micrococcus cryophilus in/on Various
+(gropin ID:394)')
 #############################
 # End of Visualisation script
 #############################

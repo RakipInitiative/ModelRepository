@@ -1,7 +1,7 @@
 #############################
 # start of Parameter script
 #############################
-T <- seq(3.996003996004,38.038,length.out=21)
+T <- seq(4.004,37.962037962038,length.out=21)
 #############################
 # end of Parameter script
 #############################
@@ -32,7 +32,9 @@ colnames(mumax) <- c(colnames(argumentsPar),'mumax')
 #############################
 plot(T,mumax$mumax,
                           xlab='T',
-                          ylab='mu_max')
+                          ylab='mu_max',main='Response surface mu_max for
+Natural microbiota in/on Pork _fresh_
+(gropin ID:356)')
 #############################
 # End of Visualisation script
 #############################

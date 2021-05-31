@@ -1,7 +1,7 @@
 #############################
 # start of Parameter script
 #############################
-pH <- seq(6.99300699300699,37.037,length.out=21)
+pH <- seq(7.007,36.963036963037,length.out=21)
 #############################
 # end of Parameter script
 #############################
@@ -32,7 +32,9 @@ colnames(mumax) <- c(colnames(argumentsPar),'mumax')
 #############################
 plot(pH,mumax$mumax,
                           xlab='pH',
-                          ylab='mu_max')
+                          ylab='mu_max',main='Response surface mu_max for
+Salmonella Enterica in/on Leafy greens
+(gropin ID:1333)')
 #############################
 # End of Visualisation script
 #############################

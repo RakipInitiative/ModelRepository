@@ -1,7 +1,7 @@
 #############################
 # start of Parameter script
 #############################
-T <- seq(3.996003996004,30.03,length.out=21)
+T <- seq(4.004,29.97002997003,length.out=21)
 #############################
 # end of Parameter script
 #############################
@@ -32,7 +32,9 @@ colnames(mumax) <- c(colnames(argumentsPar),'mumax')
 #############################
 plot(T,mumax$mumax,
                           xlab='T',
-                          ylab='mu_max')
+                          ylab='mu_max',main='Response surface mu_max for
+Lactobacillus viridens in/on Meat prod. _refrigerated, vacuum packed & under modified atmosphere_
+(gropin ID:1152)')
 #############################
 # End of Visualisation script
 #############################

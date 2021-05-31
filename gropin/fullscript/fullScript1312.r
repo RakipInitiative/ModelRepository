@@ -1,7 +1,7 @@
 #############################
 # start of Parameter script
 #############################
-T <- seq(3.996003996004,28.028,length.out=21)
+T <- seq(4.004,27.972027972028,length.out=21)
 #############################
 # end of Parameter script
 #############################
@@ -32,7 +32,9 @@ colnames(mumax) <- c(colnames(argumentsPar),'mumax')
 #############################
 plot(T,mumax$mumax,
                           xlab='T',
-                          ylab='mu_max')
+                          ylab='mu_max',main='Response surface mu_max for
+Pseudomonas spp. in/on Button mushroom _Agaricus bisporus_
+(gropin ID:1312)')
 #############################
 # End of Visualisation script
 #############################

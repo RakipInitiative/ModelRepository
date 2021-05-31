@@ -1,7 +1,7 @@
 #############################
 # start of Parameter script
 #############################
-T <- seq(12.0879120879121,62.9629,length.out=21)
+T <- seq(12.1121,62.8371628371628,length.out=21)
 #############################
 # end of Parameter script
 #############################
@@ -32,7 +32,9 @@ colnames(mumax) <- c(colnames(argumentsPar),'mumax')
 #############################
 plot(T,mumax$mumax,
                           xlab='T',
-                          ylab='mu_max')
+                          ylab='mu_max',main='Response surface mu_max for
+Bacillus coagulans in/on Nutrient broth
+(gropin ID:376)')
 #############################
 # End of Visualisation script
 #############################

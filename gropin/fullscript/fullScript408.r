@@ -1,7 +1,7 @@
 #############################
 # start of Parameter script
 #############################
-T <- seq(-3.4965034965035,29.4294,length.out=21)
+T <- seq(-3.5035,29.3706293706294,length.out=21)
 #############################
 # end of Parameter script
 #############################
@@ -32,7 +32,9 @@ colnames(mumax) <- c(colnames(argumentsPar),'mumax')
 #############################
 plot(T,mumax$mumax,
                           xlab='T',
-                          ylab='mu_max')
+                          ylab='mu_max',main='Response surface mu_max for
+Pseudomonas spp. in/on Nutrient broth
+(gropin ID:408)')
 #############################
 # End of Visualisation script
 #############################

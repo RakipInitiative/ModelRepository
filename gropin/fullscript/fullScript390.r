@@ -1,7 +1,7 @@
 #############################
 # start of Parameter script
 #############################
-T <- seq(-2.7972027972028,35.5355,length.out=21)
+T <- seq(-2.8028,35.4645354645355,length.out=21)
 #############################
 # end of Parameter script
 #############################
@@ -32,7 +32,9 @@ colnames(mumax) <- c(colnames(argumentsPar),'mumax')
 #############################
 plot(T,mumax$mumax,
                           xlab='T',
-                          ylab='mu_max')
+                          ylab='mu_max',main='Response surface mu_max for
+Flavobacterium spp. in/on Nutrient broth
+(gropin ID:390)')
 #############################
 # End of Visualisation script
 #############################

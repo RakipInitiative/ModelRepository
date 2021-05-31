@@ -1,7 +1,7 @@
 #############################
 # start of Parameter script
 #############################
-T <- seq(3.996003996004,37.037,length.out=21)
+T <- seq(4.004,36.963036963037,length.out=21)
 #############################
 # end of Parameter script
 #############################
@@ -32,7 +32,9 @@ colnames(mumax) <- c(colnames(argumentsPar),'mumax')
 #############################
 plot(T,mumax$mumax,
                           xlab='T',
-                          ylab='mu_max')
+                          ylab='mu_max',main='Response surface mu_max for
+Staphylococcus aureus in/on Eggs _peeled_
+(gropin ID:1195)')
 #############################
 # End of Visualisation script
 #############################

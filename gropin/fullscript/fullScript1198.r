@@ -1,7 +1,7 @@
 #############################
 # start of Parameter script
 #############################
-pH <- seq(3.80619380619381,9.7097,length.out=21)
+pH <- seq(3.81381,9.69030969030969,length.out=21)
 #############################
 # end of Parameter script
 #############################
@@ -32,7 +32,9 @@ colnames(mumax) <- c(colnames(argumentsPar),'mumax')
 #############################
 plot(pH,mumax$mumax,
                           xlab='pH',
-                          ylab='mu_max')
+                          ylab='mu_max',main='Response surface mu_max for
+Staphylococcus aureus in/on TSB
+(gropin ID:1198)')
 #############################
 # End of Visualisation script
 #############################

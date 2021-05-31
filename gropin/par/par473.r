@@ -1,8 +1,8 @@
 #############################
 # start of Parameter script
 #############################
-T <- seq(5.99400599400599,15.015,length.out=21)
-Irradiationdose <- seq(0.999000999000999,2.5025,length.out=21)
+T <- seq(6.006,14.985014985015,length.out=21)
+Irradiationdose <- seq(1.001,2.4975024975025,length.out=21)
 #############################
 # end of Parameter script
 #############################

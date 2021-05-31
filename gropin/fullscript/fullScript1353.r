@@ -1,7 +1,7 @@
 #############################
 # start of Parameter script
 #############################
-bw <- seq(0.031968031968032,0.4476472,length.out=21)
+bw <- seq(0.032032,0.446753246753247,length.out=21)
 #############################
 # end of Parameter script
 #############################
@@ -32,7 +32,9 @@ colnames(mumax) <- c(colnames(argumentsPar),'mumax')
 #############################
 plot(bw,mumax$mumax,
                           xlab='bw',
-                          ylab='mu_max')
+                          ylab='mu_max',main='Response surface mu_max for
+Aspergillus nomius in/on Basal medium
+(gropin ID:1353)')
 #############################
 # End of Visualisation script
 #############################

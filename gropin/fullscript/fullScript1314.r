@@ -1,7 +1,7 @@
 #############################
 # start of Parameter script
 #############################
-T <- seq(3.996003996004,16.016,length.out=21)
+T <- seq(4.004,15.984015984016,length.out=21)
 #############################
 # end of Parameter script
 #############################
@@ -32,7 +32,9 @@ colnames(mumax) <- c(colnames(argumentsPar),'mumax')
 #############################
 plot(T,mumax$mumax,
                           xlab='T',
-                          ylab='mu_max')
+                          ylab='mu_max',main='Response surface mu_max for
+Pseudomonas spp. in/on Oyster mushrooms _Pleurotus ostreatus_
+(gropin ID:1314)')
 #############################
 # End of Visualisation script
 #############################

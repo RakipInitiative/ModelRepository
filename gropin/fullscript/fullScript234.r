@@ -1,7 +1,7 @@
 #############################
 # start of Parameter script
 #############################
-pH <- seq(3.996003996004,10.01,length.out=21)
+pH <- seq(4.004,9.99000999000999,length.out=21)
 #############################
 # end of Parameter script
 #############################
@@ -37,7 +37,9 @@ colnames(mumax) <- c(colnames(argumentsPar),'mumax')
 #############################
 plot(pH,mumax$mumax,
                           xlab='pH',
-                          ylab='mu_max')
+                          ylab='mu_max',main='Response surface mu_max for
+Listeria monocytogenes in/on Nutrient broth
+(gropin ID:234)')
 #############################
 # End of Visualisation script
 #############################

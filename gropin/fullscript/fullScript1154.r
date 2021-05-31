@@ -1,7 +1,7 @@
 #############################
 # start of Parameter script
 #############################
-T <- seq(13.1268731268731,42.70266,length.out=21)
+T <- seq(13.15314,42.6173826173826,length.out=21)
 #############################
 # end of Parameter script
 #############################
@@ -32,7 +32,9 @@ colnames(mumax) <- c(colnames(argumentsPar),'mumax')
 #############################
 plot(T,mumax$mumax,
                           xlab='T',
-                          ylab='mu_max')
+                          ylab='mu_max',main='Response surface mu_max for
+Clostridium botulinum in/on Ground beef _cooked_
+(gropin ID:1154)')
 #############################
 # End of Visualisation script
 #############################

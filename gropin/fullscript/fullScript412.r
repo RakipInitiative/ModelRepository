@@ -1,7 +1,7 @@
 #############################
 # start of Parameter script
 #############################
-T <- seq(2.6973026973027,19.5195,length.out=21)
+T <- seq(2.7027,19.4805194805195,length.out=21)
 #############################
 # end of Parameter script
 #############################
@@ -32,7 +32,9 @@ colnames(mumax) <- c(colnames(argumentsPar),'mumax')
 #############################
 plot(T,mumax$mumax,
                           xlab='T',
-                          ylab='mu_max')
+                          ylab='mu_max',main='Response surface mu_max for
+Vibrio marinus in/on Nutrient broth
+(gropin ID:412)')
 #############################
 # End of Visualisation script
 #############################

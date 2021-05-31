@@ -1,7 +1,7 @@
 #############################
 # start of Parameter script
 #############################
-T <- seq(-11.2887112887113,32.032,length.out=21)
+T <- seq(-11.3113,31.968031968032,length.out=21)
 #############################
 # end of Parameter script
 #############################
@@ -32,7 +32,9 @@ colnames(mumax) <- c(colnames(argumentsPar),'mumax')
 #############################
 plot(T,mumax$mumax,
                           xlab='T',
-                          ylab='mu_max')
+                          ylab='mu_max',main='Response surface mu_max for
+Cytophaga johnsonae in/on Nutrient broth
+(gropin ID:381)')
 #############################
 # End of Visualisation script
 #############################

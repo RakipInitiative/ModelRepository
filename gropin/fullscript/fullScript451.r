@@ -1,7 +1,7 @@
 #############################
 # start of Parameter script
 #############################
-CO2 <- seq(24.975024975025,100.1,length.out=21)
+CO2 <- seq(25.025,99.9000999000999,length.out=21)
 #############################
 # end of Parameter script
 #############################
@@ -32,7 +32,9 @@ colnames(mumax) <- c(colnames(argumentsPar),'mumax')
 #############################
 plot(CO2,mumax$mumax,
                           xlab='CO2',
-                          ylab='mu_max')
+                          ylab='mu_max',main='Response surface mu_max for
+Listeria innocua in/on nutrient agar surface
+(gropin ID:451)')
 #############################
 # End of Visualisation script
 #############################

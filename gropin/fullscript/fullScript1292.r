@@ -1,7 +1,7 @@
 #############################
 # start of Parameter script
 #############################
-T <- seq(0.999000999000999,7.007,length.out=21)
+T <- seq(1.001,6.99300699300699,length.out=21)
 #############################
 # end of Parameter script
 #############################
@@ -32,7 +32,9 @@ colnames(mumax) <- c(colnames(argumentsPar),'mumax')
 #############################
 plot(T,mumax$mumax,
                           xlab='T',
-                          ylab='mu_max')
+                          ylab='mu_max',main='Response surface mu_max for
+Lactic acid bacteria in/on hake _Merluccius merluccius_ fillets
+(gropin ID:1292)')
 #############################
 # End of Visualisation script
 #############################

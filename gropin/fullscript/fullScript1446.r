@@ -1,7 +1,7 @@
 #############################
 # start of Parameter script
 #############################
-T <- seq(27.972027972028,48.048,length.out=21)
+T <- seq(28.028,47.952047952048,length.out=21)
 #############################
 # end of Parameter script
 #############################
@@ -32,7 +32,9 @@ colnames(mumax) <- c(colnames(argumentsPar),'mumax')
 #############################
 plot(T,mumax$mumax,
                           xlab='T',
-                          ylab='mu_max')
+                          ylab='mu_max',main='Response surface mu_max for
+Salmonella Typhimurium in/on Chicken _cooked_
+(gropin ID:1446)')
 #############################
 # End of Visualisation script
 #############################

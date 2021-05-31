@@ -1,7 +1,7 @@
 #############################
 # start of Parameter script
 #############################
-T <- seq(-4.3956043956044,32.5325,length.out=21)
+T <- seq(-4.4044,32.4675324675325,length.out=21)
 #############################
 # end of Parameter script
 #############################
@@ -35,7 +35,9 @@ colnames(mumax) <- c(colnames(argumentsPar),'mumax')
 #############################
 plot(T,mumax$mumax,
                           xlab='T',
-                          ylab='mu_max')
+                          ylab='mu_max',main='Response surface mu_max for
+Penicillium expansum in/on Potato Dextrose Agar
+(gropin ID:171)')
 #############################
 # End of Visualisation script
 #############################

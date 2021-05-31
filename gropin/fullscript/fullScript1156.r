@@ -1,7 +1,7 @@
 #############################
 # start of Parameter script
 #############################
-T <- seq(13.8361638361638,47.047,length.out=21)
+T <- seq(13.86385,46.953046953047,length.out=21)
 #############################
 # end of Parameter script
 #############################
@@ -32,7 +32,9 @@ colnames(mumax) <- c(colnames(argumentsPar),'mumax')
 #############################
 plot(T,mumax$mumax,
                           xlab='T',
-                          ylab='mu_max')
+                          ylab='mu_max',main='Response surface mu_max for
+Clostridium sporogenes in/on Ground beef _cooked_
+(gropin ID:1156)')
 #############################
 # End of Visualisation script
 #############################

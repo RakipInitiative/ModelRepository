@@ -1,7 +1,7 @@
 #############################
 # start of Parameter script
 #############################
-CO2 <- seq(0,15.015,length.out=21)
+CO2 <- seq(0,14.985014985015,length.out=21)
 #############################
 # end of Parameter script
 #############################
@@ -32,7 +32,9 @@ colnames(mumax) <- c(colnames(argumentsPar),'mumax')
 #############################
 plot(CO2,mumax$mumax,
                           xlab='CO2',
-                          ylab='mu_max')
+                          ylab='mu_max',main='Response surface mu_max for
+Listeria innocua in/on Lettuce_fresh-cut butterhead_
+(gropin ID:1277)')
 #############################
 # End of Visualisation script
 #############################

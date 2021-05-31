@@ -301,7 +301,7 @@ allVariables <- as.character(data.frame(existingVariables)$Var1)
 ################################################################################
 # END PART ONE: Preprocessing 
 ################################################################################
-#run <- 9
+#run <- 58
 
 
 ################################################################################
@@ -378,7 +378,7 @@ for(run in 1:nrModels){
                 as.double(as.character(growthModels$Var7Min[run])),
                 as.double(as.character(growthModels$Var8Min[run])),
                 as.double(as.character(growthModels$Var9Min[run])),
-                as.double(as.character(growthModels$Var10Min[run])))/shiftingRangeOfVariablesSlightly
+                as.double(as.character(growthModels$Var10Min[run])))*shiftingRangeOfVariablesSlightly
   myVarMax <- c(as.double(as.character(growthModels$Var1Max[run])),
                 as.double(as.character(growthModels$Var2Max[run])),
                 as.double(as.character(growthModels$Var3Max[run])),
@@ -388,7 +388,7 @@ for(run in 1:nrModels){
                 as.double(as.character(growthModels$Var7Max[run])),
                 as.double(as.character(growthModels$Var8Max[run])),
                 as.double(as.character(growthModels$Var9Max[run])),
-                as.double(as.character(growthModels$Var10Max[run])))*shiftingRangeOfVariablesSlightly
+                as.double(as.character(growthModels$Var10Max[run])))/shiftingRangeOfVariablesSlightly
   
   # preprocess nonsensical entries of minimum and maximum of variable range
   # all entries after nrOfVariables is reached are considered nonsensical
@@ -606,7 +606,14 @@ for(run in 1:nrModels){
                           xlab='",
                           myVarNames[1],
                           "',
-                          ylab='mu_max')"))
+                          ylab='mu_max',main='Response surface mu_max for\n",
+                          as.character(growthModels$Microorganism[run]),
+                          " in/on ",
+                          as.character(growthModels$Product[run]),
+                          "\n(gropin ID:",
+                          as.character(growthModels$ModelID[run]),
+                          ")",
+                          "')"))
   }
   myVisScript <- append(myVisScript,"#############################\n# End of Visualisation script\n#############################")
 

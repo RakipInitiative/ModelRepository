@@ -1,7 +1,7 @@
 #############################
 # start of Parameter script
 #############################
-T <- seq(12.987012987013,46.1461,length.out=21)
+T <- seq(13.013,46.0539460539461,length.out=21)
 #############################
 # end of Parameter script
 #############################
@@ -32,7 +32,9 @@ colnames(mumax) <- c(colnames(argumentsPar),'mumax')
 #############################
 plot(T,mumax$mumax,
                           xlab='T',
-                          ylab='mu_max')
+                          ylab='mu_max',main='Response surface mu_max for
+Cellulomonas spp. in/on Oxoid tryptone soya broth
+(gropin ID:386)')
 #############################
 # End of Visualisation script
 #############################

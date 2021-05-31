@@ -74,10 +74,14 @@ ongoing transfer, currently focussing on growth models, details see TODO
     * Variables used for scales -> "scale_" as prefix and made const in metadata
     * Variables used for kinetic modelling (currently with suffix "_kinetic"): remove suffix and introduce as Parameter
   * any parameter used for not all modes gets a prefix for which mode it is used
-    * Mode_response
-    * Mode_time2multiply: lagTime, logIncrease
-    * Mode_kinetic: logN0, lagTime, logNEnd, simTime
-  * create workflow editing fskx to fix all problems with excel sheet
+    * Mode_response - DONE
+    * Mode_time2multiply: lagTime, logIncrease - DONE
+    * Mode_kinetic: logN0, lagTime, logNEnd, simTime - DONE 
+  * a few problems:
+    * some mumax are linear, sqrt, ln -> extract info and adjust code
+    * distinction between mumax and response surface (lin,sqrt,ln)?
+    * primary model has no image title from secondary model
+  * create workflow editing fskx to fix all problems with excel sheet - DONE
     * creation date: edit medata.json 
     * additional simulation parameter sets: edit sim.sedml and add new simulation parameter set
   * transfer complete annotation data to all models

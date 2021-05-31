@@ -1,7 +1,7 @@
 #############################
 # start of Parameter script
 #############################
-T <- seq(-8.99100899100899,26.4264,length.out=21)
+T <- seq(-9.009,26.3736263736264,length.out=21)
 #############################
 # end of Parameter script
 #############################
@@ -32,7 +32,9 @@ colnames(mumax) <- c(colnames(argumentsPar),'mumax')
 #############################
 plot(T,mumax$mumax,
                           xlab='T',
-                          ylab='mu_max')
+                          ylab='mu_max',main='Response surface mu_max for
+Geotrichoides spp. in/on Ox muscle
+(gropin ID:391)')
 #############################
 # End of Visualisation script
 #############################

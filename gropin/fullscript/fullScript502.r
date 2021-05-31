@@ -1,7 +1,7 @@
 #############################
 # start of Parameter script
 #############################
-T <- seq(3.996003996004,43.043,length.out=21)
+T <- seq(4.004,42.957042957043,length.out=21)
 #############################
 # end of Parameter script
 #############################
@@ -32,7 +32,9 @@ colnames(mumax) <- c(colnames(argumentsPar),'mumax')
 #############################
 plot(T,mumax$mumax,
                           xlab='T',
-                          ylab='mu_max')
+                          ylab='mu_max',main='Response surface mu_max for
+Spoilage microorganisms in/on Cantaloupe _fresh-cut_
+(gropin ID:502)')
 #############################
 # End of Visualisation script
 #############################

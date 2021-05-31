@@ -1,7 +1,7 @@
 #############################
 # start of Parameter script
 #############################
-T <- seq(-9.69030969030969,26.8268,length.out=21)
+T <- seq(-9.7097,26.7732267732268,length.out=21)
 #############################
 # end of Parameter script
 #############################
@@ -32,7 +32,9 @@ colnames(mumax) <- c(colnames(argumentsPar),'mumax')
 #############################
 plot(T,mumax$mumax,
                           xlab='T',
-                          ylab='mu_max')
+                          ylab='mu_max',main='Response surface mu_max for
+Candida spp. in/on Ox muscle
+(gropin ID:383)')
 #############################
 # End of Visualisation script
 #############################
