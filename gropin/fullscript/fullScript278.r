@@ -26,15 +26,15 @@ return(mumax=mumax)
 } 
 
 # output parameters
-mumax <- cbind(argumentsPar,response_surface(argumentsPar['T'],argumentsPar['CO2']))
-colnames(mumax) <- c(colnames(argumentsPar),'mumax')
+responseSurface <- cbind(argumentsPar,response_surface(argumentsPar['T'],argumentsPar['CO2']))
+colnames(responseSurface) <- c(colnames(argumentsPar),'lnmumax')
 #############################
 # End of Model script
 #############################
 ############################# 
 # start of Visualisation script Gropin ID 278 
 #############################
-persp(T,CO2,matrix(unlist(mumax$mumax),nrow=21),col = 'green',xlab='T',ylab='CO2',zlab='mu_max',main='Response surface mu_max for
+persp(T,CO2,matrix(unlist(responseSurface$'lnmumax'),nrow=21),col = 'green',xlab='T',ylab='CO2',zlab='lnmumax',main='Response surface lnmumax for
 Lactic acid bacteria in/on Fish: Red mullet, gilthead seabream, boque
 (gropin ID:278)',theta=305,phi=20,shade=0.25,ticktype = 'detailed')
 #############################

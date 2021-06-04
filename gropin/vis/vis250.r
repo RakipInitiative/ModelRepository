@@ -1,9 +1,8 @@
 ############################# 
 # start of Visualisation script Gropin ID 250 
 #############################
-plot(T,mumax$mumax,
-                          xlab='T',
-                          ylab='mu_max',main='Response surface mu_max for
+plot(T,responseSurface$'mumax',xlab='T',
+                          ylab='mumax',main='Response surface mumax for
 Lactic acid bacteria in/on Cheese salad _pH 4.5_
 (gropin ID:250)')
 #############################

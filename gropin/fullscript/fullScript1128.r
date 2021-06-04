@@ -23,15 +23,15 @@ return(mumax=mumax)
 } 
 
 # output parameters
-mumax <- cbind(argumentsPar,response_surface(argumentsPar['T'],argumentsPar['PL_SDAmix']))
-colnames(mumax) <- c(colnames(argumentsPar),'mumax')
+responseSurface <- cbind(argumentsPar,response_surface(argumentsPar['T'],argumentsPar['PL_SDAmix']))
+colnames(responseSurface) <- c(colnames(argumentsPar),'lnmumax')
 #############################
 # End of Model script
 #############################
 ############################# 
 # start of Visualisation script Gropin ID 1128 
 #############################
-persp(T,PL_SDAmix,matrix(unlist(mumax$mumax),nrow=21),col = 'green',xlab='T',ylab='PL_SDAmix',zlab='mu_max',main='Response surface mu_max for
+persp(T,PL_SDAmix,matrix(unlist(responseSurface$'lnmumax'),nrow=21),col = 'green',xlab='T',ylab='PL_SDAmix',zlab='lnmumax',main='Response surface lnmumax for
 Salmonella Typhimurium in/on RTE pork
 (gropin ID:1128)',theta=305,phi=20,shade=0.25,ticktype = 'detailed')
 #############################

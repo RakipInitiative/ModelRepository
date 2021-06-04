@@ -22,17 +22,16 @@ return(mumax=mumax)
 } 
 
 # output parameters
-mumax <- cbind(argumentsPar,response_surface(argumentsPar['aw']))
-colnames(mumax) <- c(colnames(argumentsPar),'mumax')
+responseSurface <- cbind(argumentsPar,response_surface(argumentsPar['aw']))
+colnames(responseSurface) <- c(colnames(argumentsPar),'mumax')
 #############################
 # End of Model script
 #############################
 ############################# 
 # start of Visualisation script Gropin ID 1098 
 #############################
-plot(aw,mumax$mumax,
-                          xlab='aw',
-                          ylab='mu_max',main='Response surface mu_max for
+plot(aw,responseSurface$'mumax',xlab='aw',
+                          ylab='mumax',main='Response surface mumax for
 Neosartorya fischeri in/on Fruit based products
 (gropin ID:1098)')
 #############################

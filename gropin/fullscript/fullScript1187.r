@@ -23,15 +23,15 @@ return(mumax=mumax)
 } 
 
 # output parameters
-mumax <- cbind(argumentsPar,response_surface(argumentsPar['T'],argumentsPar['aw']))
-colnames(mumax) <- c(colnames(argumentsPar),'mumax')
+responseSurface <- cbind(argumentsPar,response_surface(argumentsPar['T'],argumentsPar['aw']))
+colnames(responseSurface) <- c(colnames(argumentsPar),'mumax')
 #############################
 # End of Model script
 #############################
 ############################# 
 # start of Visualisation script Gropin ID 1187 
 #############################
-persp(T,aw,matrix(unlist(mumax$mumax),nrow=21),col = 'green',xlab='T',ylab='aw',zlab='mu_max',main='Response surface mu_max for
+persp(T,aw,matrix(unlist(responseSurface$'mumax'),nrow=21),col = 'green',xlab='T',ylab='aw',zlab='mumax',main='Response surface mumax for
 Botrytis cinerea in/on PDA
 (gropin ID:1187)',theta=305,phi=20,shade=0.25,ticktype = 'detailed')
 #############################

@@ -15,8 +15,8 @@ return(mumax=mumax)
 } 
 
 # output parameters
-mumax <- cbind(argumentsPar,response_surface(argumentsPar['T'],argumentsPar['PL_SDAmix']))
-colnames(mumax) <- c(colnames(argumentsPar),'mumax')
+responseSurface <- cbind(argumentsPar,response_surface(argumentsPar['T'],argumentsPar['PL_SDAmix']))
+colnames(responseSurface) <- c(colnames(argumentsPar),'lnmumax')
 #############################
 # End of Model script
 #############################

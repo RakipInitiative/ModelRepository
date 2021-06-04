@@ -23,15 +23,15 @@ return(mumax=mumax)
 } 
 
 # output parameters
-mumax <- cbind(argumentsPar,response_surface(argumentsPar['pH'],argumentsPar['S']))
-colnames(mumax) <- c(colnames(argumentsPar),'mumax')
+responseSurface <- cbind(argumentsPar,response_surface(argumentsPar['pH'],argumentsPar['S']))
+colnames(responseSurface) <- c(colnames(argumentsPar),'lnmumax')
 #############################
 # End of Model script
 #############################
 ############################# 
 # start of Visualisation script Gropin ID 1049 
 #############################
-persp(pH,S,matrix(unlist(mumax$mumax),nrow=21),col = 'green',xlab='pH',ylab='S',zlab='mu_max',main='Response surface mu_max for
+persp(pH,S,matrix(unlist(responseSurface$'lnmumax'),nrow=21),col = 'green',xlab='pH',ylab='S',zlab='lnmumax',main='Response surface lnmumax for
 Zygosaccharomyces rouxii in/on High sugar concentrations
 (gropin ID:1049)',theta=305,phi=20,shade=0.25,ticktype = 'detailed')
 #############################

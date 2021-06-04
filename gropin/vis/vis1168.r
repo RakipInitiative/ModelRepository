@@ -1,9 +1,8 @@
 ############################# 
 # start of Visualisation script Gropin ID 1168 
 #############################
-plot(T,mumax$mumax,
-                          xlab='T',
-                          ylab='mu_max',main='Response surface mu_max for
+plot(T,responseSurface$'mumax',xlab='T',
+                          ylab='mumax',main='Response surface mumax for
 Total Viable Counts in/on Oyster _raw_
 (gropin ID:1168)')
 #############################

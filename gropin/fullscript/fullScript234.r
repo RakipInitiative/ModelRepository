@@ -27,17 +27,16 @@ return(mumax=mumax)
 } 
 
 # output parameters
-mumax <- cbind(argumentsPar,response_surface(argumentsPar['pH']))
-colnames(mumax) <- c(colnames(argumentsPar),'mumax')
+responseSurface <- cbind(argumentsPar,response_surface(argumentsPar['pH']))
+colnames(responseSurface) <- c(colnames(argumentsPar),'mumax')
 #############################
 # End of Model script
 #############################
 ############################# 
 # start of Visualisation script Gropin ID 234 
 #############################
-plot(pH,mumax$mumax,
-                          xlab='pH',
-                          ylab='mu_max',main='Response surface mu_max for
+plot(pH,responseSurface$'mumax',xlab='pH',
+                          ylab='mumax',main='Response surface mumax for
 Listeria monocytogenes in/on Nutrient broth
 (gropin ID:234)')
 #############################

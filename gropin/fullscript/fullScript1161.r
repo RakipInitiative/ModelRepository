@@ -22,17 +22,16 @@ return(mumax=mumax)
 } 
 
 # output parameters
-mumax <- cbind(argumentsPar,response_surface(argumentsPar['T']))
-colnames(mumax) <- c(colnames(argumentsPar),'mumax')
+responseSurface <- cbind(argumentsPar,response_surface(argumentsPar['T']))
+colnames(responseSurface) <- c(colnames(argumentsPar),'mumax')
 #############################
 # End of Model script
 #############################
 ############################# 
 # start of Visualisation script Gropin ID 1161 
 #############################
-plot(T,mumax$mumax,
-                          xlab='T',
-                          ylab='mu_max',main='Response surface mu_max for
+plot(T,responseSurface$'mumax',xlab='T',
+                          ylab='mumax',main='Response surface mumax for
 Clostridium perfringens in/on Chicken _Uncured_
 (gropin ID:1161)')
 #############################

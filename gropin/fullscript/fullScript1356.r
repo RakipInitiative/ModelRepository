@@ -22,17 +22,16 @@ return(mumax=mumax)
 } 
 
 # output parameters
-mumax <- cbind(argumentsPar,response_surface(argumentsPar['bw']))
-colnames(mumax) <- c(colnames(argumentsPar),'mumax')
+responseSurface <- cbind(argumentsPar,response_surface(argumentsPar['bw']))
+colnames(responseSurface) <- c(colnames(argumentsPar),'lnmumax')
 #############################
 # End of Model script
 #############################
 ############################# 
 # start of Visualisation script Gropin ID 1356 
 #############################
-plot(bw,mumax$mumax,
-                          xlab='bw',
-                          ylab='mu_max',main='Response surface mu_max for
+plot(bw,responseSurface$'lnmumax',xlab='bw',
+                          ylab='lnmumax',main='Response surface lnmumax for
 Aspergillus nomius in/on Basal medium
 (gropin ID:1356)')
 #############################

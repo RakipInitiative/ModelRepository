@@ -1,9 +1,8 @@
 ############################# 
 # start of Visualisation script Gropin ID 1407 
 #############################
-plot(T,mumax$mumax,
-                          xlab='T',
-                          ylab='mu_max',main='Response surface mu_max for
+plot(T,responseSurface$'mumax',xlab='T',
+                          ylab='mumax',main='Response surface mumax for
 Salmonella Typhimurium in/on Chicken _cooked_
 (gropin ID:1407)')
 #############################

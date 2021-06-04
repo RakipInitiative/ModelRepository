@@ -22,17 +22,16 @@ return(mumax=mumax)
 } 
 
 # output parameters
-mumax <- cbind(argumentsPar,response_surface(argumentsPar['T']))
-colnames(mumax) <- c(colnames(argumentsPar),'mumax')
+responseSurface <- cbind(argumentsPar,response_surface(argumentsPar['T']))
+colnames(responseSurface) <- c(colnames(argumentsPar),'lnmumax')
 #############################
 # End of Model script
 #############################
 ############################# 
 # start of Visualisation script Gropin ID 1278 
 #############################
-plot(T,mumax$mumax,
-                          xlab='T',
-                          ylab='mu_max',main='Response surface mu_max for
+plot(T,responseSurface$'lnmumax',xlab='T',
+                          ylab='lnmumax',main='Response surface lnmumax for
 Aerobic Mesophiles in/on hake _Merluccius merluccius_ fillets
 (gropin ID:1278)')
 #############################

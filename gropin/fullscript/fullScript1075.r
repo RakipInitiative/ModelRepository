@@ -22,17 +22,16 @@ return(mumax=mumax)
 } 
 
 # output parameters
-mumax <- cbind(argumentsPar,response_surface(argumentsPar['O2']))
-colnames(mumax) <- c(colnames(argumentsPar),'mumax')
+responseSurface <- cbind(argumentsPar,response_surface(argumentsPar['O2']))
+colnames(responseSurface) <- c(colnames(argumentsPar),'mumax')
 #############################
 # End of Model script
 #############################
 ############################# 
 # start of Visualisation script Gropin ID 1075 
 #############################
-plot(O2,mumax$mumax,
-                          xlab='O2',
-                          ylab='mu_max',main='Response surface mu_max for
+plot(O2,responseSurface$'mumax',xlab='O2',
+                          ylab='mumax',main='Response surface mumax for
 Clostridium perfringens in/on Food products _in modified atmosphere packaging_
 (gropin ID:1075)')
 #############################

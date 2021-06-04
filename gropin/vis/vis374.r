@@ -1,9 +1,8 @@
 ############################# 
 # start of Visualisation script Gropin ID 374 
 #############################
-plot(T,mumax$mumax,
-                          xlab='T',
-                          ylab='mu_max',main='Response surface mu_max for
+plot(T,responseSurface$'mumax',xlab='T',
+                          ylab='mumax',main='Response surface mumax for
 Aeromonas spp. in/on Nutrient broth
 (gropin ID:374)')
 #############################

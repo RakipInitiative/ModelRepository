@@ -58,6 +58,44 @@ https://www.aua.gr/psomas/gropin/
 ongoing transfer, currently focussing on growth models, details see TODO
 
 ## TODO
+### Gropin
+* 3 and more parameter models
+  * create generic visualisation combi plot of 3 randomly chosen pairs of variables
+  * create additional simulation parameter set: point estimates of Par
+    * edit sim.sedml and add new simulation 
+    * add to comment section: range of variables
+    * remove fixed solution
+    * remove _start,_end solution -> array stays!
+  * default resolution dependent nrOfVariables ceil(nrOfVariables_throot(max(21*21*21))) (R package pracma)
+  * comment readme about Rechenzeit with full resolution
+  * add generic visualisation script as comment for data from secondary model
+* units:
+  * create database for units of variables: T in C, CO2 in g, a.s.o. - created, but not filled with correct information, support needed!
+  * meta data needs to be adapted for each microorganism separately - open question
+suffix and introduce as Parameter
+parameter set
+* look into inactivation models
+* look into GNG models
+  
+### other models than gropin
+#### RRM
+* reduce number of parameters -> Editor bug! check up!
+#### VRE
+* test all finished models on VRE
+####Possas 
+*  -> check up on Cristina
+* transfer Possas model(Cristina) to fskx
+* discussed to be done in 9 steps
+* sending Cristina R scripts for development, afterwards transporting into fskx
+
+## DONE 2021
+
+### June
+
+### May
+* new model version of gropin -> major adaptations were necessary
+* R4.X handles xls sheets differently thant R3.X -> adaptations to the code were done
+* transfer code for 2 variables -> creates model script, visualisation script, metadata schema (not fully tested)
 * Gropin
   * look into 1 variable bugs:
     * note of gropin 'notused' is made into a variable - FIXED
@@ -66,46 +104,12 @@ ongoing transfer, currently focussing on growth models, details see TODO
   * objective & description fields fill in with info from Matthias - DONE
   * coefficients should be hardcoded, not parameters of fsk! - DONE
   * list of authors incomplete - FIXED
-  * units:
-    * create database for units of variables: T in C, CO2 in g, a.s.o. - created, but not filled with correct information, support needed!
-    * meta data needs to be adapted for each microorganism separately - open question
-  * implement kinetic model equations Panos sent - checked, and confirmed, not implemented yet
-  * include into knime R2fskx workflow
-    * Variables used for scales -> "scale_" as prefix and made const in metadata
-    * Variables used for kinetic modelling (currently with suffix "_kinetic"): remove suffix and introduce as Parameter
-  * any parameter used for not all modes gets a prefix for which mode it is used
-    * Mode_response - DONE
-    * Mode_time2multiply: lagTime, logIncrease - DONE
-    * Mode_kinetic: logN0, lagTime, logNEnd, simTime - DONE 
-  * a few problems:
-    * some mumax are linear, sqrt, ln -> extract info and adjust code
-    * distinction between mumax and response surface (lin,sqrt,ln)?
-    * primary model has no image title from secondary model
-  * create workflow editing fskx to fix all problems with excel sheet - DONE
-    * creation date: edit medata.json 
-    * additional simulation parameter sets: edit sim.sedml and add new simulation parameter set
-  * transfer complete annotation data to all models
-    * mostly done, bugfixing for rare cases and parameter annotation
-  * bugfixing rare cases model script transfer errors due to inconsistencies in gropin database
-  * bugfixing visualisation for 4 or more variables
-  * create transfer script for "time to multiply by X log steps"-models for all models
-  * analyse macros in gropin 
-  * create transfer script for "kinetic modelling" for growth models for all models
-  * look into inactivation models
-  * look into GNG models
-  * bugfixing automatic transfer script for all growth models of 3 or less variables
-* test all finished models on VRE
-* Possas -> check up
-  * transfer Possas model(Cristina) to fskx
-  * discussed to be done in 9 steps
-  * sending Cristina R scripts for development, afterwards transporting into fskx
-
-## DONE 2021
-
-### May
-* new model version of gropin -> major adaptations were necessary
-* R4.X handles xls sheets differently thant R3.X -> adaptations to the code were done
-* transfer code for 2 variables -> creates model script, visualisation script, metadata schema (not fully tested)
+  * Mode_time2multiply: lagTime, logIncrease - DONE
+  * Mode_kinetic: logN0, lagTime, logNEnd, simTime - DONE 
+    * implemented Baranyi model version of gropin
+  * developed knime workflow for creating fskx files from script and md schema
+  * wrote editing script for fskx files to fix Creation Date & Reference Bug of FSK Creator
+  * uploaded 1-&2-Parameter growth models to server
 
 ### April 
 * showcases gropin 24,492,256 done -> goal for full transfer code

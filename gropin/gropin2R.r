@@ -44,7 +44,7 @@ emailOfCreator <- "marcel.fuhrmann@bfr.bund.de"
 organizationOfCreator <- "BfR"
 
 # adding new output parameters (just add another component to each vector of strings)
-idsOfOutputPar <- c("mumax")
+idsOfOutputPar <- c("responseSurface")
 namesOfOutputPar <- c("data frame with variables and corresponding mumax")
 descriptionOfOutputPar <- c("This dataframe consists of a number of columns 
                             in relation to the number of variables of this 
@@ -301,7 +301,7 @@ allVariables <- as.character(data.frame(existingVariables)$Var1)
 ################################################################################
 # END PART ONE: Preprocessing 
 ################################################################################
-#run <- 58
+run <- 2
 
 
 ################################################################################
@@ -312,7 +312,7 @@ nrModels <- dim(growthModels)[1]
 #initialising
 model2Vars <- NA
 
-for(run in 1:nrModels){
+#for(run in 1:nrModels){
   
   # exlude model from conversion any model given in list above
   if(growthModels$ModelID[run] %in% listOfNonfunctioningModels) {
@@ -496,7 +496,7 @@ for(run in 1:nrModels){
   gropinFunctionNames <- c("SQRT","EXP","LN","ln")
   FunctionNames <- c("sqrt","exp","log","log")
   
-  # replacing function names
+  # replacing gropin function names with R function names
   myEq <- gsubfn("\\w+",as.list(setNames(FunctionNames,gropinFunctionNames)),myEq)
   
   
@@ -555,10 +555,12 @@ for(run in 1:nrModels){
   myModelScript <- append(myModelScript,"\nreturn(mumax=mumax)\n} ")
   myModelScript <- append(myModelScript,"\n# output parameters")
   myModelScript <- append(myModelScript, 
-                          paste0("mumax <- cbind(argumentsPar,response_surface(",
+                          paste0("responseSurface <- cbind(argumentsPar,response_surface(",
                                  paste0("argumentsPar['",myVarNames[1:nrOfVariables],"']",collapse = ','),
                           "))",
-                          "\ncolnames(mumax) <- c(colnames(argumentsPar),'mumax')")
+                          "\ncolnames(responseSurface) <- c(colnames(argumentsPar),'",
+                          gsub("[[:punct:]]","",as.character(growthModels$mumax[run])),
+                          "')")
                           )
   myModelScript <- append(myModelScript,"#############################\n# End of Model script\n#############################")
   
@@ -582,13 +584,19 @@ for(run in 1:nrModels){
                                  myVarNames[1],
                                  ",",
                                  myVarNames[2],
-                                 ",matrix(unlist(mumax$mumax),nrow=",
+                                 ",matrix(unlist(responseSurface$'",
+                                 gsub("[[:punct:]]","",as.character(growthModels$mumax[run])),
+                                 "'),nrow=",
                                  lenOfVar,
                                  "),col = 'green',xlab='",
                                  myVarNames[1],
                                  "',ylab='",
                                  myVarNames[2],
-                                 "',zlab='mu_max',main='Response surface mu_max for\n",
+                                 "',zlab='",
+                                 gsub("[[:punct:]]","",as.character(growthModels$mumax[run])),
+                                 "',main='Response surface ",
+                                 gsub("[[:punct:]]","",as.character(growthModels$mumax[run])),
+                                 " for\n",
                                  as.character(growthModels$Microorganism[run]),
                                  " in/on ",
                                  as.character(growthModels$Product[run]),
@@ -602,11 +610,16 @@ for(run in 1:nrModels){
     myVisScript <- append(myVisScript,
                    paste0("plot(",
                           myVarNames[1],
-                          ",mumax$mumax,
-                          xlab='",
+                          ",responseSurface$'",
+                          gsub("[[:punct:]]","",as.character(growthModels$mumax[run])),
+                          "',xlab='",
                           myVarNames[1],
                           "',
-                          ylab='mu_max',main='Response surface mu_max for\n",
+                          ylab='",
+                          gsub("[[:punct:]]","",as.character(growthModels$mumax[run])),
+                          "',main='Response surface ",
+                          gsub("[[:punct:]]","",as.character(growthModels$mumax[run])),
+                          " for\n",
                           as.character(growthModels$Microorganism[run]),
                           " in/on ",
                           as.character(growthModels$Product[run]),
@@ -643,6 +656,9 @@ for(run in 1:nrModels){
                            as.character(growthModels$ModelID[run]))
   # License
   MetaData$Data[8] <-"Academic Free License 3.0"
+  
+  # Language 
+  MetaData$Data[25] <-"R"
   
   # Language Written in
   MetaData$Data[26] <-"R 3"
@@ -724,7 +740,9 @@ for(run in 1:nrModels){
   #STATUS	
   #WEBSITE	
   #COMMENT	
-  
+  MetaData$...22[14] <- paste(as.character(growthModels$Journal[run]),
+                              ", ",
+                              as.character(growthModels$Issue[run]))
   
   
   # list of products currently 1 product per model
@@ -819,6 +837,6 @@ for(run in 1:nrModels){
   fileNameSchema <- paste0(subfolderSchemaScript,"/metadataschema",growthModels$ModelID[run],".xlsx")
   write_xlsx(list("Generic Metadata Schema"=MetaData),path=fileNameSchema)
   print(paste("done with Model Nr.",growthModels$ModelID[run]))
-}
+#}
 
 all2VarModels <- as.character(data.frame(table(model2Vars))$model2Vars)

@@ -23,15 +23,15 @@ return(mumax=mumax)
 } 
 
 # output parameters
-mumax <- cbind(argumentsPar,response_surface(argumentsPar['T'],argumentsPar['CLO']))
-colnames(mumax) <- c(colnames(argumentsPar),'mumax')
+responseSurface <- cbind(argumentsPar,response_surface(argumentsPar['T'],argumentsPar['CLO']))
+colnames(responseSurface) <- c(colnames(argumentsPar),'Sqrmumax')
 #############################
 # End of Model script
 #############################
 ############################# 
 # start of Visualisation script Gropin ID 1387 
 #############################
-persp(T,CLO,matrix(unlist(mumax$mumax),nrow=21),col = 'green',xlab='T',ylab='CLO',zlab='mu_max',main='Response surface mu_max for
+persp(T,CLO,matrix(unlist(responseSurface$'Sqrmumax'),nrow=21),col = 'green',xlab='T',ylab='CLO',zlab='Sqrmumax',main='Response surface Sqrmumax for
 Listeria monocytogenes in/on Meats _RTE_
 (gropin ID:1387)',theta=305,phi=20,shade=0.25,ticktype = 'detailed')
 #############################

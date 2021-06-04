@@ -1,9 +1,8 @@
 ############################# 
 # start of Visualisation script Gropin ID 1372 
 #############################
-plot(bw,mumax$mumax,
-                          xlab='bw',
-                          ylab='mu_max',main='Response surface mu_max for
+plot(bw,responseSurface$'lnmumax',xlab='bw',
+                          ylab='lnmumax',main='Response surface lnmumax for
 Aspergillus oryzae in/on Basal medium
 (gropin ID:1372)')
 #############################

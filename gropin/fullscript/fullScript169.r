@@ -24,17 +24,16 @@ return(mumax=mumax)
 } 
 
 # output parameters
-mumax <- cbind(argumentsPar,response_surface(argumentsPar['aw']))
-colnames(mumax) <- c(colnames(argumentsPar),'mumax')
+responseSurface <- cbind(argumentsPar,response_surface(argumentsPar['aw']))
+colnames(responseSurface) <- c(colnames(argumentsPar),'Sqrmumax')
 #############################
 # End of Model script
 #############################
 ############################# 
 # start of Visualisation script Gropin ID 169 
 #############################
-plot(aw,mumax$mumax,
-                          xlab='aw',
-                          ylab='mu_max',main='Response surface mu_max for
+plot(aw,responseSurface$'Sqrmumax',xlab='aw',
+                          ylab='Sqrmumax',main='Response surface Sqrmumax for
 Penicillium expansum in/on Potato Dextrose Agar
 (gropin ID:169)')
 #############################

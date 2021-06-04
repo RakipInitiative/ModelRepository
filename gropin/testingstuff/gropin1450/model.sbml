@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<sbml xmlns="http://www.sbml.org/sbml/level3/version1/core" level="3" version="1" xmlns:fsk="https://foodrisklabs.bfr.bund.de/wp-content/uploads/2017/01/FSK-ML_guidance_document_021216.pdf">
+  <model id="model">
+    <listOfParameters>
+      <parameter constant="false" id="T" name="Temperature">
+        <annotation>
+  <fsk:parameter value="seq(28.028,47.952047952048,length.out=21)"/>
+        </annotation>
+            </parameter>
+      <parameter constant="false" id="responseSurface" name="data frame with variables and corresponding mumax"/>
+    </listOfParameters>
+  </model>
+</sbml>

@@ -1,9 +1,8 @@
 ############################# 
 # start of Visualisation script Gropin ID 443 
 #############################
-plot(T,mumax$mumax,
-                          xlab='T',
-                          ylab='mu_max',main='Response surface mu_max for
+plot(T,responseSurface$'lnmumax',xlab='T',
+                          ylab='lnmumax',main='Response surface lnmumax for
 Pseudomonas spp. in/on Tryptic Soy Broth
 (gropin ID:443)')
 #############################

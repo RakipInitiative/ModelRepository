@@ -1,9 +1,8 @@
 ############################# 
 # start of Visualisation script Gropin ID 364 
 #############################
-plot(T,mumax$mumax,
-                          xlab='T',
-                          ylab='mu_max',main='Response surface mu_max for
+plot(T,responseSurface$'Sqrmumax',xlab='T',
+                          ylab='Sqrmumax',main='Response surface Sqrmumax for
 Listeria monocytogenes in/on Pasteurized milk
 (gropin ID:364)')
 #############################

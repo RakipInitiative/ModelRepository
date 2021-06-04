@@ -22,17 +22,16 @@ return(mumax=mumax)
 } 
 
 # output parameters
-mumax <- cbind(argumentsPar,response_surface(argumentsPar['pH']))
-colnames(mumax) <- c(colnames(argumentsPar),'mumax')
+responseSurface <- cbind(argumentsPar,response_surface(argumentsPar['pH']))
+colnames(responseSurface) <- c(colnames(argumentsPar),'mumax')
 #############################
 # End of Model script
 #############################
 ############################# 
 # start of Visualisation script Gropin ID 1198 
 #############################
-plot(pH,mumax$mumax,
-                          xlab='pH',
-                          ylab='mu_max',main='Response surface mu_max for
+plot(pH,responseSurface$'mumax',xlab='pH',
+                          ylab='mumax',main='Response surface mumax for
 Staphylococcus aureus in/on TSB
 (gropin ID:1198)')
 #############################
