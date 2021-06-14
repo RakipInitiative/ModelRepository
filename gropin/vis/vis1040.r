@@ -1,64 +1,32 @@
 ############################# 
 # start of Visualisation script Gropin ID 1040 
 #############################
-visAxes <- c(visVar1,visVar2)
-expectedAxes <- c('T','pH','aw')
-checkPresent <- match(expectedAxes,visAxes)
-missingAxis <- expectedAxes[is.na(checkPresent)]
-if('T' %in% visAxes){
-  ax1 <- T
+titleText <-'Response surface ln_mu_max for
+Yarrowia lipolytica in/on Dairy products, Sugar solutions, beverages
+(gropin ID:1040)'
+argPar1 <- unique.data.frame(expand.grid(T,pH))
+argPar2 <- unique.data.frame(expand.grid(T,aw))
+argPar3 <- unique.data.frame(expand.grid(pH,aw))
+z1 <- matrix(unlist(response_surface(argPar1[1],argPar1[2],aw[1])),nrow=10)
+z2 <- matrix(unlist(response_surface(argPar2[1],pH[1],argPar2[2])),nrow=10)
+z3 <- matrix(unlist(response_surface(T[1],argPar3[1],argPar3[2])),nrow=10)
+if(length(T)>1 & length(pH)>1 & length(aw)>1) {
+	par(mfrow = c(1,3))
+	persp(T,pH,z1,col = 'green',xlab='T',ylab='pH',zlab='ln_mu_max',theta=305,phi=20,shade=0.25,ticktype = 'detailed')
+	persp(T,aw,z2,col = 'green',xlab='T',ylab='aw',zlab='ln_mu_max',theta=305,phi=20,shade=0.25,ticktype = 'detailed')
+	persp(pH,aw,z3,col = 'green',xlab='pH',ylab='aw',zlab='ln_mu_max',theta=305,phi=20,shade=0.25,ticktype = 'detailed')
+	mtext(titleText,outer=T,  cex=1.5, line=-8.5, side=3)
 } else {
-  ax1 <- T_fixed
+	if(length(aw)==1) {
+		persp(T,pH,z1,col = 'green',xlab='T',ylab='pH',zlab='ln_mu_max',main=titleText,sub=paste('other variable: aw =',aw),theta=305,phi=20,shade=0.25,ticktype = 'detailed')
+	}
+	if(length(pH)==1) {
+		persp(T,aw,z2,col = 'green',xlab='T',ylab='aw',zlab='ln_mu_max',main=titleText,sub=paste('other variable: pH =',pH),theta=305,phi=20,shade=0.25,ticktype = 'detailed')
+	}
+	if(length(T)==1) {
+		persp(pH,aw,z3,col = 'green',xlab='pH',ylab='aw',zlab='ln_mu_max',main=titleText,sub=paste('other variable: T =',T),theta=305,phi=20,shade=0.25,ticktype = 'detailed')
+	}
 }
-
-if('pH' %in% visAxes){
-  ax2 <- pH
-} else {
-  ax2 <- pH_fixed
-}
-
-if('aw' %in% visAxes){
-  ax3 <- aw
-} else {
-  ax3 <- aw_fixed
-}
-
-argumentsVisVar <- expand.grid(ax1,ax2,ax3)
-colnames(argumentsVisVar) <- expectedAxes
-firstChosenAxis <- expectedAxes[
-  min(
-    which(expectedAxes == expectedAxes[match(1,checkPresent)]),
-    which(expectedAxes == expectedAxes[match(2,checkPresent)]))
-]
-secondChosenAxis <- expectedAxes[
-  max(
-    which(expectedAxes == expectedAxes[match(1,checkPresent)]),
-    which(expectedAxes == expectedAxes[match(2,checkPresent)]))
-]
-
-result <- matrix(unlist(response_surface(
-	argumentsVisVar['T'],	argumentsVisVar['pH'],	argumentsVisVar['aw']
-)),nrow=21,byrow=F)
-
-#order of entries in result is always:
-# rows of the 1st chosen index of expectedAxes
-# cols of the 2nd chosen index of expectedAxes
-# this makes sure, the order of visVar1 and visVar2 are not relevant
-rownames(result) <- unlist(variables[firstChosenAxis])
-colnames(result) <- unlist(variables[secondChosenAxis])
-persp(as.numeric(rownames(result)),
-	as.numeric(colnames(result)),
-	result,
-	col = 'green',
-	xlab=firstChosenAxis,
-	ylab=secondChosenAxis,
-	zlab='ln<mu>max',
-	main='Response surface ln<mu>max for Gropin Model (ID 1040)',
-	sub='Yarrowia lipolytica in/on Dairy products, Sugar solutions, beverages',
-	theta=305,
-	phi=20,
-	shade=0.25,
-	ticktype = 'detailed')
 #############################
 # End of Visualisation script
 #############################

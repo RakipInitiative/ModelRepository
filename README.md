@@ -58,17 +58,21 @@ https://www.aua.gr/psomas/gropin/
 ongoing transfer, currently focussing on growth models, details see TODO
 
 ## TODO
+### Lindqvist
+* fragen
 ### Gropin
 * 3 and more parameter models
-  * create generic visualisation combi plot of 3 randomly chosen pairs of variables
+  * create generic visualisation combi plot of 3 randomly chosen pairs of variables-DONE
   * create additional simulation parameter set: point estimates of Par
     * edit sim.sedml and add new simulation 
     * add to comment section: range of variables
     * remove fixed solution
     * remove _start,_end solution -> array stays!
-  * default resolution dependent nrOfVariables ceil(nrOfVariables_throot(max(21*21*21))) (R package pracma)
+  * default resolution dependent nrOfVariables ceil(nrOfVariables_throot(max(21*21))) (R package pracma::nth_root) - DONE
   * comment readme about Rechenzeit with full resolution
   * add generic visualisation script as comment for data from secondary model
+  * joiner workflow als beispiel (Petra?)
+  * check for sqrt/ln/lin mumax as is?
 * units:
   * create database for units of variables: T in C, CO2 in g, a.s.o. - created, but not filled with correct information, support needed!
   * meta data needs to be adapted for each microorganism separately - open question

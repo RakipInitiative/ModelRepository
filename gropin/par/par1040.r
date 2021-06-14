@@ -1,17 +1,9 @@
 #############################
 # start of Parameter script
 #############################
-T_start <- 2.002
-T_end <- 19.98001998002
-T_fixed <- 10.99
-pH_start <- 4.004
-pH_end <- 7.49250749250749
-pH_fixed <- 5.75
-aw_start <- 0.95095
-aw_end <- 0.994005994005994
-aw_fixed <- 0.97
-visVar1 <- 'T'
-visVar2 <- 'pH'
+T <- seq(2.002,19.98001998002,length.out=10)
+pH <- seq(4.004,7.49250749250749,length.out=10)
+aw <- seq(0.95095,0.994005994005994,length.out=10)
 #############################
 # end of Parameter script
 #############################

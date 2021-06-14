@@ -6,12 +6,13 @@ library(stringr)
 thisProjectPath <- "C:/Users/Joker/Documents/Projects/ModelRepository/gropin/"
 tempFolder <- "temp/"
 sourceSubFolder <- "fskx/"
-targetSubFolder <- "finishedFSKX/"
+#targetSubFolder <- "finishedFSKX/"
+targetSubFolder <- "testingstuff/"
 
 myList <- list.files(file.path(thisProjectPath,sourceSubFolder),pattern="*.fskx")
 
 
-
+# create target folder if not existing
 if(!dir.exists(file.path(thisProjectPath,targetSubFolder))){
   dir.create(file.path(thisProjectPath,targetSubFolder))
 }
@@ -25,8 +26,8 @@ newCreationDate <- paste0(",\"creationDate\":[",
                           currentDate,
                           "],\"modificationDate\":[]")
 
-#run <- 1
-for(run in 1:length(myList)) {
+run <- 1
+#for(run in 1:length(myList)) {
   # check if folders exist
   if(!dir.exists(file.path(thisProjectPath,tempFolder))){
     dir.create(file.path(thisProjectPath,tempFolder))
@@ -36,7 +37,7 @@ for(run in 1:length(myList)) {
   zipTargetFile <- paste0(thisProjectPath,targetSubFolder,myList[run])
 
 
-  # unload fskx file into temp folder
+  # put fskx file into temp folder
   unzip(zipSourceFile,exdir = file.path(thisProjectPath,tempFolder))
 
   ##############################################################
@@ -74,12 +75,92 @@ for(run in 1:length(myList)) {
                       replace = myString, 
                       x = changedData)
   
+  
+  #editing sim.sedml
+  # TODO extract values qq<-str_match(oldSim, "newValue=\"\\s*(.*?)\\s*\"")[,2]
+  #> qq[!is.na(qq)]
+  # mean eval(parse(text=qq1))
+  # insert new values
+  # edit task id and so on
+  testthisa <- "testme"
+  oldSim <- readLines(paste0(thisProjectPath,tempFolder,"sim.sedml"))
+  
+  # find the names values of all variables
+  originalValuesVariablesVec <- str_match(oldSim, "newValue=\"\\s*(.*?)\\s*\"")[,2]
+  originalValuesVariablesVec <- originalValuesVariablesVec[!is.na(originalValuesVariablesVec)]
+  originalNamesVariablesVec <- str_match(oldSim, "target=\"\\s*(.*?)\\s*\"")[,2]
+  originalNamesVariablesVec <- originalNamesVariablesVec[!is.na(originalNamesVariablesVec)]
+  
+  
+  # marker for end of simulation settings
+  searchString1 <- "<listOfModels>\\s*(.*?)\\s*</listOfModels>"
+  listOfSimulations <- str_match(paste0(oldSim,collapse = ''), searchString1)[2]
+  listOfSimulations <- append(listOfSimulations,"<listOfModels>",after = 0)
+  for(sim in 1:length(originalNamesVariablesVec)) {
+    nameOfSimulation <- paste("point value for",originalNamesVariablesVec[sim])
+    newValuesVariables <- originalValuesVariablesVec
+    #just change 1 variable for each simulation setting
+    newValuesVariables[sim] <- mean(eval(parse(text=originalValuesVariablesVec[sim])))
+    
+    newSim <- paste0("<model id=\"",
+                     nameOfSimulation,
+                     "\" name=\"\" language=\"https://iana.org/assignments/mediatypes/text/x-r\" source=\"./model.r\">\n\t",
+                     "<listOfChanges>\n\t\t",
+                     "<changeAttribute newValue=\"",
+                     newValuesVariables[1],
+                     "\" target=\"",
+                     originalNamesVariablesVec[1],
+                     "\" />\n\t\t",
+                     "<changeAttribute newValue=\"",
+                     newValuesVariables[2],
+                     "\" target=\"",
+                     originalNamesVariablesVec[2],
+                     "\" />\n\t\t",
+                     "<changeAttribute newValue=\"",
+                     newValuesVariables[3],
+                     "\" target=\"",
+                     originalNamesVariablesVec[3],
+                     "\" />\n\t",
+                     "</listOfChanges>\n</model>\n")
+    listOfSimulations <- append(listOfSimulations,newSim)
+  }
+  listOfSimulations <- append(listOfSimulations,"</listOfModels>")
+  newSim1 <- gsub(pattern = searchString1, 
+                 replace = paste(listOfSimulations,collapse=''), 
+                 x = paste(oldSim,collapse=''))
+
+  
+  searchString2 <- "<listOfTasks>\\s*(.*?)\\s*</listOfTasks>"
+  listOfTasks <- str_match(paste0(newSim1,collapse = ''), searchString2)[2]
+  listOfTasks <- append(listOfTasks,"<listOfTasks>",after = 0)
+  
+  for(sim in 1:length(originalNamesVariablesVec)) {
+    nameOfSimulation <- paste("point value for",originalNamesVariablesVec[sim])
+    newTaskIDs <- paste0("task",sim)
+    
+    newSim2 <- paste0("\t<task id=\"",
+                      newTaskIDs,
+                     "\" name=\"\" modelReference=\"",
+                     nameOfSimulation,
+                     "\" simulationReference=\"steadyState\" />")
+    listOfTasks <- append(listOfTasks,newSim2)
+  }
+  listOfTasks <- append(listOfTasks,"</listOfTasks>")
+  newSim2 <- gsub(pattern = searchString2, 
+                 replace = paste(listOfTasks,collapse=''), 
+                 x = paste(newSim1,collapse=''))
+  
+  
+
   ##############################################################
   # ALL CHANGES HAVE TO BE DONE BY NOW
   ##############################################################
   
   
-  #newData <- gsub(pattern = "Fuhrmann",replace = "Bloedmann",x = oldData)
+  fileConn <- file(paste0(thisProjectPath,tempFolder,"sim.sedml"))
+  writeLines(newSim2,fileConn)
+  close(fileConn)
+  
   fileConn <- file(paste0(thisProjectPath,tempFolder,"metaData.json"))
   writeLines(newData,fileConn)
   close(fileConn)
@@ -94,4 +175,4 @@ for(run in 1:length(myList)) {
   unlink(file.path(thisProjectPath,tempFolder), recursive = TRUE)
   
   print(paste("done with file:",myList[run]))
-}
+#}

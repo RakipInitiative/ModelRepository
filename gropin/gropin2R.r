@@ -20,8 +20,10 @@
 # setting a few parameters for potential later adaptations to gropin
 ################################################################################
 
-# length of variable ranges of different models
-lenOfVar <- 21
+# length of variable ranges of different models depending on the nr of variables
+# to save computational effort. position in this vector relates to nrOfVariables of model
+lenOfVarVec <- c(21,21,10,7,5,4,3,3,2,2)
+#lenOfVarVec <- rep(21,10)  # legacy length of sequence vector of variables (equal to gropin)
 
 # names of subfolders for different scripts and files
 subfolderParScript <- "par"
@@ -58,7 +60,7 @@ datatypeOfOutputPar <- c("Matrix[number,number]")
 ###################################################
 # finding weird models with lots of exceptions
 # than one wants to exclude until further notice
-listOfNonfunctioningModels <- NA
+listOfNonfunctioningModels <- c(263,264)
 ################################################################################
 
 ###################################################
@@ -78,7 +80,19 @@ idsOfVars <- c("aw",
                "PL_SDAmix",
                "S",
                "Sugar",
-               "T")
+               "T",
+               "Ac",
+               "AscorbA",
+               "Citra",
+               "CO2_dissolved_",
+               "Ethanol",
+               "Fructose",
+               "Gelatin",
+               "Hours",
+               "NaNO2",
+               "Oleo",
+               "Phe",
+               "S_S")
 namesOfVars <- c("water activity",
                  "name bw",
                  "name CLO",
@@ -93,7 +107,19 @@ namesOfVars <- c("water activity",
                  "name PL_SDAmix",
                  "name S",
                  "name Sugar",
-                 "Temperature")
+                 "Temperature",
+                 "name Ac",
+                 "name AscorbA",
+                 "name Citra",
+                 "name CO2_dissolved_",
+                 "name Ethanol",
+                 "name Fructose",
+                 "name Gelatin",
+                 "name Hours",
+                 "name NaNO2",
+                 "name Oleo",
+                 "name Phe",
+                 "name S_S")
 descriptionsOfVars <- c("descr water activity",
                        "descr bw",
                        "descr CLO",
@@ -108,7 +134,19 @@ descriptionsOfVars <- c("descr water activity",
                        "descr PL_SDAmix",
                        "descr S",
                        "descr Sugar",
-                       "descr Temperature")
+                       "descr Temperature",
+                       "descr Ac",
+                       "descr AscorbA",
+                       "descr Citra",
+                       "descr CO2_dissolved_",
+                       "descr Ethanol",
+                       "descr Fructose",
+                       "descr Gelatin",
+                       "descr Hours",
+                       "descr NaNO2",
+                       "descr Oleo",
+                       "descr Phe",
+                       "descr S_S")
 unitsOfVars <- c("[%]",
                  "unit bw",
                  "unit CLO",
@@ -123,7 +161,19 @@ unitsOfVars <- c("[%]",
                  "unit PL_SDAmix",
                  "unit S",
                  "unit Sugar",
-                 "C")
+                 "C",
+                 "unit Ac",
+                 "unit AscorbA",
+                 "unit Citra",
+                 "unit CO2_dissolved_",
+                 "unit Ethanol",
+                 "unit Fructose",
+                 "unit Gelatin",
+                 "unit Hours",
+                 "unit NaNO2",
+                 "unit Oleo",
+                 "unit Phe",
+                 "unit S_S")
 unitcategorysOfVars <- c("Dimensionless Parameter",
                          "unit category bw",
                          "unit category CLO",
@@ -138,7 +188,19 @@ unitcategorysOfVars <- c("Dimensionless Parameter",
                          "unit category PL_SDAmix",
                          "unit category S",
                          "unit category Sugar",
-                         "Temperature")
+                         "Temperature",
+                         "unit category Ac",
+                         "unit category AscorbA",
+                         "unit category Citra",
+                         "unit category CO2_dissolved_",
+                         "unit category Ethanol",
+                         "unit category Fructose",
+                         "unit category Gelatin",
+                         "unit category Hours",
+                         "unit category NaNO2",
+                         "unit category Oleo",
+                         "unit category Phe",
+                         "unit category S_S")
 ###################################################
 
 # set your own path
@@ -301,7 +363,8 @@ allVariables <- as.character(data.frame(existingVariables)$Var1)
 ################################################################################
 # END PART ONE: Preprocessing 
 ################################################################################
-run <- 2
+#run <- 61
+run <- 254
 
 
 ################################################################################
@@ -350,14 +413,18 @@ model2Vars <- NA
  
   #collecting unique variables from models with less than 3 variables
   # for 1st extension step, adding metadata info to those 2-variable models
-  if(nrOfVariables<=2){
+  if(nrOfVariables<3){
+    print("already done")
+    next
+  }
+  if(nrOfVariables==3){
     model2Vars <- append(model2Vars,myVarNames)
   }
   
   
   # extension step 1: transfer growth models with 1&2 variables only
-  if(nrOfVariables>2){
-    print("wait for extension step 2")
+  if(nrOfVariables>3){
+    print("wait for extension step 3")
     next
   }
   
@@ -425,7 +492,7 @@ model2Vars <- NA
                       ",",
                       myVarMax[j],
                       ",length.out=",
-                      lenOfVar,
+                      lenOfVarVec[nrOfVariables],
                       ")")
     )
     
@@ -435,7 +502,7 @@ model2Vars <- NA
                                   ",",
                                   myVarMax[j],
                                   ",length.out=",
-                                  lenOfVar,
+                                  lenOfVarVec[nrOfVariables],
                                   ")")
     
    }
@@ -444,12 +511,7 @@ model2Vars <- NA
   
  
   
-  # choosing axes to visualize
-  if (nrOfVariables>2) {
-    # choose visualisation layer
-    myParScript <- append(myParScript,paste0("visVar1 <- '",myVarNames[1],
-                               "'\nvisVar2 <- '",myVarNames[2],"'"))
-  }
+ 
   myParScript <- append(myParScript,"#############################\n# end of Parameter script\n#############################")
   
   ##############################################################################
@@ -512,8 +574,10 @@ model2Vars <- NA
   if (namesOfCoeffsList[1]!='not used') {
     namesOfCoeffs <- as.character(unlist(namesOfCoeffsList))[!is.na(as.character(unlist(namesOfCoeffsList)))]
     namesOfCoeffs <- gsub("[+]","",namesOfCoeffs)
+    namesOfCoeffs <- gsub("[[:punct:]]","",namesOfCoeffs)
     namesOfCoeffs <- gsub(" ","",namesOfCoeffs)
     valuesOfCoeffs <- as.character(unlist(valuesOfCoeffsList))[!is.na(as.character(valuesOfCoeffsList))]
+    valuesOfCoeffs <- gsub("_","",valuesOfCoeffs)
     nrOfCoeffs <- length(namesOfCoeffs)
     
     for (c in 1:nrOfCoeffs) {
@@ -540,7 +604,7 @@ model2Vars <- NA
                                  ")")
   )
   myModelScript <- append(myModelScript,
-                          "argumentsPar <- expand.grid(variables)"
+                          "argumentsPar <- unique.data.frame(expand.grid(variables))"
   )
   
   
@@ -552,7 +616,7 @@ model2Vars <- NA
                                  paste(myVarNames[1:nrOfVariables],collapse = ','),
                              ") {\n   mumax <-",
                              myEq))
-  myModelScript <- append(myModelScript,"\nreturn(mumax=mumax)\n} ")
+  myModelScript <- append(myModelScript,"\n\treturn(mumax=mumax)\n} ")
   myModelScript <- append(myModelScript,"\n# output parameters")
   myModelScript <- append(myModelScript, 
                           paste0("responseSurface <- cbind(argumentsPar,response_surface(",
@@ -578,6 +642,112 @@ model2Vars <- NA
                        growthModels$ModelID[run],
                        "\n#############################")
 
+  myVisScript <- append(myVisScript,paste0("titleText <-",
+                                           "'Response surface ",
+                                           gsub("[[:punct:]]","_",as.character(growthModels$mumax[run])),
+                                           " for\n",
+                                           as.character(growthModels$Microorganism[run]),
+                                           " in/on ",
+                                           as.character(growthModels$Product[run]),
+                                           "\n(gropin ID:",
+                                           as.character(growthModels$ModelID[run]),
+                                           ")'"))
+  
+  if (nrOfVariables==3) {
+    
+    # for models with 3 or more variables, a special visualisation was devised:
+    # 3 plots of the first 3 variables are combined into 1 plot
+    varPairs <- combn(myVarNames[!is.na(myVarNames)],2)
+    
+    for(par in 1:3) {
+      myVisScript <- append(myVisScript,paste0("argPar",
+                                               par,
+                                               " <- unique.data.frame(expand.grid(",
+                                               varPairs[1,par],
+                                               ",",
+                                               varPairs[2,par],
+                                               "))"))
+    }
+    
+    
+    myVisScript <- append(myVisScript,paste0("z1 <- matrix(unlist(response_surface(argPar1[1],argPar1[2],",
+                                             myVarNames[3],
+                                             "[",
+                                             1,
+                                             "])),nrow=",
+                                             lenOfVarVec[nrOfVariables],
+                                             ")"))
+
+    myVisScript <- append(myVisScript,paste0("z2 <- matrix(unlist(response_surface(argPar2[1],",
+                                             myVarNames[2],
+                                             "[",
+                                             1,
+                                             "],argPar2[2])),nrow=",
+                                             lenOfVarVec[nrOfVariables],
+                                             ")"))
+    myVisScript <- append(myVisScript,paste0("z3 <- matrix(unlist(response_surface(",
+                                             myVarNames[1],
+                                             "[",
+                                             1,
+                                             "],argPar3[1],argPar3[2])),nrow=",
+                                             lenOfVarVec[nrOfVariables],
+                                             ")"))
+    myVisScript <- append(myVisScript,paste0("if(length(",
+                                             myVarNames[1],
+                                             ")>1 & length(",
+                                             myVarNames[2],
+                                             ")>1 & length(",
+                                             myVarNames[3],
+                                             ")>1) {"))
+    myVisScript <- append(myVisScript,"\tpar(mfrow = c(1,3))")
+    
+    for(par in 1:3) {
+      myVisScript <- append(myVisScript,paste0("\tpersp(",
+                                               varPairs[1,par],
+                                               ",",
+                                               varPairs[2,par],
+                                               ",z",
+                                               par,
+                                               ",col = 'green',xlab='",
+                                               varPairs[1,par],
+                                               "',ylab='",
+                                               varPairs[2,par],
+                                               "',zlab='",
+                                               gsub("[[:punct:]]","_",as.character(growthModels$mumax[run])),
+                                               "',theta=305,phi=20,shade=0.25,ticktype = 'detailed')"))
+    }
+    myVisScript <- append(myVisScript,paste0("\tmtext(titleText,outer=T,  cex=1.2, line=-8.5, side=3)"))
+    myVisScript <- append(myVisScript,"} else {")
+    
+    for(par in 1:3) {
+      missingVar <- myVarNames[is.na(match(myVarNames[!is.na(myVarNames)],varPairs[,par]))][1]
+      myVisScript <- append(myVisScript,paste0("\tif(length(",
+                                               missingVar,
+                                               ")==1) {"))
+      myVisScript <- append(myVisScript,paste0("\t\tpersp(",
+                                               varPairs[1,par],
+                                               ",",
+                                               varPairs[2,par],
+                                               ",z",
+                                               par,
+                                               ",col = 'green',xlab='",
+                                               varPairs[1,par],
+                                               "',ylab='",
+                                               varPairs[2,par],
+                                               "',zlab='",
+                                               gsub("[[:punct:]]","_",as.character(growthModels$mumax[run])),
+                                               "',main=titleText,sub=",
+                                               paste0("paste('other variable: ",
+                                                      missingVar,
+                                                      " =',",
+                                                      missingVar,
+                                                      ")"),
+                                               ",theta=305,phi=20,shade=0.25,ticktype = 'detailed')"))
+    myVisScript <- append(myVisScript,"\t}")
+    }
+    myVisScript <- append(myVisScript,"}")
+  }
+  
   if (nrOfVariables==2) {
     myVisScript <- append(myVisScript,
                           paste0("persp(",
@@ -587,23 +757,14 @@ model2Vars <- NA
                                  ",matrix(unlist(responseSurface$'",
                                  gsub("[[:punct:]]","",as.character(growthModels$mumax[run])),
                                  "'),nrow=",
-                                 lenOfVar,
+                                 lenOfVarVec[nrOfVariables],
                                  "),col = 'green',xlab='",
                                  myVarNames[1],
                                  "',ylab='",
                                  myVarNames[2],
                                  "',zlab='",
                                  gsub("[[:punct:]]","",as.character(growthModels$mumax[run])),
-                                 "',main='Response surface ",
-                                 gsub("[[:punct:]]","",as.character(growthModels$mumax[run])),
-                                 " for\n",
-                                 as.character(growthModels$Microorganism[run]),
-                                 " in/on ",
-                                 as.character(growthModels$Product[run]),
-                                 "\n(gropin ID:",
-                                 as.character(growthModels$ModelID[run]),
-                                 ")",
-                                 "',theta=305,phi=20,shade=0.25,ticktype = 'detailed')")
+                                 "',main=titleText,theta=305,phi=20,shade=0.25,ticktype = 'detailed')")
                           )
     }
   if (nrOfVariables==1){
@@ -617,16 +778,7 @@ model2Vars <- NA
                           "',
                           ylab='",
                           gsub("[[:punct:]]","",as.character(growthModels$mumax[run])),
-                          "',main='Response surface ",
-                          gsub("[[:punct:]]","",as.character(growthModels$mumax[run])),
-                          " for\n",
-                          as.character(growthModels$Microorganism[run]),
-                          " in/on ",
-                          as.character(growthModels$Product[run]),
-                          "\n(gropin ID:",
-                          as.character(growthModels$ModelID[run]),
-                          ")",
-                          "')"))
+                          "',main=titleText)"))
   }
   myVisScript <- append(myVisScript,"#############################\n# End of Visualisation script\n#############################")
 
@@ -772,6 +924,10 @@ model2Vars <- NA
     #classification
     MetaData$...13[thisRow] <- "Input"
     #name
+    if (!is.element(myVarNames[fskPar],idsOfVars)) { 
+      mdID <- 1
+    }
+    
     MetaData$...14[thisRow] <- namesOfVars[mdID]
     #description
     MetaData$...15[thisRow] <- descriptionsOfVars[mdID]
