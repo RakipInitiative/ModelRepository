@@ -12,13 +12,13 @@ T <- seq(5.5055,49.95004995005,length.out=21)
 # constant coefficients for this model
  
 variables <- data.frame(T)
-argumentsPar <- expand.grid(variables)
+argumentsPar <- unique.data.frame(expand.grid(variables))
  
 # heart of the model
 response_surface <- function(T) {
    mumax <-(0.0435*(T-2.9)*(1-exp(0.314*(T-49.2))))^2
 
-return(mumax=mumax)
+	return(mumax=mumax)
 } 
 
 # output parameters
@@ -30,10 +30,11 @@ colnames(responseSurface) <- c(colnames(argumentsPar),'mumax')
 ############################# 
 # start of Visualisation script Gropin ID 366 
 #############################
-plot(T,responseSurface$'mumax',xlab='T',
-                          ylab='mumax',main='Response surface mumax for
+titleText <-'Response surface _mu_max for
 Bacillus coli in/on Liquid culture medium
-(gropin ID:366)')
+(gropin ID:366)'
+plot(T,responseSurface$'mumax',xlab='T',
+                          ylab='mumax',main=titleText)
 #############################
 # End of Visualisation script
 #############################

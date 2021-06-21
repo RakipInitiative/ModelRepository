@@ -13,13 +13,13 @@ aw <- seq(0.947947,0.995004995004995,length.out=21)
 # constant coefficients for this model
  
 variables <- data.frame(T,aw)
-argumentsPar <- expand.grid(variables)
+argumentsPar <- unique.data.frame(expand.grid(variables))
  
 # heart of the model
 response_surface <- function(T,aw) {
    mumax <-0.03346*(T+7.6)*sqrt(aw-0.947)
 
-return(mumax=mumax)
+	return(mumax=mumax)
 } 
 
 # output parameters
@@ -31,9 +31,10 @@ colnames(responseSurface) <- c(colnames(argumentsPar),'Sqrmumax')
 ############################# 
 # start of Visualisation script Gropin ID 430 
 #############################
-persp(T,aw,matrix(unlist(responseSurface$'Sqrmumax'),nrow=21),col = 'green',xlab='T',ylab='aw',zlab='Sqrmumax',main='Response surface Sqrmumax for
+titleText <-'Response surface Sqr_mu_max for
 Pseudomonas spp. in/on Nutrient broth
-(gropin ID:430)',theta=305,phi=20,shade=0.25,ticktype = 'detailed')
+(gropin ID:430)'
+persp(T,aw,matrix(unlist(responseSurface$'Sqrmumax'),nrow=21),col = 'green',xlab='T',ylab='aw',zlab='Sqrmumax',main=titleText,theta=305,phi=20,shade=0.25,ticktype = 'detailed')
 #############################
 # End of Visualisation script
 #############################

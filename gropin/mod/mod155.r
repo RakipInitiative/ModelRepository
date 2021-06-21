@@ -9,13 +9,13 @@ Tmin <- -8.81
 CO2max <- 7799
  
 variables <- data.frame(T,aw,CO2_dissolved_)
-argumentsPar <- expand.grid(variables)
+argumentsPar <- unique.data.frame(expand.grid(variables))
  
 # heart of the model
 response_surface <- function(T,aw,CO2_dissolved_) {
    mumax <-(a*(T-Tmin)*sqrt((aw-awmin)*(CO2max-CO2_dissolved_)))
 
-return(mumax=mumax)
+	return(mumax=mumax)
 } 
 
 # output parameters

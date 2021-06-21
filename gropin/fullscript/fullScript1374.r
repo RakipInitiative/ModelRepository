@@ -12,13 +12,13 @@ bw <- seq(0.032032,0.446753246753247,length.out=21)
 # constant coefficients for this model
  
 variables <- data.frame(bw)
-argumentsPar <- expand.grid(variables)
+argumentsPar <- unique.data.frame(expand.grid(variables))
  
 # heart of the model
 response_surface <- function(bw) {
    mumax <-(-0.5825+6.392*bw-26.11*bw^2)
 
-return(mumax=mumax)
+	return(mumax=mumax)
 } 
 
 # output parameters
@@ -30,10 +30,11 @@ colnames(responseSurface) <- c(colnames(argumentsPar),'lnmumax')
 ############################# 
 # start of Visualisation script Gropin ID 1374 
 #############################
-plot(bw,responseSurface$'lnmumax',xlab='bw',
-                          ylab='lnmumax',main='Response surface lnmumax for
+titleText <-'Response surface ln_mu_max for
 Aspergillus parasiticus in/on Basal medium
-(gropin ID:1374)')
+(gropin ID:1374)'
+plot(bw,responseSurface$'lnmumax',xlab='bw',
+                          ylab='lnmumax',main=titleText)
 #############################
 # End of Visualisation script
 #############################

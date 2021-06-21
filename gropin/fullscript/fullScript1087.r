@@ -13,13 +13,13 @@ Sugar <- seq(64.064,67.9320679320679,length.out=21)
 # constant coefficients for this model
  
 variables <- data.frame(pH,Sugar)
-argumentsPar <- expand.grid(variables)
+argumentsPar <- unique.data.frame(expand.grid(variables))
  
 # heart of the model
 response_surface <- function(pH,Sugar) {
    mumax <-(-50.035+1.409*Sugar-0.010*(Sugar^2)+3.765*pH-0.162*(pH^2)-0.041*Sugar*pH)
 
-return(mumax=mumax)
+	return(mumax=mumax)
 } 
 
 # output parameters
@@ -31,9 +31,10 @@ colnames(responseSurface) <- c(colnames(argumentsPar),'mumax')
 ############################# 
 # start of Visualisation script Gropin ID 1087 
 #############################
-persp(pH,Sugar,matrix(unlist(responseSurface$'mumax'),nrow=21),col = 'green',xlab='pH',ylab='Sugar',zlab='mumax',main='Response surface mumax for
+titleText <-'Response surface _mu_max for
 Zygosaccharomyces rouxii in/on Grape juice _concentrated_
-(gropin ID:1087)',theta=305,phi=20,shade=0.25,ticktype = 'detailed')
+(gropin ID:1087)'
+persp(pH,Sugar,matrix(unlist(responseSurface$'mumax'),nrow=21),col = 'green',xlab='pH',ylab='Sugar',zlab='mumax',main=titleText,theta=305,phi=20,shade=0.25,ticktype = 'detailed')
 #############################
 # End of Visualisation script
 #############################

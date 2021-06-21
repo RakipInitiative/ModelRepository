@@ -14,13 +14,13 @@ a8 <- 0.08419
 a9 <- 1.83963
  
 variables <- data.frame(pH,T,CO2)
-argumentsPar <- expand.grid(variables)
+argumentsPar <- unique.data.frame(expand.grid(variables))
  
 # heart of the model
 response_surface <- function(pH,T,CO2) {
    mumax <-a1+(a2*pH)+(a3*T)+(a4*CO2)+(a5*pH*T)+(a6*pH*CO2)+(a7*T*CO2)+(a8*(T^2))+(a9*(CO2^2))
 
-return(mumax=mumax)
+	return(mumax=mumax)
 } 
 
 # output parameters

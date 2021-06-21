@@ -12,13 +12,13 @@ T <- seq(11.5115,44.2557442557443,length.out=21)
 # constant coefficients for this model
  
 variables <- data.frame(T)
-argumentsPar <- expand.grid(variables)
+argumentsPar <- unique.data.frame(expand.grid(variables))
  
 # heart of the model
 response_surface <- function(T) {
    mumax <-0.633*(T-44.3)*((T-11.5)^2)/(((36.4-11.5)*(T-36.4)-(36.4-44.3)*(36.4+11.5-2*T))*(36.4-11.5))
 
-return(mumax=mumax)
+	return(mumax=mumax)
 } 
 
 # output parameters
@@ -30,10 +30,11 @@ colnames(responseSurface) <- c(colnames(argumentsPar),'lnmumax')
 ############################# 
 # start of Visualisation script Gropin ID 1153 
 #############################
-plot(T,responseSurface$'lnmumax',xlab='T',
-                          ylab='lnmumax',main='Response surface lnmumax for
+titleText <-'Response surface ln_mu_max for
 Clostridium botulinum in/on Ground beef _cooked_
-(gropin ID:1153)')
+(gropin ID:1153)'
+plot(T,responseSurface$'lnmumax',xlab='T',
+                          ylab='lnmumax',main=titleText)
 #############################
 # End of Visualisation script
 #############################

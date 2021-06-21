@@ -13,13 +13,13 @@ aw <- seq(0.96096,0.992007992007992,length.out=21)
 # constant coefficients for this model
  
 variables <- data.frame(pH,aw)
-argumentsPar <- expand.grid(variables)
+argumentsPar <- unique.data.frame(expand.grid(variables))
  
 # heart of the model
 response_surface <- function(pH,aw) {
    mumax <-498.85+(-18.201)*pH+(-876.72)*aw+17.984*pH*aw+0.19199*(pH^2)+381.26*(aw^2)
 
-return(mumax=mumax)
+	return(mumax=mumax)
 } 
 
 # output parameters
@@ -31,9 +31,10 @@ colnames(responseSurface) <- c(colnames(argumentsPar),'mumax')
 ############################# 
 # start of Visualisation script Gropin ID 477 
 #############################
-persp(pH,aw,matrix(unlist(responseSurface$'mumax'),nrow=21),col = 'green',xlab='pH',ylab='aw',zlab='mumax',main='Response surface mumax for
+titleText <-'Response surface _mu_max for
 Listeria monocytogenes in/on Meat _Cooked_
-(gropin ID:477)',theta=305,phi=20,shade=0.25,ticktype = 'detailed')
+(gropin ID:477)'
+persp(pH,aw,matrix(unlist(responseSurface$'mumax'),nrow=21),col = 'green',xlab='pH',ylab='aw',zlab='mumax',main=titleText,theta=305,phi=20,shade=0.25,ticktype = 'detailed')
 #############################
 # End of Visualisation script
 #############################

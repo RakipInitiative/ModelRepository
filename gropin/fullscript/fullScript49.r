@@ -19,13 +19,13 @@ a4 <- 0.00072
 a5 <- -0.1
  
 variables <- data.frame(T,pH)
-argumentsPar <- expand.grid(variables)
+argumentsPar <- unique.data.frame(expand.grid(variables))
  
 # heart of the model
 response_surface <- function(T,pH) {
    mumax <-(a0+(a1*T)+(a2*pH)+(a3*(T^2))+(a4*T*pH)+(a5*(pH^2)))
 
-return(mumax=mumax)
+	return(mumax=mumax)
 } 
 
 # output parameters
@@ -37,9 +37,10 @@ colnames(responseSurface) <- c(colnames(argumentsPar),'lnmumax')
 ############################# 
 # start of Visualisation script Gropin ID 49 
 #############################
-persp(T,pH,matrix(unlist(responseSurface$'lnmumax'),nrow=21),col = 'green',xlab='T',ylab='pH',zlab='lnmumax',main='Response surface lnmumax for
+titleText <-'Response surface ln_mu_max for
 Escherichia coli O157:H7 in/on Brain Heart Infusion agar
-(gropin ID:49)',theta=305,phi=20,shade=0.25,ticktype = 'detailed')
+(gropin ID:49)'
+persp(T,pH,matrix(unlist(responseSurface$'lnmumax'),nrow=21),col = 'green',xlab='T',ylab='pH',zlab='lnmumax',main=titleText,theta=305,phi=20,shade=0.25,ticktype = 'detailed')
 #############################
 # End of Visualisation script
 #############################

@@ -13,13 +13,13 @@ PL_SDAmix <- seq(0,2.997002997003,length.out=21)
 # constant coefficients for this model
  
 variables <- data.frame(T,PL_SDAmix)
-argumentsPar <- expand.grid(variables)
+argumentsPar <- unique.data.frame(expand.grid(variables))
  
 # heart of the model
 response_surface <- function(T,PL_SDAmix) {
    mumax <-7.7668-0.4074*T+0.5026*PL_SDAmix+0.0016*T*PL_SDAmix+0.0063*(T^2)-0.0601*(PL_SDAmix^2)
 
-return(mumax=mumax)
+	return(mumax=mumax)
 } 
 
 # output parameters
@@ -31,9 +31,10 @@ colnames(responseSurface) <- c(colnames(argumentsPar),'lnmumax')
 ############################# 
 # start of Visualisation script Gropin ID 1128 
 #############################
-persp(T,PL_SDAmix,matrix(unlist(responseSurface$'lnmumax'),nrow=21),col = 'green',xlab='T',ylab='PL_SDAmix',zlab='lnmumax',main='Response surface lnmumax for
+titleText <-'Response surface ln_mu_max for
 Salmonella Typhimurium in/on RTE pork
-(gropin ID:1128)',theta=305,phi=20,shade=0.25,ticktype = 'detailed')
+(gropin ID:1128)'
+persp(T,PL_SDAmix,matrix(unlist(responseSurface$'lnmumax'),nrow=21),col = 'green',xlab='T',ylab='PL_SDAmix',zlab='lnmumax',main=titleText,theta=305,phi=20,shade=0.25,ticktype = 'detailed')
 #############################
 # End of Visualisation script
 #############################

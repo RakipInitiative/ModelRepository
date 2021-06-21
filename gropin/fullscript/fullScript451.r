@@ -12,13 +12,13 @@ CO2 <- seq(25.025,99.9000999000999,length.out=21)
 # constant coefficients for this model
  
 variables <- data.frame(CO2)
-argumentsPar <- expand.grid(variables)
+argumentsPar <- unique.data.frame(expand.grid(variables))
  
 # heart of the model
 response_surface <- function(CO2) {
    mumax <-sqrt(118*(CO2+0.007))
 
-return(mumax=mumax)
+	return(mumax=mumax)
 } 
 
 # output parameters
@@ -30,10 +30,11 @@ colnames(responseSurface) <- c(colnames(argumentsPar),'mumax')
 ############################# 
 # start of Visualisation script Gropin ID 451 
 #############################
-plot(CO2,responseSurface$'mumax',xlab='CO2',
-                          ylab='mumax',main='Response surface mumax for
+titleText <-'Response surface _mu_max for
 Listeria innocua in/on nutrient agar surface
-(gropin ID:451)')
+(gropin ID:451)'
+plot(CO2,responseSurface$'mumax',xlab='CO2',
+                          ylab='mumax',main=titleText)
 #############################
 # End of Visualisation script
 #############################

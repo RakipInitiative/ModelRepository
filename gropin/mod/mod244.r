@@ -15,13 +15,13 @@ axbw <- 0.358186
 aybw <- -2.93541
  
 variables <- data.frame(T,pH,aw)
-argumentsPar <- expand.grid(variables)
+argumentsPar <- unique.data.frame(expand.grid(variables))
  
 # heart of the model
 response_surface <- function(T,pH,aw) {
    mumax <-a0+(ax*T)+(ax2*(T^2))+(ay*pH)+(ay2*(pH^2))+(abw*sqrt(1-aw))+(abw2*(sqrt(1-aw)^2))+(axy*T*pH)+(axbw*T*sqrt(1-aw))+(aybw*pH*sqrt(1-aw))
 
-return(mumax=mumax)
+	return(mumax=mumax)
 } 
 
 # output parameters

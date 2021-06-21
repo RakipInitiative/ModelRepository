@@ -62,17 +62,17 @@ ongoing transfer, currently focussing on growth models, details see TODO
 * fragen
 ### Gropin
 * 3 and more parameter models
+  * 3 variables testing - DONE
   * create generic visualisation combi plot of 3 randomly chosen pairs of variables-DONE
-  * create additional simulation parameter set: point estimates of Par
+  * create additional simulation parameter set: point estimates of Par -DONE
     * edit sim.sedml and add new simulation 
-    * add to comment section: range of variables
-    * remove fixed solution
-    * remove _start,_end solution -> array stays!
+    * remove fixed solution - DONE
+    * remove _start,_end solution -> array stays! - DONE
   * default resolution dependent nrOfVariables ceil(nrOfVariables_throot(max(21*21))) (R package pracma::nth_root) - DONE
-  * comment readme about Rechenzeit with full resolution
+  * comment readme about Rechenzeit with full resolution - DONE
   * add generic visualisation script as comment for data from secondary model
   * joiner workflow als beispiel (Petra?)
-  * check for sqrt/ln/lin mumax as is?
+  * check for sqrt/ln/lin mumax as is? - DONE
 * units:
   * create database for units of variables: T in C, CO2 in g, a.s.o. - created, but not filled with correct information, support needed!
   * meta data needs to be adapted for each microorganism separately - open question
@@ -110,7 +110,7 @@ parameter set
   * list of authors incomplete - FIXED
   * Mode_time2multiply: lagTime, logIncrease - DONE
   * Mode_kinetic: logN0, lagTime, logNEnd, simTime - DONE 
-    * implemented Baranyi model version of gropin
+    * implemented Baranyi model version of gropin - DONE
   * developed knime workflow for creating fskx files from script and md schema
   * wrote editing script for fskx files to fix Creation Date & Reference Bug of FSK Creator
   * uploaded 1-&2-Parameter growth models to server

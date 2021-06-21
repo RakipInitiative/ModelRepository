@@ -20,13 +20,13 @@ Tmax <- 45.06
 mopt <- 2.635
  
 variables <- data.frame(pH,T)
-argumentsPar <- expand.grid(variables)
+argumentsPar <- unique.data.frame(expand.grid(variables))
  
 # heart of the model
 response_surface <- function(pH,T) {
    mumax <-2.635*(((pH-pHmin)*(pH-pHmax)/(((pH-pHmin)*(pH-pHmax))-(pH-pHopt)^2)))*((T-Tmax)*(T-Tmin)^2)/((Topt-Tmin)*((Topt-Tmin)*(T-Topt)-(Topt-Tmax)*(Topt+Tmin-2*T)))
 
-return(mumax=mumax)
+	return(mumax=mumax)
 } 
 
 # output parameters
@@ -38,9 +38,10 @@ colnames(responseSurface) <- c(colnames(argumentsPar),'mumax')
 ############################# 
 # start of Visualisation script Gropin ID 235 
 #############################
-persp(pH,T,matrix(unlist(responseSurface$'mumax'),nrow=21),col = 'green',xlab='pH',ylab='T',zlab='mumax',main='Response surface mumax for
+titleText <-'Response surface _mu_max for
 Escherichia coli O157:H7 in/on Nutrient broth
-(gropin ID:235)',theta=305,phi=20,shade=0.25,ticktype = 'detailed')
+(gropin ID:235)'
+persp(pH,T,matrix(unlist(responseSurface$'mumax'),nrow=21),col = 'green',xlab='pH',ylab='T',zlab='mumax',main=titleText,theta=305,phi=20,shade=0.25,ticktype = 'detailed')
 #############################
 # End of Visualisation script
 #############################

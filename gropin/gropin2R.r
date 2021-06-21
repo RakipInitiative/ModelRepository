@@ -60,7 +60,7 @@ datatypeOfOutputPar <- c("Matrix[number,number]")
 ###################################################
 # finding weird models with lots of exceptions
 # than one wants to exclude until further notice
-listOfNonfunctioningModels <- c(263,264)
+listOfNonfunctioningModels <- c(263,264,28,128,331,332)
 ################################################################################
 
 ###################################################
@@ -364,8 +364,11 @@ allVariables <- as.character(data.frame(existingVariables)$Var1)
 # END PART ONE: Preprocessing 
 ################################################################################
 #run <- 61
-run <- 254
-
+#run <- 254
+#run <- 482
+#run <- 22
+#run <- 28
+#run <- 1
 
 ################################################################################
 # START PART TWO: creating scripts
@@ -375,7 +378,7 @@ nrModels <- dim(growthModels)[1]
 #initialising
 model2Vars <- NA
 
-#for(run in 1:nrModels){
+for(run in 1:nrModels){
   
   # exlude model from conversion any model given in list above
   if(growthModels$ModelID[run] %in% listOfNonfunctioningModels) {
@@ -413,20 +416,20 @@ model2Vars <- NA
  
   #collecting unique variables from models with less than 3 variables
   # for 1st extension step, adding metadata info to those 2-variable models
-  if(nrOfVariables<3){
-    print("already done")
-    next
-  }
-  if(nrOfVariables==3){
+  # if(nrOfVariables<4){
+  #   print("already done")
+  #   next
+  # }
+  if(nrOfVariables>=3){
     model2Vars <- append(model2Vars,myVarNames)
   }
   
   
-  # extension step 1: transfer growth models with 1&2 variables only
-  if(nrOfVariables>3){
-    print("wait for extension step 3")
-    next
-  }
+  # placeholder for different stages
+#  if(nrOfVariables>6){
+ #   print("wait for extension step 3")
+  #  next
+  #}
   
   # note that few models have zeros in rare cases 
   # in the denominator of a fraction term
@@ -653,13 +656,14 @@ model2Vars <- NA
                                            as.character(growthModels$ModelID[run]),
                                            ")'"))
   
-  if (nrOfVariables==3) {
+  if (nrOfVariables>=3) {
     
     # for models with 3 or more variables, a special visualisation was devised:
     # 3 plots of the first 3 variables are combined into 1 plot
     varPairs <- combn(myVarNames[!is.na(myVarNames)],2)
     
     for(par in 1:3) {
+      
       myVisScript <- append(myVisScript,paste0("argPar",
                                                par,
                                                " <- unique.data.frame(expand.grid(",
@@ -669,35 +673,87 @@ model2Vars <- NA
                                                "))"))
     }
     
-    
-    myVisScript <- append(myVisScript,paste0("z1 <- matrix(unlist(response_surface(argPar1[1],argPar1[2],",
-                                             myVarNames[3],
-                                             "[",
-                                             1,
-                                             "])),nrow=",
-                                             lenOfVarVec[nrOfVariables],
-                                             ")"))
+    for(par in 1:3) {
 
-    myVisScript <- append(myVisScript,paste0("z2 <- matrix(unlist(response_surface(argPar2[1],",
-                                             myVarNames[2],
-                                             "[",
-                                             1,
-                                             "],argPar2[2])),nrow=",
-                                             lenOfVarVec[nrOfVariables],
-                                             ")"))
-    myVisScript <- append(myVisScript,paste0("z3 <- matrix(unlist(response_surface(",
-                                             myVarNames[1],
-                                             "[",
-                                             1,
-                                             "],argPar3[1],argPar3[2])),nrow=",
-                                             lenOfVarVec[nrOfVariables],
-                                             ")"))
+      # get axis of point values
+      missingVar <- myVarNames[is.na(match(myVarNames[!is.na(myVarNames)],varPairs[,par]))]
+      missingVar <- missingVar[!is.na(missingVar)]
+      
+      myVisScript <- append(myVisScript,paste0("z",
+                                               par,
+                                               " <- matrix(unlist(response_surface(",
+                                               varPairs[1,par],
+                                               " = argPar",
+                                               par,
+                                               "[1],",
+                                               varPairs[2,par],
+                                               " = argPar",
+                                               par,
+                                               "[2],",
+                                               paste0(missingVar," = ",missingVar,"[",1,"]",collapse=','),
+                                               ")),nrow=",
+                                               lenOfVarVec[nrOfVariables],
+                                               ")"))
+    }
+
+  #  if(nrOfVariables==3){
+      # myVisScript <- append(myVisScript,paste0("z2 <- matrix(unlist(response_surface(argPar2[1],",
+      #                                          myVarNames[2],
+      #                                          "[",
+      #                                          1,
+      #                                          "],argPar2[2])),nrow=",
+      #                                          lenOfVarVec[nrOfVariables],
+      #                                          ")"))
+      # myVisScript <- append(myVisScript,paste0("z3 <- matrix(unlist(response_surface(",
+      #                                          myVarNames[1],
+      #                                          "[",
+      #                                          1,
+      #                                          "],argPar3[1],argPar3[2])),nrow=",
+      #                                          lenOfVarVec[nrOfVariables],
+      #                                          ")"))
+   # }
+    # if(nrOfVariables>3) {
+    #   myVisScript <- append(myVisScript,paste0("z2 <- matrix(unlist(response_surface(argPar2[1],",
+    #                                            myVarNames[2],
+    #                                            "[",
+    #                                            1,
+    #                                            "],argPar2[2],",
+    #                                            paste0(myVarNames[4:nrOfVariables],"[",1,"]",collapse=','),
+    #                                            ")),nrow=",
+    #                                            lenOfVarVec[nrOfVariables],
+    #                                            ")"))
+    #   myVisScript <- append(myVisScript,paste0("z3 <- matrix(unlist(response_surface(",
+    #                                            myVarNames[1],
+    #                                            "[",
+    #                                            1,
+    #                                            "],argPar3[1],argPar3[2],",
+    #                                            paste0(myVarNames[4:nrOfVariables],"[",1,"]",collapse=','),
+    #                                            ")),nrow=",
+    #                                            lenOfVarVec[nrOfVariables],
+    #                                            ")"))
+    # }
+    
+    myVisScript <- append(myVisScript,"# adding precaution if response surface is zero")
+    for(par in 1:3) {
+      myVisScript <- append(myVisScript,paste0("myZLim",
+                                               par,
+                                               " <- range(z",
+                                               par,
+                                               ")"))
+      
+      myVisScript <- append(myVisScript,paste0("if(myZLim",
+                                               par,
+                                               "[1] == myZLim",
+                                               par,
+                                               "[2]) myZLim",
+                                               par,
+                                               "[2] <- myZLim",
+                                               par,
+                                               "[2]+1"))
+    }
+    
     myVisScript <- append(myVisScript,paste0("if(length(",
-                                             myVarNames[1],
-                                             ")>1 & length(",
-                                             myVarNames[2],
-                                             ")>1 & length(",
-                                             myVarNames[3],
+                                             paste0(myVarNames[1:nrOfVariables],collapse = ")>1 & length("),
                                              ")>1) {"))
     myVisScript <- append(myVisScript,"\tpar(mfrow = c(1,3))")
     
@@ -714,22 +770,41 @@ model2Vars <- NA
                                                varPairs[2,par],
                                                "',zlab='",
                                                gsub("[[:punct:]]","_",as.character(growthModels$mumax[run])),
-                                               "',theta=305,phi=20,shade=0.25,ticktype = 'detailed')"))
+                                               "',zlim=myZLim",
+                                               par,
+                                               ",theta=305,phi=20,shade=0.25,ticktype = 'detailed')"))
     }
     myVisScript <- append(myVisScript,paste0("\tmtext(titleText,outer=T,  cex=1.2, line=-8.5, side=3)"))
     myVisScript <- append(myVisScript,"} else {")
+
+    myVisScript <- append(myVisScript,paste0("\t\tmyPars <- unique.data.frame(expand.grid(",
+                                             paste0(myVarNames[!is.na(myVarNames)], collapse = ','),
+                                             "))"))
+    myVisScript <- append(myVisScript,paste0("\t\tmyZ <-",
+                                             "matrix(unlist(response_surface(",
+                                             paste0("myPars[,",1:nrOfVariables,"]",collapse = ','),
+                                             ")),nrow=",
+                                             lenOfVarVec[nrOfVariables],
+                                             ")"))
+    myVisScript <- append(myVisScript,"\t\tmyZLim <- range(myZ)")
     
-    for(par in 1:3) {
-      missingVar <- myVarNames[is.na(match(myVarNames[!is.na(myVarNames)],varPairs[,par]))][1]
+    myVisScript <- append(myVisScript,"if(myZLim[1] == myZLim[2]) myZLim[2] <- myZLim[2]+1")
+    
+        
+    nrOfPermutations <- dim(varPairs)[2]
+    for(par in 1:nrOfPermutations) {
+      # getting the variable names which are not a vector
+      missingVar <- myVarNames[is.na(match(myVarNames[!is.na(myVarNames)],varPairs[,par]))]
+      missingVar <- missingVar[!is.na(missingVar)]
+      
       myVisScript <- append(myVisScript,paste0("\tif(length(",
-                                               missingVar,
+                                               paste0(missingVar,collapse = ')==1 & length('),
                                                ")==1) {"))
       myVisScript <- append(myVisScript,paste0("\t\tpersp(",
                                                varPairs[1,par],
                                                ",",
                                                varPairs[2,par],
-                                               ",z",
-                                               par,
+                                               ",myZ",
                                                ",col = 'green',xlab='",
                                                varPairs[1,par],
                                                "',ylab='",
@@ -738,12 +813,11 @@ model2Vars <- NA
                                                gsub("[[:punct:]]","_",as.character(growthModels$mumax[run])),
                                                "',main=titleText,sub=",
                                                paste0("paste('other variable: ",
-                                                      missingVar,
-                                                      " =',",
-                                                      missingVar,
+                                                      paste0(missingVar," =',round(",missingVar,",digits = 2)",collapse = ", '"),
                                                       ")"),
+                                               ",zlim=myZLim",
                                                ",theta=305,phi=20,shade=0.25,ticktype = 'detailed')"))
-    myVisScript <- append(myVisScript,"\t}")
+      myVisScript <- append(myVisScript,"\t}")
     }
     myVisScript <- append(myVisScript,"}")
   }
@@ -795,7 +869,7 @@ model2Vars <- NA
   
   # mandatory fields
   #Name of the Model
-  MetaData$Data[1] <-paste("Gropin growth model for",
+  MetaData$Data[1] <-paste("Gropin secondary growth model for",
                            as.character(growthModels$Microorganism[run]),
                            "in/on",
                            as.character(growthModels$Product[run]),
@@ -816,7 +890,7 @@ model2Vars <- NA
   MetaData$Data[26] <-"R 3"
   
   # Model Category
-  MetaData$Data[27] <-"QRA model"
+  MetaData$Data[27] <-"Predictive"
   
   # Objective
   DependentVariable <- "mu_max"
@@ -993,6 +1067,6 @@ model2Vars <- NA
   fileNameSchema <- paste0(subfolderSchemaScript,"/metadataschema",growthModels$ModelID[run],".xlsx")
   write_xlsx(list("Generic Metadata Schema"=MetaData),path=fileNameSchema)
   print(paste("done with Model Nr.",growthModels$ModelID[run]))
-#}
+}
 
 all2VarModels <- as.character(data.frame(table(model2Vars))$model2Vars)

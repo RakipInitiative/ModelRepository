@@ -12,13 +12,13 @@ T <- seq(4.004,27.972027972028,length.out=21)
 # constant coefficients for this model
  
 variables <- data.frame(T)
-argumentsPar <- expand.grid(variables)
+argumentsPar <- unique.data.frame(expand.grid(variables))
  
 # heart of the model
 response_surface <- function(T) {
    mumax <-9.90*(10^-3)*(T+17.5)
 
-return(mumax=mumax)
+	return(mumax=mumax)
 } 
 
 # output parameters
@@ -30,10 +30,11 @@ colnames(responseSurface) <- c(colnames(argumentsPar),'Sqrmumax')
 ############################# 
 # start of Visualisation script Gropin ID 1312 
 #############################
-plot(T,responseSurface$'Sqrmumax',xlab='T',
-                          ylab='Sqrmumax',main='Response surface Sqrmumax for
+titleText <-'Response surface Sqr_mu_max for
 Pseudomonas spp. in/on Button mushroom _Agaricus bisporus_
-(gropin ID:1312)')
+(gropin ID:1312)'
+plot(T,responseSurface$'Sqrmumax',xlab='T',
+                          ylab='Sqrmumax',main=titleText)
 #############################
 # End of Visualisation script
 #############################

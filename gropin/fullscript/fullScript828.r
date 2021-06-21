@@ -20,13 +20,13 @@ Tmax <- 55.68
 mopt <- 1.035
  
 variables <- data.frame(pH,T)
-argumentsPar <- expand.grid(variables)
+argumentsPar <- unique.data.frame(expand.grid(variables))
  
 # heart of the model
 response_surface <- function(pH,T) {
    mumax <-1.035*((pH-pHmax)*(pH-pHmin)/((pHopt-pHmin)*(pH-pHopt)-(pHopt-pHmax)*(pHmin-pH)))*((T-Tmax)*((T-Tmin)^2)/((Topt-Tmin)*((Topt-Tmin)*(T-Topt)-(Topt-Tmax)*(Topt+Tmin-2*T))))
 
-return(mumax=mumax)
+	return(mumax=mumax)
 } 
 
 # output parameters
@@ -38,9 +38,10 @@ colnames(responseSurface) <- c(colnames(argumentsPar),'mumax')
 ############################# 
 # start of Visualisation script Gropin ID 828 
 #############################
-persp(pH,T,matrix(unlist(responseSurface$'mumax'),nrow=21),col = 'green',xlab='pH',ylab='T',zlab='mumax',main='Response surface mumax for
+titleText <-'Response surface _mu_max for
 Alicyclobacillus acidoterrestris in/on Fruit drinks
-(gropin ID:828)',theta=305,phi=20,shade=0.25,ticktype = 'detailed')
+(gropin ID:828)'
+persp(pH,T,matrix(unlist(responseSurface$'mumax'),nrow=21),col = 'green',xlab='pH',ylab='T',zlab='mumax',main=titleText,theta=305,phi=20,shade=0.25,ticktype = 'detailed')
 #############################
 # End of Visualisation script
 #############################

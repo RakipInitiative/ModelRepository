@@ -5,13 +5,13 @@
 # constant coefficients for this model
  
 variables <- data.frame(CO2,NaCl,NaNO2)
-argumentsPar <- expand.grid(variables)
+argumentsPar <- unique.data.frame(expand.grid(variables))
  
 # heart of the model
 response_surface <- function(CO2,NaCl,NaNO2) {
    mumax <-5.6+50*CO2*NaNO2+21*(NaCl^2)
 
-return(mumax=mumax)
+	return(mumax=mumax)
 } 
 
 # output parameters

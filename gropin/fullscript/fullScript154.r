@@ -1,9 +1,9 @@
 #############################
 # start of Parameter script
 #############################
-T <- seq(4.004,11.988011988012,length.out=21)
-aw <- seq(0.961038961038961,0.986986,length.out=21)
-CO2_dissolved_ <- seq(0,2408.59140859141,length.out=21)
+T <- seq(4.004,11.988011988012,length.out=10)
+aw <- seq(0.961038961038961,0.986986,length.out=10)
+CO2_dissolved_ <- seq(0,2408.59140859141,length.out=10)
 #############################
 # end of Parameter script
 #############################
@@ -24,13 +24,13 @@ l8 <- 495
 l9 <- -0.16
  
 variables <- data.frame(T,aw,CO2_dissolved_)
-argumentsPar <- expand.grid(variables)
+argumentsPar <- unique.data.frame(expand.grid(variables))
  
 # heart of the model
 response_surface <- function(T,aw,CO2_dissolved_) {
    mumax <-(l+(l1*T)+(l2*CO2_dissolved_)+(l3*aw)+(l4*(T^2))+(l5*(CO2_dissolved_^2))+(l6*(aw^2))+(l7*T*CO2_dissolved_)+(l8*T*aw)+(l9*CO2_dissolved_*aw))
 
-return(mumax=mumax)
+	return(mumax=mumax)
 } 
 
 # output parameters
@@ -42,19 +42,43 @@ colnames(responseSurface) <- c(colnames(argumentsPar),'mumax')
 ############################# 
 # start of Visualisation script Gropin ID 154 
 #############################
-argPar1 <- expand.grid(T,aw)
-argPar2 <- expand.grid(T,CO2_dissolved_)
-argPar3 <- expand.grid(aw,CO2_dissolved_)
-z1 <- matrix(unlist(response_surface(argPar1[1],argPar1[2],CO2_dissolved_[10])),nrow=21)
-z2 <- matrix(unlist(response_surface(argPar2[1],aw[10],argPar2[2])),nrow=21)
-z3 <- matrix(unlist(response_surface(T[10],argPar3[1],argPar3[2])),nrow=21)
-par(mfrow = c(1,3))
-persp(T,aw,z1,col = 'green',xlab='T',ylab='aw',zlab='_mu_max',theta=305,phi=20,shade=0.25,ticktype = 'detailed')
-persp(T,CO2_dissolved_,z2,col = 'green',xlab='T',ylab='CO2_dissolved_',zlab='_mu_max',theta=305,phi=20,shade=0.25,ticktype = 'detailed')
-persp(aw,CO2_dissolved_,z3,col = 'green',xlab='aw',ylab='CO2_dissolved_',zlab='_mu_max',theta=305,phi=20,shade=0.25,ticktype = 'detailed')
-mtext('Response surface _mu_max for
+titleText <-'Response surface _mu_max for
 Lactobacillus sake in/on Cooked meat model _in modified BHI_
-(gropin ID:154)',outer=T,  cex=1.5, line=-8.5, side=3)
+(gropin ID:154)'
+argPar1 <- unique.data.frame(expand.grid(T,aw))
+argPar2 <- unique.data.frame(expand.grid(T,CO2_dissolved_))
+argPar3 <- unique.data.frame(expand.grid(aw,CO2_dissolved_))
+z1 <- matrix(unlist(response_surface(T = argPar1[1],aw = argPar1[2],CO2_dissolved_ = CO2_dissolved_[1])),nrow=10)
+z2 <- matrix(unlist(response_surface(T = argPar2[1],CO2_dissolved_ = argPar2[2],aw = aw[1])),nrow=10)
+z3 <- matrix(unlist(response_surface(aw = argPar3[1],CO2_dissolved_ = argPar3[2],T = T[1])),nrow=10)
+# adding precaution if response surface is zero
+myZLim1 <- range(z1)
+if(myZLim1[1] == myZLim1[2]) myZLim1[2] <- myZLim1[2]+1
+myZLim2 <- range(z2)
+if(myZLim2[1] == myZLim2[2]) myZLim2[2] <- myZLim2[2]+1
+myZLim3 <- range(z3)
+if(myZLim3[1] == myZLim3[2]) myZLim3[2] <- myZLim3[2]+1
+if(length(T)>1 & length(aw)>1 & length(CO2_dissolved_)>1) {
+	par(mfrow = c(1,3))
+	persp(T,aw,z1,col = 'green',xlab='T',ylab='aw',zlab='_mu_max',zlim=myZLim1,theta=305,phi=20,shade=0.25,ticktype = 'detailed')
+	persp(T,CO2_dissolved_,z2,col = 'green',xlab='T',ylab='CO2_dissolved_',zlab='_mu_max',zlim=myZLim2,theta=305,phi=20,shade=0.25,ticktype = 'detailed')
+	persp(aw,CO2_dissolved_,z3,col = 'green',xlab='aw',ylab='CO2_dissolved_',zlab='_mu_max',zlim=myZLim3,theta=305,phi=20,shade=0.25,ticktype = 'detailed')
+	mtext(titleText,outer=T,  cex=1.2, line=-8.5, side=3)
+} else {
+		myPars <- unique.data.frame(expand.grid(T,aw,CO2_dissolved_))
+		myZ <-matrix(unlist(response_surface(myPars[,1],myPars[,2],myPars[,3])),nrow=10)
+		myZLim <- range(myZ)
+if(myZLim[1] == myZLim[2]) myZLim[2] <- myZLim[2]+1
+	if(length(CO2_dissolved_)==1) {
+		persp(T,aw,myZ,col = 'green',xlab='T',ylab='aw',zlab='_mu_max',main=titleText,sub=paste('other variable: CO2_dissolved_ =',round(CO2_dissolved_,digits = 2)),zlim=myZLim,theta=305,phi=20,shade=0.25,ticktype = 'detailed')
+	}
+	if(length(aw)==1) {
+		persp(T,CO2_dissolved_,myZ,col = 'green',xlab='T',ylab='CO2_dissolved_',zlab='_mu_max',main=titleText,sub=paste('other variable: aw =',round(aw,digits = 2)),zlim=myZLim,theta=305,phi=20,shade=0.25,ticktype = 'detailed')
+	}
+	if(length(T)==1) {
+		persp(aw,CO2_dissolved_,myZ,col = 'green',xlab='aw',ylab='CO2_dissolved_',zlab='_mu_max',main=titleText,sub=paste('other variable: T =',round(T,digits = 2)),zlim=myZLim,theta=305,phi=20,shade=0.25,ticktype = 'detailed')
+	}
+}
 #############################
 # End of Visualisation script
 #############################

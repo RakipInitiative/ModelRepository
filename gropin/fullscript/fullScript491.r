@@ -12,13 +12,13 @@ T <- seq(4.004,15.984015984016,length.out=21)
 # constant coefficients for this model
  
 variables <- data.frame(T)
-argumentsPar <- expand.grid(variables)
+argumentsPar <- unique.data.frame(expand.grid(variables))
  
 # heart of the model
 response_surface <- function(T) {
    mumax <-0.061*(T-1.76)
 
-return(mumax=mumax)
+	return(mumax=mumax)
 } 
 
 # output parameters
@@ -30,10 +30,11 @@ colnames(responseSurface) <- c(colnames(argumentsPar),'Sqrmumax')
 ############################# 
 # start of Visualisation script Gropin ID 491 
 #############################
-plot(T,responseSurface$'Sqrmumax',xlab='T',
-                          ylab='Sqrmumax',main='Response surface Sqrmumax for
+titleText <-'Response surface Sqr_mu_max for
 Escherichia coli O157:H7 in/on Lettuce salad
-(gropin ID:491)')
+(gropin ID:491)'
+plot(T,responseSurface$'Sqrmumax',xlab='T',
+                          ylab='Sqrmumax',main=titleText)
 #############################
 # End of Visualisation script
 #############################

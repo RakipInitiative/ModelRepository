@@ -16,13 +16,13 @@ awmin <- 0.9561
 Tmin <- -8.1
  
 variables <- data.frame(T,aw)
-argumentsPar <- expand.grid(variables)
+argumentsPar <- unique.data.frame(expand.grid(variables))
  
 # heart of the model
 response_surface <- function(T,aw) {
    mumax <-(a*(aw-awmin)*((T-Tmin)^2))
 
-return(mumax=mumax)
+	return(mumax=mumax)
 } 
 
 # output parameters
@@ -34,9 +34,10 @@ colnames(responseSurface) <- c(colnames(argumentsPar),'mumax')
 ############################# 
 # start of Visualisation script Gropin ID 149 
 #############################
-persp(T,aw,matrix(unlist(responseSurface$'mumax'),nrow=21),col = 'green',xlab='T',ylab='aw',zlab='mumax',main='Response surface mumax for
+titleText <-'Response surface _mu_max for
 Lactobacillus sake in/on Cooked meat model _in modified BHI_
-(gropin ID:149)',theta=305,phi=20,shade=0.25,ticktype = 'detailed')
+(gropin ID:149)'
+persp(T,aw,matrix(unlist(responseSurface$'mumax'),nrow=21),col = 'green',xlab='T',ylab='aw',zlab='mumax',main=titleText,theta=305,phi=20,shade=0.25,ticktype = 'detailed')
 #############################
 # End of Visualisation script
 #############################

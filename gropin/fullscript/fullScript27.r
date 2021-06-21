@@ -16,13 +16,13 @@ awmin <- 0.974
 Tmin <- -0.48499999999999999
  
 variables <- data.frame(T,aw)
-argumentsPar <- expand.grid(variables)
+argumentsPar <- unique.data.frame(expand.grid(variables))
  
 # heart of the model
 response_surface <- function(T,aw) {
    mumax <-(1/(c*sqrt(aw-awmin)*(T-Tmin)))
 
-return(mumax=mumax)
+	return(mumax=mumax)
 } 
 
 # output parameters
@@ -34,9 +34,10 @@ colnames(responseSurface) <- c(colnames(argumentsPar),'Sqrmumax')
 ############################# 
 # start of Visualisation script Gropin ID 27 
 #############################
-persp(T,aw,matrix(unlist(responseSurface$'Sqrmumax'),nrow=21),col = 'green',xlab='T',ylab='aw',zlab='Sqrmumax',main='Response surface Sqrmumax for
+titleText <-'Response surface Sqr_mu_max for
 Aeromonas hydrophila in/on modified BHI
-(gropin ID:27)',theta=305,phi=20,shade=0.25,ticktype = 'detailed')
+(gropin ID:27)'
+persp(T,aw,matrix(unlist(responseSurface$'Sqrmumax'),nrow=21),col = 'green',xlab='T',ylab='aw',zlab='Sqrmumax',main=titleText,theta=305,phi=20,shade=0.25,ticktype = 'detailed')
 #############################
 # End of Visualisation script
 #############################

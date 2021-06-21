@@ -13,13 +13,13 @@ CO2 <- seq(0,14.985014985015,length.out=21)
 # constant coefficients for this model
  
 variables <- data.frame(O2,CO2)
-argumentsPar <- expand.grid(variables)
+argumentsPar <- unique.data.frame(expand.grid(variables))
  
 # heart of the model
 response_surface <- function(O2,CO2) {
    mumax <-3.23-0.016*O2+0.051*CO2
 
-return(mumax=mumax)
+	return(mumax=mumax)
 } 
 
 # output parameters
@@ -31,9 +31,10 @@ colnames(responseSurface) <- c(colnames(argumentsPar),'lnmumax')
 ############################# 
 # start of Visualisation script Gropin ID 1275 
 #############################
-persp(O2,CO2,matrix(unlist(responseSurface$'lnmumax'),nrow=21),col = 'green',xlab='O2',ylab='CO2',zlab='lnmumax',main='Response surface lnmumax for
+titleText <-'Response surface ln_mu_max for
 Pseudomonas fluorescens in/on Lettuce_fresh-cut butterhead_
-(gropin ID:1275)',theta=305,phi=20,shade=0.25,ticktype = 'detailed')
+(gropin ID:1275)'
+persp(O2,CO2,matrix(unlist(responseSurface$'lnmumax'),nrow=21),col = 'green',xlab='O2',ylab='CO2',zlab='lnmumax',main=titleText,theta=305,phi=20,shade=0.25,ticktype = 'detailed')
 #############################
 # End of Visualisation script
 #############################

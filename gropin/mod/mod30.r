@@ -15,13 +15,13 @@ I8 <- 34
 I9 <- -0.46
  
 variables <- data.frame(T,aw,CO2_dissolved_)
-argumentsPar <- expand.grid(variables)
+argumentsPar <- unique.data.frame(expand.grid(variables))
  
 # heart of the model
 response_surface <- function(T,aw,CO2_dissolved_) {
    mumax <-(Il+(I1*T)+(I2*CO2_dissolved_)+(I3*aw)+(I4*(T^2))+(I5*(CO2_dissolved_^2))+(I6*(aw^2))+(I7*T*CO2_dissolved_)+(I8*T*aw)+(I9*CO2_dissolved_*aw))
 
-return(mumax=mumax)
+	return(mumax=mumax)
 } 
 
 # output parameters

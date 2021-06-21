@@ -16,13 +16,13 @@ b2 <- 4.01
 c1 <- 0.032
  
 variables <- data.frame(pH)
-argumentsPar <- expand.grid(variables)
+argumentsPar <- unique.data.frame(expand.grid(variables))
  
 # heart of the model
 response_surface <- function(pH) {
    mumax <-b2*((pH-pHmin)*(1-exp(c1*(pH-pHmax))))^2
 
-return(mumax=mumax)
+	return(mumax=mumax)
 } 
 
 # output parameters
@@ -34,10 +34,11 @@ colnames(responseSurface) <- c(colnames(argumentsPar),'mumax')
 ############################# 
 # start of Visualisation script Gropin ID 233 
 #############################
-plot(pH,responseSurface$'mumax',xlab='pH',
-                          ylab='mumax',main='Response surface mumax for
+titleText <-'Response surface _mu_max for
 Listeria monocytogenes in/on Nutrient broth
-(gropin ID:233)')
+(gropin ID:233)'
+plot(pH,responseSurface$'mumax',xlab='pH',
+                          ylab='mumax',main=titleText)
 #############################
 # End of Visualisation script
 #############################

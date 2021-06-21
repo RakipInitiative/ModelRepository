@@ -13,13 +13,13 @@ pH <- seq(5.2052,6.39360639360639,length.out=21)
 # constant coefficients for this model
  
 variables <- data.frame(T,pH)
-argumentsPar <- expand.grid(variables)
+argumentsPar <- unique.data.frame(expand.grid(variables))
  
 # heart of the model
 response_surface <- function(T,pH) {
    mumax <-exp(-12.65+0.004234*(T^2)-0.3024*(pH^2)+0.01535*T*pH-0.004356*T+3.467*pH)
 
-return(mumax=mumax)
+	return(mumax=mumax)
 } 
 
 # output parameters
@@ -31,9 +31,10 @@ colnames(responseSurface) <- c(colnames(argumentsPar),'mumax')
 ############################# 
 # start of Visualisation script Gropin ID 417 
 #############################
-persp(T,pH,matrix(unlist(responseSurface$'mumax'),nrow=21),col = 'green',xlab='T',ylab='pH',zlab='mumax',main='Response surface mumax for
+titleText <-'Response surface _mu_max for
 Pseudomonas spp. in/on Tryptic Soy Broth
-(gropin ID:417)',theta=305,phi=20,shade=0.25,ticktype = 'detailed')
+(gropin ID:417)'
+persp(T,pH,matrix(unlist(responseSurface$'mumax'),nrow=21),col = 'green',xlab='T',ylab='pH',zlab='mumax',main=titleText,theta=305,phi=20,shade=0.25,ticktype = 'detailed')
 #############################
 # End of Visualisation script
 #############################

@@ -5,13 +5,13 @@
 # constant coefficients for this model
  
 variables <- data.frame(T,pH,aw)
-argumentsPar <- expand.grid(variables)
+argumentsPar <- unique.data.frame(expand.grid(variables))
  
 # heart of the model
 response_surface <- function(T,pH,aw) {
    mumax <-2*(((T+1.5)/(37+15))^2)*((pH-4.39)*(9.6-pH)/(7-4.39)*(9.6-7))*((aw-0.92)*(1-0.92))
 
-return(mumax=mumax)
+	return(mumax=mumax)
 } 
 
 # output parameters

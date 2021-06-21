@@ -12,13 +12,13 @@ pH <- seq(3.81381,9.69030969030969,length.out=21)
 # constant coefficients for this model
  
 variables <- data.frame(pH)
-argumentsPar <- expand.grid(variables)
+argumentsPar <- unique.data.frame(expand.grid(variables))
  
 # heart of the model
 response_surface <- function(pH) {
    mumax <-3.28*(pH-9.84)*((pH-3.78)^2)/((6.81-3.78)*((6.81-3.78)*(pH-6.81)-(6.81-9.84)*(6.81+3.78-2*pH)))
 
-return(mumax=mumax)
+	return(mumax=mumax)
 } 
 
 # output parameters
@@ -30,10 +30,11 @@ colnames(responseSurface) <- c(colnames(argumentsPar),'mumax')
 ############################# 
 # start of Visualisation script Gropin ID 1198 
 #############################
-plot(pH,responseSurface$'mumax',xlab='pH',
-                          ylab='mumax',main='Response surface mumax for
+titleText <-'Response surface _mu_max for
 Staphylococcus aureus in/on TSB
-(gropin ID:1198)')
+(gropin ID:1198)'
+plot(pH,responseSurface$'mumax',xlab='pH',
+                          ylab='mumax',main=titleText)
 #############################
 # End of Visualisation script
 #############################

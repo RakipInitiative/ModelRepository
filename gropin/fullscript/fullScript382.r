@@ -12,13 +12,13 @@ T <- seq(-7.5075,33.0669330669331,length.out=21)
 # constant coefficients for this model
  
 variables <- data.frame(T)
-argumentsPar <- expand.grid(variables)
+argumentsPar <- unique.data.frame(expand.grid(variables))
  
 # heart of the model
 response_surface <- function(T) {
    mumax <-(6.2*(10^-2)*(T-33.1)*((T+7.5)^2))/((27.8+7.5)*((27.8+7.5)*(T-27.8)-(27.8-33.1)*(27.8-7.5-2*T)))
 
-return(mumax=mumax)
+	return(mumax=mumax)
 } 
 
 # output parameters
@@ -30,10 +30,11 @@ colnames(responseSurface) <- c(colnames(argumentsPar),'mumax')
 ############################# 
 # start of Visualisation script Gropin ID 382 
 #############################
-plot(T,responseSurface$'mumax',xlab='T',
-                          ylab='mumax',main='Response surface mumax for
+titleText <-'Response surface _mu_max for
 Cytophaga johnsonae in/on Nutrient broth
-(gropin ID:382)')
+(gropin ID:382)'
+plot(T,responseSurface$'mumax',xlab='T',
+                          ylab='mumax',main=titleText)
 #############################
 # End of Visualisation script
 #############################

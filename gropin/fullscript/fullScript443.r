@@ -12,13 +12,13 @@ T <- seq(0,33.966033966034,length.out=21)
 # constant coefficients for this model
  
 variables <- data.frame(T)
-argumentsPar <- expand.grid(variables)
+argumentsPar <- unique.data.frame(expand.grid(variables))
  
 # heart of the model
 response_surface <- function(T) {
    mumax <-(-8700/(8.3144261*(T+273)))
 
-return(mumax=mumax)
+	return(mumax=mumax)
 } 
 
 # output parameters
@@ -30,10 +30,11 @@ colnames(responseSurface) <- c(colnames(argumentsPar),'lnmumax')
 ############################# 
 # start of Visualisation script Gropin ID 443 
 #############################
-plot(T,responseSurface$'lnmumax',xlab='T',
-                          ylab='lnmumax',main='Response surface lnmumax for
+titleText <-'Response surface ln_mu_max for
 Pseudomonas spp. in/on Tryptic Soy Broth
-(gropin ID:443)')
+(gropin ID:443)'
+plot(T,responseSurface$'lnmumax',xlab='T',
+                          ylab='lnmumax',main=titleText)
 #############################
 # End of Visualisation script
 #############################

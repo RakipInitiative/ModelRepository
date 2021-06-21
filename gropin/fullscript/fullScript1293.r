@@ -13,13 +13,13 @@ CO2 <- seq(0,99.9000999000999,length.out=21)
 # constant coefficients for this model
  
 variables <- data.frame(T,CO2)
-argumentsPar <- expand.grid(variables)
+argumentsPar <- unique.data.frame(expand.grid(variables))
  
 # heart of the model
 response_surface <- function(T,CO2) {
    mumax <-0.082+0.032*T-3.6*(10^-4)-1.1*(10^-4)*T*CO2
 
-return(mumax=mumax)
+	return(mumax=mumax)
 } 
 
 # output parameters
@@ -31,9 +31,10 @@ colnames(responseSurface) <- c(colnames(argumentsPar),'Sqrmumax')
 ############################# 
 # start of Visualisation script Gropin ID 1293 
 #############################
-persp(T,CO2,matrix(unlist(responseSurface$'Sqrmumax'),nrow=21),col = 'green',xlab='T',ylab='CO2',zlab='Sqrmumax',main='Response surface Sqrmumax for
+titleText <-'Response surface Sqr_mu_max for
 Photobacterium phosphoreum in/on Cod _Gadus morhua_ fillets _in MAP_
-(gropin ID:1293)',theta=305,phi=20,shade=0.25,ticktype = 'detailed')
+(gropin ID:1293)'
+persp(T,CO2,matrix(unlist(responseSurface$'Sqrmumax'),nrow=21),col = 'green',xlab='T',ylab='CO2',zlab='Sqrmumax',main=titleText,theta=305,phi=20,shade=0.25,ticktype = 'detailed')
 #############################
 # End of Visualisation script
 #############################
