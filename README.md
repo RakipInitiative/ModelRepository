@@ -40,7 +40,7 @@ pending: waiting for expert review (Ranta, Ganas?)
 
 ### gropin modelling database
 containing 997 models in total, which are divided into (old version, needs update!)
-* 495 growth models
+* 495 growth models (ALL transferred!)
   * 1 variable - 291 models
   * 2 variable - 99 models
   * 3 variable - 57 models
@@ -48,53 +48,71 @@ containing 997 models in total, which are divided into (old version, needs updat
   * 5 variable - 2 models
   * 6 variable - 4 models
   * 9 variable - 2 models
-* 131 growth/no-growth models
-* 72 inactivation models
-* 284 lethality models
-* 15 gamma models with interaction
+* 72 inactivation models (inverse growth models, should be equal to growth model, check first!)
+* 131 growth/no-growth models (polynomial fitting necessary?)
+* 284 lethality models 
+* 15 gamma models with interaction (probably not transferrable, check first!)
 #### Reference
 https://www.aua.gr/psomas/gropin/
 #### Status
-ongoing transfer, currently focussing on growth models, details see TODO
+ongoing transfer, growth models completely transferred (roughly half of gropin DB)
 
 ## TODO
-### Lindqvist
-* fragen
 ### Gropin
-* 3 and more parameter models
-  * 3 variables testing - DONE
-  * create generic visualisation combi plot of 3 randomly chosen pairs of variables-DONE
-  * create additional simulation parameter set: point estimates of Par -DONE
-    * edit sim.sedml and add new simulation 
-    * remove fixed solution - DONE
-    * remove _start,_end solution -> array stays! - DONE
-  * default resolution dependent nrOfVariables ceil(nrOfVariables_throot(max(21*21))) (R package pracma::nth_root) - DONE
-  * comment readme about Rechenzeit with full resolution - DONE
-  * add generic visualisation script as comment for data from secondary model
-  * joiner workflow als beispiel (Petra?)
-  * check for sqrt/ln/lin mumax as is? - DONE
-* units:
-  * create database for units of variables: T in C, CO2 in g, a.s.o. - created, but not filled with correct information, support needed!
-  * meta data needs to be adapted for each microorganism separately - open question
-suffix and introduce as Parameter
-parameter set
-* look into inactivation models
+* non functional models 
+  * sqrt of negative numbers -> ignored by excel, error in R - excluded models
+  * zero in denominator if Variable X - Coefficient Y = 0, happens on boundary of range of variable X, place holder solution: range of variable shortened by relative 1/1000
+* look into inactivation models (probably similar to growth models, but need to be checked)
 * look into GNG models
+* look into lethality models 
   
 ### other models than gropin
-#### RRM
-* reduce number of parameters -> Editor bug! check up!
-#### VRE
-* test all finished models on VRE
-####Possas 
+###P#ossas 
 *  -> check up on Cristina
 * transfer Possas model(Cristina) to fskx
 * discussed to be done in 9 steps
 * sending Cristina R scripts for development, afterwards transporting into fskx
 
 ## DONE 2021
-
 ### June
+#### Gropin
+* 3 and more parameter models
+  * 3 variables testing - DONE
+  * multiple-variable model transfer code - DONE
+* rewrite code: coefficients were introduced as constants 
+    -> remove from meta data schema
+    -> hard code into model script
+* create visualisation code for all multiple variable models, so each hyper plane may be viewed - DONE
+* rewrite visualisation code to accomodate for Matthias wishes to create a more simple visualisation code
+  * just a generic visualisation combi plot of 3 pairs of variables-DONE
+  * create generic visualisation code for primary model code - DONE
+  * rewrite code for new visualisation code to accomodate for all possible hyper plane permutations:
+    * 1 plane for views for 2 variables (only 1 possible pair)- DONE
+    * 3 planes of views for 3 variables (3 possible pairs) - DONE
+    * 6 planes of views for 4 variables (6 possible pairs) - DONE
+    * 10 planes of views for 5 variables (10 possible pairs) - DONE
+    * 15 planes of views for 6 variables (15 possible pairs) - DONE
+    * 21 planes of views for 7 variables (21 possible pairs) - DONE
+    * 28 planes of views for 8 variables (28 possible pairs) - DONE
+    * 36 planes of views for 9 variables (36 possible pairs) - DONE
+    * rewrite code for all possible new simulation settings - DONE
+    * permutation formula: number of possible pairs = \fraction{\factorial{n}}{2*\factorial{n-2}} 
+        (n = number of Variables)
+* create additional simulation parameter set: point estimates of Par - DONE
+    * edit sim.sedml and add all new simulation (dynamical depending on number of variables)
+    * remove fixated solution - DONE
+    * remove _start,_end solution of fixated variables -> just the array -  DONE
+* rewrite visualisation code to accomodate for users choice of simulation settings - DONE
+* default resolution dependent nrOfVariables ceil(nrOfVariables_throot(max(21*21))) (R package pracma::nth_root) - DONE, see in gropin2R: lenOfVarVec
+* comment readme about Rechenzeit with full resolution - DONE
+* add generic visualisation script as comment for data from secondary model - DONE
+  * rewrite generic visualisation to accomodate for more complicated version of visualisation choice (see above) - DONE
+* joiner workflow als beispiel (Petra?) - DONE
+* check for sqrt/ln/lin mumax as is? - DONE (secondary model wont touch mumax, but retain information about which mode was used in header of resultTotal -> primary model will read this information and recalculate mumax accordingly)
+* units:
+  * create database for units of variables: T in C, CO2 in g, a.s.o. - created, but not filled with correct information, SUPPORT NEEDED!
+  * meta data needs to be adapted for each microorganism separately - OPEN QUESTION!
+
 
 ### May
 * new model version of gropin -> major adaptations were necessary
@@ -116,7 +134,7 @@ parameter set
   * uploaded 1-&2-Parameter growth models to server
 
 ### April 
-* showcases gropin 24,492,256 done -> goal for full transfer code
+* showcases gropin 24,492,256 done -> concept rewrite for creating full transfer code
 
 ### 30/3
 * Lindqvist Telco

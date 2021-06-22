@@ -1,45 +1,54 @@
-#library(rjson)
+##############################################################################
+# purpose: edit fskx file to correct some bugs in FSK Creator
+# Corrections listed:
+#     CreationDate
+#     Reference Issue, Volume, Pages
+#     Insert New simulation settings
+#     Readme text
+##############################################################################
+
 library(zip)
 library(stringr)
 
 # for easy count ups
 `%+=%` = function(e1,e2) eval.parent(substitute(e1 <- e1 + e2))
+##############################################################################
 
-# project path / obsolete in source mode
+
+
+# project path / obsolete in source mode, PLEASE change to your path!
 thisProjectPath <- "C:/Users/Joker/Documents/Projects/ModelRepository/gropin/"
-tempFolder <- "temp/"
-sourceSubFolder <- "fskx/"
-targetSubFolder <- "finishedFSKX/"
-#targetSubFolder <- "testingstuff/"
+tempFolder <- "temp/" # subfolder in project path (will be emptied at end of this script)
+sourceSubFolder <- "fskx/" # subfolder of where to find fskx files to be corrected/enhanced
+targetSubFolder <- "finishedFSKX/" # target subfolder of corrected fskx files, ready for upload
+#targetSubFolder <- "testingstuff/" # for bugfixing purposes, if you just want to test new corrections
 
-#########################
-# name place holder for new simulation settin names
+##############################################################################
+# name place holder for new simulation setting names
+# TODO maybe not straight forward to understand, check with expert!
 newSimName <- "point_Value_For_"
 
-
+# get all fskx files in sourceSubFolder
 myList <- list.files(file.path(thisProjectPath,sourceSubFolder),pattern="*.fskx")
 
 
 # create target folder if not existing
+# TODO check for existing fskx files in target folder, 
+# currently everything will be overwritten!
 if(!dir.exists(file.path(thisProjectPath,targetSubFolder))){
   dir.create(file.path(thisProjectPath,targetSubFolder))
 }
 
 
-# bring current date into format used by meta data schema
-currentDate <- sub("0?(.+)-0?(.+)-0?(.+)", "\\1,\\2,\\3", Sys.Date())
+# check if temp folder exist
+if(!dir.exists(file.path(thisProjectPath,tempFolder))){
+  dir.create(file.path(thisProjectPath,tempFolder))
+}
 
-# new metadata string
-newCreationDate <- paste0(",\"creationDate\":[",
-                          currentDate,
-                          "],\"modificationDate\":[]")
 
 #run <- 2
 for(run in 1:length(myList)) {
-  # check if folders exist
-  if(!dir.exists(file.path(thisProjectPath,tempFolder))){
-    dir.create(file.path(thisProjectPath,tempFolder))
-  }
+  
   
   zipSourceFile <- paste0(thisProjectPath,sourceSubFolder,myList[run])
   zipTargetFile <- paste0(thisProjectPath,targetSubFolder,myList[run])
@@ -52,11 +61,23 @@ for(run in 1:length(myList)) {
   # PUT YOUR CHANGES IN HERE
   ##############################################################
   ##### Creation Date ########
+  
+  # bring current date into format used by meta data schema
+  currentDate <- sub("0?(.+)-0?(.+)-0?(.+)", "\\1,\\2,\\3", Sys.Date())
+  
+  # new metadata string
+  newCreationDate <- paste0(",\"creationDate\":[",
+                            currentDate,
+                            "],\"modificationDate\":[]")
+  
+  
   # get metaData for creation Date
   oldData <- readLines(paste0(thisProjectPath,tempFolder,"metaData.json"))
+
   # replace no Creation date with current day
   # NOTE! works only if no creation date was entered!
-  changedData <- gsub(pattern = ",\"rights\":\"", 
+  # TODO check if creation date is already inserted
+  changedData <- gsub(pattern = ",\"rights\":\"",#always before "rights" 
                   replace = paste0(newCreationDate,",\"rights\":\""), 
                   x = oldData)
   ##### Creation Date ########
@@ -65,6 +86,7 @@ for(run in 1:length(myList)) {
   
   ##### Reference Edit ########
   # first find reference, stored in comments (design decision)
+  # TODO find a better way to do this
   capturedJournalInfo <- str_match(changedData, "comment\":\"\\s*(.*?)\\s*\"")
   journalVolumeIssue <- unlist(strsplit(capturedJournalInfo[2], ","))
   myString <- paste0("journal\":\"",
@@ -81,7 +103,7 @@ for(run in 1:length(myList)) {
   # with correct entries in forms, so that FSK-Lab may read this correctly
   # NOTE! works only, if gropin2R script stores info about 
   # journal,volume,issue in the comment section of this reference
-  # TODO: extension step: creating the whole metadata.json file and all other 
+  # TODO extension step: creating the whole metadata.json file and all other 
   # necessary files for fskx in 1 R-script (takes more time to develop)
   newData <- gsub(pattern = str_match(changedData, "comment\":\"\\s*(.*?)\\s*\"")[1], 
                       replace = myString, 
@@ -95,51 +117,56 @@ for(run in 1:length(myList)) {
   oldSim <- readLines(paste0(thisProjectPath,tempFolder,"sim.sedml"))
   
   
-  # find the names and values of all variables
+  # find the names and values of all variables stored in oldSim
   originalValuesVariablesVec <- str_match(oldSim, "newValue=\"\\s*(.*?)\\s*\"")[,2]
   originalValuesVariablesVec <- originalValuesVariablesVec[!is.na(originalValuesVariablesVec)]
   originalNamesVariablesVec <- str_match(oldSim, "target=\"\\s*(.*?)\\s*\"")[,2]
   originalNamesVariablesVec <- originalNamesVariablesVec[!is.na(originalNamesVariablesVec)]
   
-  # adding new simulation settings if nrOfVariables > 2 only: no reason for different setting
+  # adding new simulation settings if nrOfVariables > 2 only, 
+  # otherwise no reason for different setting
   if(length(originalNamesVariablesVec)>2) {
     
     # all permutation of pairs of parameters
     varPairs <- combn(originalNamesVariablesVec[!is.na(originalNamesVariablesVec)],2)
-    nrOfPermutations <- dim(varPairs)[2] # should be choose(nrOfVariables,nrOfVariables-2)
-    #par <- 1
+    nrOfPermutations <- dim(varPairs)[2] # equal to choose(nrOfVariables,nrOfVariables-2)
   
-    # marker for end of simulation settings
-    #searchString1 <- "<listOfModels>\\s*(.*?)\\s*</listOfModels>"
+    # marker for end of original simulation settings
     locationOfEdit <- which(gsub("[[:space:]]", "", oldSim) %in% "</listOfModels>")-1
     
-   
-    
+    # initialising new file, keeping the old one for bugfixing reasons
     newSim <- oldSim
     
-    #add new parameter settings
+    #add new parameter settings (number depends on number of Variables)
     for(sim in 1:nrOfPermutations) {
       # get names of variables that are point values for each simulation setting
       missingVar <- originalNamesVariablesVec[is.na(match(originalNamesVariablesVec[!is.na(originalNamesVariablesVec)],varPairs[,sim]))]
       missingVar <- missingVar[!is.na(missingVar)]
       
+      # create name of simulation
       nameOfSimulation <- paste0(newSimName,paste0(missingVar,collapse = '_'))
+      
+      # create and insert string for each parameter
       newSim <- append(newSim,
                        paste0("<model id=\"",
                               nameOfSimulation,
                               "\" name=\"\" language=\"https://iana.org/assignments/mediatypes/text/x-r\" source=\"./model.r\">"),
                        after=locationOfEdit)
-      locationOfEdit%+=%1
+      locationOfEdit%+=%1 # enter next line in text file
       newSim <- append(newSim,
                        "<listOfChanges>",
                        after=locationOfEdit)
     
+      # get the correct values of new parameters
       
       newValuesVariablesVec <- originalValuesVariablesVec
       idsOfPointValues <- which(originalNamesVariablesVec %in% missingVar)
-      for(i in idsOfPointValues) newValuesVariablesVec[i] <- round(mean(eval(parse(text=originalValuesVariablesVec[i]))), digits=2)
-      #newValuesVariablesVec[sim] <- round(mean(eval(parse(text=originalValuesVariablesVec[sim]))), digits=2)
+      for(i in idsOfPointValues) {
+        newValuesVariablesVec[i] <- round(mean(eval(parse(text=originalValuesVariablesVec[i]))), digits=2)
+      }
+  
       
+      # enter new values of new simulation setting into text file
       for(val in 1:length(originalNamesVariablesVec)) {
         locationOfEdit%+=%1
         newSim <- append(newSim,
@@ -151,6 +178,8 @@ for(run in 1:length(myList)) {
                          after=locationOfEdit)
       }
       locationOfEdit%+=%1
+      
+      # end of new edit
       newSim <- append(newSim,
                      "</listOfChanges>",
                        after=locationOfEdit)
