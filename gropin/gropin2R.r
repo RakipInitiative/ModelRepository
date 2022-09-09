@@ -988,7 +988,7 @@ for(run in 1:nrModels){ # "MARKER RUN JUST 1 MODEL!"
   # Description
   MetaData$Data[34] <- paste("This model and all metadata included have been",
                              "automatically generated from the GroPIN microbial",
-                             "modelling DataBase (https://www.aua.gr/psomas/gropin/,",
+                             "modelling DataBase (https://www.foodsctech.com/",
                              "version 2020). The model code has been converted",
                              "from Excel to R and the model itself is provided",
                              "as an FSKX file. This FSKX model contains also an",
