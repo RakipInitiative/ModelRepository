@@ -28,11 +28,12 @@ URL to the unpublished model or publication associated with model
 - [ ] model has been uploaded and published in Zenodo KJ
 
 ## Basic Quality Control
-**Chair of Curationboard**
-[email]
+- By Chair of Curationboard: [email]
 
-- [ ] Online Sanitation Check [validate](https://knime.bfr.berlin/fskx_validator/)
-**[MIRARAM](https://www.sciencedirect.com/science/article/pii/S0963996920309777?via%3Dihub)**
+**General Check**
+- [ ] Online Sanitation Check: [validate](https://knime.bfr.berlin/fskx_validator/)
+
+**[MIRARAM](https://www.sciencedirect.com/science/article/pii/S0963996920309777?via%3Dihub) Check**
 - [ ] Model Name 
 - [ ] Model ID
 - [ ] Model Creator (different from author!)
@@ -52,7 +53,7 @@ URL to the unpublished model or publication associated with model
 - [ ] Curator assigned to this ticket
 
 ## Advanced Quality Control
-**Curator**
+**By Curator**
 - Technical Curation by: [email]
 - Scientific Curation by: [email]
 
@@ -72,8 +73,10 @@ URL to the unpublished model or publication associated with model
 
 ## Report
 **Changes Made**
+
 Changes made to the model in preparation for publication ([Zenodo KJ](https://zenodo.org/communities/efsa-kj))
 
 
 **Additional notes**
+
 Observations or remarks about the model or its curation
