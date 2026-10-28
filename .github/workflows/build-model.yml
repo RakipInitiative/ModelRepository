@@ -1,0 +1,217 @@
+# Builds the Docker image of each changed model folder (models/<model_id>/).
+#
+#   pull request   build + smoke test, nothing is pushed, no secrets are used
+#   push to master build + smoke test + push to Harbor (fskx/models/<model_id>:<version>)
+#   manual run     same as push, for one model (use it to rebuild after a harness change)
+#
+# The committed models/<model_id>/Dockerfile is built exactly as it is. Nothing here generates
+# or rewrites a Dockerfile. The image platform is forced to linux/amd64 at build time.
+#
+# Repository settings needed before the first push run:
+#   environment "harbor-push" (deployment branches: master only) with the secrets
+#     HARBOR_USERNAME, HARBOR_PASSWORD    (push robot, project "fskx")
+#     DOCKERHUB_USERNAME, DOCKERHUB_TOKEN (optional, raises the Docker Hub pull limit)
+#   TODO: pin the actions below to commit SHAs (public repo, third-party actions).
+name: build-model
+
+on:
+  pull_request:
+    paths:
+      - "models/**"
+      - ".github/workflows/build-model.yml"
+  push:
+    branches: [master]
+    paths:
+      - "models/**"
+  workflow_dispatch:
+    inputs:
+      model_id:
+        description: "Model id (folder name under models/)"
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+# A newer push to a pull request replaces the older run. Push and manual runs get their own
+# group, otherwise a pending run would be dropped by the next one and its models never built.
+concurrency:
+  group: build-model-${{ github.event_name == 'pull_request' && github.ref || github.run_id }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+env:
+  HARBOR_REGISTRY: harbor.cloudferro-dev.risk-ai-cloud.com
+  HARBOR_PROJECT: fskx
+  HARBOR_REPO_PREFIX: models
+
+jobs:
+  detect:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.detect.outputs.matrix }}
+      any: ${{ steps.detect.outputs.any }}
+    steps:
+      # Blobless and sparse: only commit and tree objects are needed to list changed folders.
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+          filter: blob:none
+          sparse-checkout: tools
+      - id: detect
+        env:
+          EVENT: ${{ github.event_name }}
+          BEFORE: ${{ github.event.before }}
+          MODEL_ID: ${{ inputs.model_id }}
+        run: |
+          if [ "$EVENT" = "workflow_dispatch" ]; then
+            ids=$(python3 tools/changed_models.py --only "$MODEL_ID")
+          elif [ "$EVENT" = "push" ] && [ -n "$BEFORE" ] && [ "$BEFORE" != "0000000000000000000000000000000000000000" ]; then
+            git fetch --no-tags --depth=1 --filter=blob:none origin "$BEFORE"
+            ids=$(python3 tools/changed_models.py "$BEFORE" HEAD)
+          else
+            # pull_request: HEAD is the merge commit, HEAD^ the base branch
+            ids=$(python3 tools/changed_models.py HEAD^ HEAD)
+          fi
+          echo "models: $ids"
+          echo "matrix={\"id\":$ids}" >> "$GITHUB_OUTPUT"
+          if [ "$ids" = "[]" ]; then echo "any=false" >> "$GITHUB_OUTPUT"; else echo "any=true" >> "$GITHUB_OUTPUT"; fi
+
+  build:
+    needs: detect
+    if: needs.detect.outputs.any == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    # Harbor and Docker Hub secrets live in the environment "harbor-push", which is restricted to the
+    # master branch in the repository settings. Pull request runs use the secret-free "pr-build".
+    environment: ${{ (github.event_name != 'pull_request' && github.ref == 'refs/heads/master') && 'harbor-push' || 'pr-build' }}
+    strategy:
+      fail-fast: false
+      max-parallel: 2
+      matrix: ${{ fromJSON(needs.detect.outputs.matrix) }}
+    env:
+      MODEL_ID: ${{ matrix.id }}
+      # Secrets only reach push and manual runs on master, never pull requests.
+      PUBLISH: ${{ github.event_name != 'pull_request' && github.ref == 'refs/heads/master' }}
+    steps:
+      - name: Free disk space
+        run: |
+          sudo rm -rf /usr/share/dotnet /usr/local/lib/android /opt/ghc /opt/hostedtoolcache/CodeQL /usr/local/share/boost
+          docker image prune --all --force > /dev/null
+          df -h /
+
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          filter: blob:none
+          sparse-checkout: |
+            tools
+            harness
+            models/${{ matrix.id }}
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Fetch model file (source.yaml)
+        run: |
+          if [ -f "models/$MODEL_ID/source.yaml" ]; then
+            python3 tools/prepare_model.py fetch "models/$MODEL_ID" "$RUNNER_TEMP/model.fskx"
+            echo "FSKX_FILE=$RUNNER_TEMP/model.fskx" >> "$GITHUB_ENV"
+          fi
+
+      - name: Read build metadata
+        id: info
+        run: |
+          args=("models/$MODEL_ID")
+          if [ -n "$FSKX_FILE" ]; then args+=(--fskx "$FSKX_FILE"); fi
+          python3 tools/prepare_model.py info "${args[@]}" | tee -a "$GITHUB_OUTPUT"
+
+      - name: Assemble build context
+        run: |
+          args=("models/$MODEL_ID" "$RUNNER_TEMP/context")
+          if [ -n "$FSKX_FILE" ]; then args+=(--fskx "$FSKX_FILE"); fi
+          python3 tools/prepare_model.py context "${args[@]}"
+
+      - name: Log in to Docker Hub
+        if: env.PUBLISH == 'true'
+        env:
+          DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+          DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
+        run: |
+          if [ -n "$DOCKERHUB_USERNAME" ]; then
+            echo "$DOCKERHUB_TOKEN" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
+          else
+            echo "No Docker Hub credentials; pulling anonymously."
+          fi
+
+      - name: Check that the version tag is still free in Harbor
+        if: env.PUBLISH == 'true'
+        env:
+          HARBOR_USERNAME: ${{ secrets.HARBOR_USERNAME }}
+          HARBOR_PASSWORD: ${{ secrets.HARBOR_PASSWORD }}
+          VERSION: ${{ steps.info.outputs.version }}
+        run: |
+          # The repository name contains a "/", which the Harbor API wants double-encoded (UNVERIFIED, check on first run).
+          repo="${HARBOR_REPO_PREFIX}%252F${MODEL_ID}"
+          url="https://${HARBOR_REGISTRY}/api/v2.0/projects/${HARBOR_PROJECT}/repositories/${repo}/artifacts/${VERSION}"
+          code=$(printf 'user = "%s:%s"\n' "$HARBOR_USERNAME" "$HARBOR_PASSWORD" | curl -sS -K - -o /dev/null -w '%{http_code}' "$url")
+          case "$code" in
+            404) echo "Tag ${VERSION} does not exist yet." ;;
+            200) echo "::error::${MODEL_ID}:${VERSION} already exists in Harbor. Increase 'version' in models/${MODEL_ID}/build.yaml."; exit 1 ;;
+            *)   echo "::error::Could not check Harbor (HTTP ${code}); not pushing blindly."; exit 1 ;;
+          esac
+
+      - name: Build image
+        env:
+          NAME: ${{ steps.info.outputs.name }}
+          VERSION: ${{ steps.info.outputs.version }}
+          CPU: ${{ steps.info.outputs.cpu }}
+          RAM: ${{ steps.info.outputs.ram }}
+          GPU: ${{ steps.info.outputs.gpu }}
+          HARNESS_VERSION: ${{ steps.info.outputs.harness_version }}
+        run: |
+          image="${HARBOR_REGISTRY}/${HARBOR_PROJECT}/${HARBOR_REPO_PREFIX}/${MODEL_ID}:${VERSION}"
+          echo "IMAGE=$image" >> "$GITHUB_ENV"
+          docker buildx build --platform linux/amd64 --load \
+            --file "models/$MODEL_ID/Dockerfile" \
+            --label "fskx.model-id=${MODEL_ID}" \
+            --label "fskx.model-name=${NAME}" \
+            --label "fskx.version=${VERSION}" \
+            --label "fskx.harness-version=${HARNESS_VERSION}" \
+            --label "fskx.cpu=${CPU}" \
+            --label "fskx.ram-gb=${RAM}" \
+            --label "fskx.gpu=${GPU}" \
+            --label "fskx.build-run-url=${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}" \
+            --label "org.opencontainers.image.source=${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}" \
+            --label "org.opencontainers.image.revision=${GITHUB_SHA}" \
+            --tag "$image" \
+            "$RUNNER_TEMP/context"
+          docker image inspect "$image" --format 'built {{.Architecture}}/{{.Os}} {{.Size}} bytes'
+          df -h /
+
+      - name: Smoke test
+        run: python3 tools/smoke_test.py "$IMAGE" --timeout 1200
+
+      - name: Push to Harbor
+        if: env.PUBLISH == 'true'
+        env:
+          HARBOR_USERNAME: ${{ secrets.HARBOR_USERNAME }}
+          HARBOR_PASSWORD: ${{ secrets.HARBOR_PASSWORD }}
+        run: |
+          echo "$HARBOR_PASSWORD" | docker login "$HARBOR_REGISTRY" -u "$HARBOR_USERNAME" --password-stdin
+          docker push "$IMAGE"
+          digest=$(docker image inspect "$IMAGE" --format '{{index .RepoDigests 0}}')
+          {
+            echo "### Pushed \`${IMAGE}\`"
+            echo ""
+            echo "Digest: \`${digest}\`"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Summary (no push)
+        if: env.PUBLISH != 'true'
+        run: |
+          {
+            echo "### Built and smoke-tested \`${IMAGE}\`"
+            echo ""
+            echo "Not pushed: pull request run."
+          } >> "$GITHUB_STEP_SUMMARY"
