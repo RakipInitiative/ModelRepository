@@ -4,8 +4,9 @@
   changed_models.py <base> <head>     models/<id>/ folders that differ between two commits
   changed_models.py --only <id>       exactly one model (manual runs)
 
-Folders deleted in <head> are skipped. Only tree objects are needed, so it works in a
-blobless clone.
+Only changes to the recipe files count (RELEVANT_FILES); notes or other files in a model
+folder do not trigger a build. Folders deleted in <head> are skipped.
+Only tree objects are needed, so it works in a blobless clone.
 """
 import argparse
 import json
@@ -14,6 +15,7 @@ import subprocess
 import sys
 
 ID_PATTERN = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._-]*$")
+RELEVANT_FILES = {"Dockerfile", "build.yaml"}
 
 
 def git(*args):
@@ -27,7 +29,7 @@ def changed_models(base, head):
     ids = set()
     for path in diff.stdout.splitlines():
         parts = path.split("/")
-        if len(parts) >= 3 and parts[0] == "models":
+        if len(parts) == 3 and parts[0] == "models" and parts[2] in RELEVANT_FILES:
             ids.add(parts[1])
     return sorted(i for i in ids if ID_PATTERN.match(i) and git("cat-file", "-e", f"{head}:models/{i}").returncode == 0)
 

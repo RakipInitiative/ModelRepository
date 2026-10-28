@@ -4,14 +4,22 @@
 #   push to master build + smoke test + push to Harbor (fskx/models/<model_id>:<version>)
 #   manual run     same as push, for one model (use it to rebuild after a harness change)
 #
-# The committed models/<model_id>/Dockerfile is built exactly as it is. Nothing here generates
-# or rewrites a Dockerfile. The image platform is forced to linux/amd64 at build time.
+# A model folder holds only Dockerfile + build.yaml. The FSKX file is downloaded from the
+# model-lookup-service (S3) with an API key (header X-API-KEY); its sha256 is recorded as an image label.
+# The committed Dockerfile is built exactly as it is. Nothing here generates or rewrites a
+# Dockerfile. The image platform is forced to linux/amd64 at build time.
 #
 # Repository settings needed before the first push run:
 #   environment "harbor-push" (deployment branches: master only) with the secrets
 #     HARBOR_USERNAME, HARBOR_PASSWORD    (push robot, project "fskx")
 #     DOCKERHUB_USERNAME, DOCKERHUB_TOKEN (optional, raises the Docker Hub pull limit)
-#   TODO: pin the actions below to commit SHAs (public repo, third-party actions).
+#     FSKX_API_KEY                        (API key of the platform, reads model files)
+#   environment "pr-build" (no Harbor secrets) with the same FSKX_API_KEY secret. Pull request
+#     builds need the model file too; set "Required reviewers" on this environment so a run
+#     (and with it a changed workflow or tool) is approved before the secret is released.
+#   Actions are pinned to commit SHAs (public repo). To update: look up the SHA of the new release tag.
+#   Runners are pinned to ubuntu-24.04 because ubuntu-latest moves to 26.04 in Nov 2026; the
+#   free-disk step and the Docker version may behave differently there. Move on purpose, after a test.
 name: build-model
 
 on:
@@ -43,16 +51,17 @@ env:
   HARBOR_REGISTRY: harbor.cloudferro-dev.risk-ai-cloud.com
   HARBOR_PROJECT: fskx
   HARBOR_REPO_PREFIX: models
+  FSKX_LOOKUP_URL: https://api-gateway.cloudferro-dev.risk-ai-cloud.com/model-lookup-service
 
 jobs:
   detect:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     outputs:
       matrix: ${{ steps.detect.outputs.matrix }}
       any: ${{ steps.detect.outputs.any }}
     steps:
       # Blobless and sparse: only commit and tree objects are needed to list changed folders.
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           fetch-depth: 2
           filter: blob:none
@@ -63,14 +72,20 @@ jobs:
           BEFORE: ${{ github.event.before }}
           MODEL_ID: ${{ inputs.model_id }}
         run: |
+          base=""
           if [ "$EVENT" = "workflow_dispatch" ]; then
             ids=$(python3 tools/changed_models.py --only "$MODEL_ID")
           elif [ "$EVENT" = "push" ] && [ -n "$BEFORE" ] && [ "$BEFORE" != "0000000000000000000000000000000000000000" ]; then
             git fetch --no-tags --depth=1 --filter=blob:none origin "$BEFORE"
-            ids=$(python3 tools/changed_models.py "$BEFORE" HEAD)
+            base="$BEFORE"
           else
             # pull_request: HEAD is the merge commit, HEAD^ the base branch
-            ids=$(python3 tools/changed_models.py HEAD^ HEAD)
+            base="HEAD^"
+          fi
+          if [ -n "$base" ]; then
+            ids=$(python3 tools/changed_models.py "$base" HEAD)
+            # An updated model needs a higher version; fail here, not after the merge.
+            python3 tools/check_version_bump.py "$base" HEAD "$ids"
           fi
           echo "models: $ids"
           echo "matrix={\"id\":$ids}" >> "$GITHUB_OUTPUT"
@@ -79,7 +94,7 @@ jobs:
   build:
     needs: detect
     if: needs.detect.outputs.any == 'true'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 180
     # Harbor and Docker Hub secrets live in the environment "harbor-push", which is restricted to the
     # master branch in the repository settings. Pull request runs use the secret-free "pr-build".
@@ -99,7 +114,7 @@ jobs:
           docker image prune --all --force > /dev/null
           df -h /
 
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           fetch-depth: 1
           filter: blob:none
@@ -108,29 +123,23 @@ jobs:
             harness
             models/${{ matrix.id }}
 
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
         with:
           python-version: "3.12"
 
-      - name: Fetch model file (source.yaml)
+      - name: Download model from the lookup service
+        env:
+          FSKX_API_KEY: ${{ secrets.FSKX_API_KEY }}
         run: |
-          if [ -f "models/$MODEL_ID/source.yaml" ]; then
-            python3 tools/prepare_model.py fetch "models/$MODEL_ID" "$RUNNER_TEMP/model.fskx"
-            echo "FSKX_FILE=$RUNNER_TEMP/model.fskx" >> "$GITHUB_ENV"
-          fi
+          python3 tools/prepare_model.py fetch "$MODEL_ID" "$RUNNER_TEMP/model.fskx"
+          echo "FSKX_FILE=$RUNNER_TEMP/model.fskx" >> "$GITHUB_ENV"
 
       - name: Read build metadata
         id: info
-        run: |
-          args=("models/$MODEL_ID")
-          if [ -n "$FSKX_FILE" ]; then args+=(--fskx "$FSKX_FILE"); fi
-          python3 tools/prepare_model.py info "${args[@]}" | tee -a "$GITHUB_OUTPUT"
+        run: python3 tools/prepare_model.py info "models/$MODEL_ID" --fskx "$FSKX_FILE" | tee -a "$GITHUB_OUTPUT"
 
       - name: Assemble build context
-        run: |
-          args=("models/$MODEL_ID" "$RUNNER_TEMP/context")
-          if [ -n "$FSKX_FILE" ]; then args+=(--fskx "$FSKX_FILE"); fi
-          python3 tools/prepare_model.py context "${args[@]}"
+        run: python3 tools/prepare_model.py context "models/$MODEL_ID" "$RUNNER_TEMP/context" --fskx "$FSKX_FILE"
 
       - name: Log in to Docker Hub
         if: env.PUBLISH == 'true'
@@ -169,6 +178,7 @@ jobs:
           RAM: ${{ steps.info.outputs.ram }}
           GPU: ${{ steps.info.outputs.gpu }}
           HARNESS_VERSION: ${{ steps.info.outputs.harness_version }}
+          FSKX_SHA256: ${{ steps.info.outputs.fskx_sha256 }}
         run: |
           image="${HARBOR_REGISTRY}/${HARBOR_PROJECT}/${HARBOR_REPO_PREFIX}/${MODEL_ID}:${VERSION}"
           echo "IMAGE=$image" >> "$GITHUB_ENV"
@@ -178,6 +188,7 @@ jobs:
             --label "fskx.model-name=${NAME}" \
             --label "fskx.version=${VERSION}" \
             --label "fskx.harness-version=${HARNESS_VERSION}" \
+            --label "fskx.model-sha256=${FSKX_SHA256}" \
             --label "fskx.cpu=${CPU}" \
             --label "fskx.ram-gb=${RAM}" \
             --label "fskx.gpu=${GPU}" \
@@ -197,6 +208,7 @@ jobs:
         env:
           HARBOR_USERNAME: ${{ secrets.HARBOR_USERNAME }}
           HARBOR_PASSWORD: ${{ secrets.HARBOR_PASSWORD }}
+          FSKX_SHA256: ${{ steps.info.outputs.fskx_sha256 }}
         run: |
           echo "$HARBOR_PASSWORD" | docker login "$HARBOR_REGISTRY" -u "$HARBOR_USERNAME" --password-stdin
           docker push "$IMAGE"
@@ -205,6 +217,8 @@ jobs:
             echo "### Pushed \`${IMAGE}\`"
             echo ""
             echo "Digest: \`${digest}\`"
+            echo ""
+            echo "Model file sha256: \`${FSKX_SHA256}\`"
           } >> "$GITHUB_STEP_SUMMARY"
 
       - name: Summary (no push)
