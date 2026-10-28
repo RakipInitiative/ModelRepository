@@ -223,9 +223,13 @@ jobs:
 
       - name: Summary (no push)
         if: env.PUBLISH != 'true'
+        env:
+          FSKX_SHA256: ${{ steps.info.outputs.fskx_sha256 }}
         run: |
           {
             echo "### Built and smoke-tested \`${IMAGE}\`"
             echo ""
             echo "Not pushed: pull request run."
+            echo ""
+            echo "Model file sha256: \`${FSKX_SHA256}\` (compare with the push run after the merge)"
           } >> "$GITHUB_STEP_SUMMARY"
