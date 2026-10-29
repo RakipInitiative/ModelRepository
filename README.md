@@ -1,6 +1,32 @@
 # ModelRepository
 Joint project of EFSA, Federal Institute For Risk Assessment, DTU and ANSES to create an online model repository.
 
+# Container images of the models
+
+The execution images of the models are built here by GitHub Actions
+([build-model.yml](.github/workflows/build-model.yml)) and pushed to Harbor as
+`fskx/models/<model_id>:<version>`. Each model that has an image has a folder `models/<model_id>/` with exactly two files:
+
+| File | Content |
+| --- | --- |
+| `Dockerfile` | Written and maintained by hand; it is built exactly as committed. `python3 tools/prepare_model.py init` creates a starting point. |
+| `build.yaml` | `version`, `cpu`, `ram` (GB), `gpu` of the image. |
+
+The FSKX file is not stored here; the workflow downloads it from the model-lookup-service when it builds.
+
+## The version is a positive integer
+
+`version` in `build.yaml` must be a **positive integer without leading zeros**: `1`, `2`, `3`, ... Not `0`, `-1`, `1.5`,
+`01` or `v2`.
+
+- It becomes the image tag. The container image management service registers the image with the **highest** integer
+  tag of a model as the active version and rejects every other tag, so a tag like `v2` would never be used.
+- Every change to a model's `Dockerfile` or `build.yaml` needs a higher version than before. A pushed tag is never
+  overwritten. Pull requests fail on an unchanged, lower or invalid version
+  ([tools/check_version_bump.py](tools/check_version_bump.py), rule in [tools/build_version.py](tools/build_version.py)).
+- If you replace the FSKX file of a model in the model-lookup-service, upload it first and then raise the version, so the
+  rebuild picks up the new file.
+
 # content
 
 ## currently implemented models

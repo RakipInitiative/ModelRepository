@@ -9,6 +9,11 @@
 # The committed Dockerfile is built exactly as it is. Nothing here generates or rewrites a
 # Dockerfile. The image platform is forced to linux/amd64 at build time.
 #
+# `version` in build.yaml is the image tag and must be a positive integer without leading zeros
+# (1, 2, 3, ...; rule in tools/build_version.py). The container image management service takes the
+# highest integer tag of a model as the active version and rejects every other tag. Any change to
+# a model folder needs a higher version (tools/check_version_bump.py, checked on pull requests).
+#
 # Repository settings needed before the first push run:
 #   environment "harbor-push" (deployment branches: master only) with the secrets
 #     HARBOR_USERNAME, HARBOR_PASSWORD    (push robot, project "fskx")
