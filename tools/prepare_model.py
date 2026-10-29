@@ -47,6 +47,7 @@ import zipfile
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
+from build_version import version_problem
 from FskxFile import FskxFile
 from fskx_dockerfile import dockerfile_from_model
 
@@ -64,7 +65,10 @@ def extract_fskx(fskx_path, dest_dir):
 
 
 def build_yaml(version=1, cpu=1, ram=1, gpu=0):
-    return f"version: {version}\ncpu: {cpu}\nram: {ram}\ngpu: {gpu}\n"
+    # version: positive integer, see build_version.py (it becomes the image tag).
+    return ("# version: a positive integer (1, 2, 3, ...) without leading zeros. It is the image tag,\n"
+            "# and the highest number is the active version. Raise it with every change to this folder.\n"
+            f"version: {version}\ncpu: {cpu}\nram: {ram}\ngpu: {gpu}\n")
 
 
 def read_general_information(fskx_path):
@@ -170,6 +174,9 @@ def read_build_yaml(model_dir):
     missing = [k for k in ("version", "cpu", "ram", "gpu") if k not in values]
     if missing:
         sys.exit(f"{model_dir}/build.yaml: missing {', '.join(missing)}")
+    problem = version_problem(values["version"])
+    if problem:
+        sys.exit(f"{model_dir}/build.yaml: {problem}")
     return values
 
 
