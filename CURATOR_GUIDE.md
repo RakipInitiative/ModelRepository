@@ -3,11 +3,10 @@
 For curators who prepare the execution image of a model. You do not need to know Kubernetes. You need a GitHub account
 with access to this repository, Docker Desktop, and Python 3.10 or newer.
 
-> **Status (2026-10-30, draft for review).** Steps 1-3 and 5-9 describe what works today. Step 4 (choosing a shared base
-> image) describes the **planned** way of writing the Dockerfile. The base images ([bases/](bases/)) and the workflow that
-> builds them ([build-base.yml](.github/workflows/build-base.yml)) exist in the repository as a proposal, but nothing has
-> been published to Harbor yet. Until a maintainer announces that the bases are available, start from the full Dockerfile
-> that `init` generates (step 3) and skip step 4.
+> **Status (2026-10-30, draft for review).** The shared base images are published (step 4) and the first model on a
+> base, `9731510d`, is the reference for how a Dockerfile on a base looks
+> ([models/9731510d-5dc3-4da6-9c2c-d5544b253489/Dockerfile](models/9731510d-5dc3-4da6-9c2c-d5544b253489/Dockerfile)).
+> Models that do not fit a base still use a full Dockerfile as generated in step 3.
 
 ## What happens to your model
 
@@ -60,25 +59,31 @@ This downloads the model, creates `models/<model_id>/Dockerfile` and `build.yaml
 starting point from the packages named in the model; it often needs manual fixes. If you already have a Dockerfile that
 works, use `--dockerfile my.Dockerfile` instead. Whatever you commit is built exactly as it is.
 
-## Step 4 - Choose a base image (planned; skip until announced)
+## Step 4 - Choose a base image
 
 Pick the family that matches your model and start your Dockerfile with `FROM` that base. The base already contains the
 operating system, the language runtime, Miniconda, the harness environment and the common packages, so your Dockerfile
 only adds what is specific to your model.
 
-| Your model needs | Base | Already in it |
+| Your model needs | `FROM` line (copy exactly) | Already in it |
 |---|---|---|
-| R 3.6.3 (tidyverse) | `bases/r-3.6.3` | rocker/tidyverse 3.6.3, curl, cmake, `remotes`, `jsonlite` |
-| Python 3.12 | `bases/python-3.12` | pandas 2.2.3, numpy 2.2.4, matplotlib 3.10.1, openpyxl 3.1.5, seaborn 0.13.2 |
+| R 3.6.3 (tidyverse) | `FROM harbor.cloudferro-dev.risk-ai-cloud.com/fskx-base/r-3.6.3@sha256:6df097e61195a14e57e860d27ce605d7c6c4ff81388115024f555dbeddb0a799` | rocker/tidyverse 3.6.3 (Ubuntu 18.04), curl, cmake, Miniconda, harness environment, `remotes`, `jsonlite` |
+| Python 3.12 | `FROM harbor.cloudferro-dev.risk-ai-cloud.com/fskx-base/python-3.12@sha256:d17a7d550130c2e19a40235282be689fb70ed7d22fadc31583092b3335a630b6` | python:3.12-slim, curl, cmake, Miniconda, harness environment, pandas 2.2.3, numpy 2.2.4, matplotlib 3.10.1, openpyxl 3.1.5, seaborn 0.13.2 |
 | another R or Python version, system libraries (e.g. GDAL), Octave | none yet | write a full Dockerfile as in step 3 and ask a maintainer whether a new base is worthwhile |
 
-`FROM` must name the base **by digest** (`FROM <registry>/fskx/base/<name>@sha256:<digest>`); the exact line is
-published together with the base. The examples show the shape: [bases/r-3.6.3/example-9731510d.Dockerfile](bases/r-3.6.3/example-9731510d.Dockerfile)
-and [bases/python-3.12/example-7c962507.Dockerfile](bases/python-3.12/example-7c962507.Dockerfile).
+The base is named **by digest**, never by tag. A tag could be moved, and the pull request check
+(`tools/base_images.py check-pins`) rejects a `FROM` into the base project without `@sha256:...`. New digests appear in the
+job summary of the `build-base` workflow when a base is rebuilt; models keep using the digest they name until their
+Dockerfile is changed and the version raised. The bases are public; no login is needed to build.
+
+Examples: [models/9731510d-5dc3-4da6-9c2c-d5544b253489/Dockerfile](models/9731510d-5dc3-4da6-9c2c-d5544b253489/Dockerfile)
+(R, real), [bases/python-3.12/example-7c962507.Dockerfile](bases/python-3.12/example-7c962507.Dockerfile) and
+[bases/r-3.6.3/example-ggplot2-group.Dockerfile](bases/r-3.6.3/example-ggplot2-group.Dockerfile) (prototypes; they still show a
+local `FROM` tag where a real Dockerfile has the line from the table).
 
 Why it matters: a node stores a layer once only if it is identical in all images that use it. With a shared base the
-model above added 9 MB (R) and 46 MB (Python) on top of the base instead of roughly 800-900 MB, and starts in seconds when the
-base is already on the machine.
+model above adds 9 MB on top of the base instead of roughly 800-900 MB, and starts in seconds when the base is already
+on the machine.
 
 ## Step 5 - Write the Dockerfile
 
@@ -111,10 +116,20 @@ Rules that keep images small and results reproducible:
 
 ```yaml
 version: 1     # positive integer: 1, 2, 3, ...  (not 0, 1.5, 01, v2)
-cpu: 1         # CPU cores the simulation needs
-ram: 1         # GB of memory
+cpu: 1         # CPU cores the simulation reserves
+ram: 1         # GB of memory the simulation reserves
 gpu: 0
 ```
+
+`cpu` and `ram` are what the platform **reserves** for a simulation: the scheduler only starts it on a machine that has
+this much unreserved, and the simulation is guaranteed at least this share when the machine is busy. They are **not a
+limit**: a simulation can use more if the machine has it. The defaults are 1 CPU and 1 GB. Raise them only for models that
+really run in parallel (number of workers + 1) or hold large data, because every simulation reserves its numbers while
+it runs and fewer simulations fit on a machine at the same time. Measure instead of guessing: run the image once with the
+model's default parameters and a larger one, and read the container's peak memory and CPU time afterwards
+(`/sys/fs/cgroup/memory.peak` and `cpu.stat` inside the container; model 9731510d peaked at 206 MB and used 1.03 cores). Note that R's `detectCores()`
+and Python's `os.cpu_count()` report all cores of the machine, not what was reserved: set the number of workers
+explicitly in the model.
 
 `version` becomes the image tag. The platform runs the **highest** version of a model. A pull request fails if you change
 a model folder without raising the version. A published version is never overwritten.
