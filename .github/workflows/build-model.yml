@@ -56,6 +56,7 @@ env:
   HARBOR_REGISTRY: harbor.cloudferro-dev.risk-ai-cloud.com
   HARBOR_PROJECT: fskx
   HARBOR_REPO_PREFIX: models
+  HARBOR_BASE_PROJECT: fskx-base   # project of the shared base images, see build-base.yml
   FSKX_LOOKUP_URL: https://api-gateway.cloudferro-dev.risk-ai-cloud.com/model-lookup-service
 
 jobs:
@@ -92,6 +93,8 @@ jobs:
             # An updated model needs a higher version; fail here, not after the merge.
             python3 tools/check_version_bump.py "$base" HEAD "$ids"
           fi
+          # A model that starts FROM a shared base (bases/, build-base.yml) must name it by digest.
+          if [ "$ids" != "[]" ]; then python3 tools/base_images.py check-pins HEAD "$ids"; fi
           echo "models: $ids"
           echo "matrix={\"id\":$ids}" >> "$GITHUB_OUTPUT"
           if [ "$ids" = "[]" ]; then echo "any=false" >> "$GITHUB_OUTPUT"; else echo "any=true" >> "$GITHUB_OUTPUT"; fi
