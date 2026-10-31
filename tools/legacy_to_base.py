@@ -20,12 +20,20 @@ It is a scaffold, not a verdict: build and smoke-test every result (curator guid
   the dated snapshot line of bases/r-3.6.3/example-ggplot2-group.Dockerfile; other models keep the repositories of the
   rocker image (like model 9731510d). Override with --snapshot YYYY-MM-DD or --snapshot none.
 * a check step that fails the build if a package named in an install line is missing.
+
+Environment of the model (--fskx FILE, optional): the packages.json inside the FSKX file declares package versions. Scientific
+models must keep their environment, so every declared version that differs from what the base has installed
+(bases/r-3.6.3/packages.tsv, override with --installed) gets an install_version line, and the check step fails the build if an
+installed version differs from the declared one. Cases the converter cannot decide are written as "# CHECK:" comments: a
+declared version that contradicts a version pinned in the legacy lines, and a declared version the build cannot meet (list
+it with --allow PACKAGE after you have looked at it; it is then left out of the check and named in a comment).
 """
 import argparse
 import json
 import os
 import re
 import sys
+import zipfile
 from email.utils import parsedate_to_datetime
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -62,8 +70,49 @@ PACKAGE_UNPINNED = re.compile(r"""install\.packages\(\s*(?:c\()?['"]([^'"]+)['"]
 GGPLOT2 = re.compile(r"""install_version\(\s*['"]ggplot2['"]\s*,\s*version\s*=\s*['"](\d+)\.(\d+)""")
 
 
+PIN = re.compile(r"""install_version\(\s*['"]([^'"]+)['"]\s*,\s*version\s*=\s*['"]([^'"]+)['"]""")
+# R's own packages follow the R version, not an install step; "base" in packages.json is R itself.
+R_OWN = {"base", "compiler", "datasets", "graphics", "grDevices", "grid", "methods", "parallel", "splines", "stats", "stats4", "tcltk", "tools", "utils"}
+DEFAULT_INSTALLED = os.path.join(os.path.dirname(HERE), "bases", "r-3.6.3", "packages.tsv")
+
+
 class Unsupported(Exception):
     pass
+
+
+def read_declared(fskx_path):
+    """{package: version} of the packages.json in an FSKX file, only entries with a version, without R's own packages."""
+    with zipfile.ZipFile(fskx_path) as z:
+        if "packages.json" not in z.namelist():
+            return {}
+        listed = json.loads(z.read("packages.json")).get("PackageList") or []
+    return {x["Package"]: x["Version"] for x in listed
+            if isinstance(x, dict) and x.get("Package") and x.get("Version") and x["Package"] not in R_OWN}
+
+
+def read_installed(path):
+    with open(path, encoding="utf-8") as f:
+        return dict(line.rstrip("\n").split("\t", 1) for line in f if "\t" in line)
+
+
+def pin_lines(own, declared, installed, allow):
+    """(install lines, notes, packages to verify) that bring the environment to the declared versions."""
+    pinned = {}
+    for raw in own:
+        pinned.update(PIN.findall(raw))
+    lines, notes, verify = [], [], {}
+    for name, want in sorted(declared.items()):
+        if name in allow:
+            notes.append(f"packages.json declares {name} {want}, not enforced ({name} accepted by --allow)")
+        elif name in pinned:
+            if pinned[name] != want:
+                notes.append(f"packages.json declares {name} {want} but the legacy lines install {pinned[name]}: decide which one is right")
+            verify[name] = want
+        else:
+            verify[name] = want
+            if installed.get(name) != want:
+                lines.append(f"""RUN R -e "require(remotes)" -e "install_version('{name}', version = '{want}')\"""")
+    return lines, notes, verify
 
 
 def instructions(text):
@@ -129,13 +178,15 @@ def notes(own):
     return sorted(set(found))
 
 
-def convert(text, base_from, snapshot=None, source=""):
+def convert(text, base_from, snapshot=None, source="", declared=None, installed=None, allow=()):
     own = split(text)
+    pins, pin_notes, verify = pin_lines(own, declared or {}, installed or {}, set(allow))
+    own = own + pins
     date = snapshot_for(own, snapshot)
     lines = [f"# Converted from the legacy Dockerfile{source} by tools/legacy_to_base.py; build and smoke-test it, then adjust by hand.",
              "# On the shared base image bases/r-3.6.3 (rocker/tidyverse 3.6.3-ubuntu18.04 + curl, cmake, Miniconda, the harness",
              "# conda environment, remotes, jsonlite); the base is named by digest."]
-    lines += [f"# CHECK: {n}" for n in notes(own)]
+    lines += [f"# CHECK: {n}" for n in notes(own) + pin_notes]
     lines += [f"FROM {base_from}", ""]
     if date:
         lines += [f"""# Dated CRAN snapshot: ggplot2 >= 3.4 does not install from today's CRAN on R 3.6.3 (see bases/r-3.6.3/example-ggplot2-group.Dockerfile).""",
@@ -145,6 +196,10 @@ def convert(text, base_from, snapshot=None, source=""):
     if names:
         quoted = ", ".join(f"'{n}'" for n in names)
         lines.append(f"""RUN R -e "missing <- setdiff(c({quoted}), rownames(installed.packages())); if (length(missing) > 0) stop(paste('R packages failed to install:', paste(missing, collapse = ', ')))\"""")
+    if verify:
+        wanted = ", ".join(f"{k} = '{v}'" for k, v in sorted(verify.items()))
+        lines.append("# The environment declared in the model's packages.json: the build fails if an installed version differs.")
+        lines.append(f"""RUN R -e "want <- c({wanted}); ip <- installed.packages(); got <- unname(ip[match(names(want), rownames(ip)), 'Version']); got[is.na(got)] <- 'missing'; names(got) <- names(want); bad <- names(want)[got != want]; if (length(bad) > 0) stop(paste('versions differ from packages.json:', paste(bad, got[bad], 'wanted', want[bad], collapse = '; ')))\"""")
     if own:
         lines.append("")
     lines += ["ADD . /containerscripts", "ADD fskx /fskx", "ENTRYPOINT . ./containerscripts/entrypoint.sh", ""]
@@ -183,8 +238,10 @@ def cmd_convert(a):
             sys.exit(f"no completed build of {a.model_id} in {a.history}")
         b = builds[a.model_id]
         text, source = b["docker_file"], f" built {parsedate_to_datetime(b['created_at']).date()}"
+    declared = read_declared(a.fskx) if a.fskx else None
+    installed = read_installed(a.installed or DEFAULT_INSTALLED) if a.fskx else None
     try:
-        result = convert(text, base_from, a.snapshot, source)
+        result = convert(text, base_from, a.snapshot, source, declared, installed, a.allow or [])
     except Unsupported as e:
         sys.exit(f"{a.model_id}: {e}")
     if not a.models_dir:
@@ -229,6 +286,9 @@ def main():
     c.add_argument("--models-dir")
     c.add_argument("--base-from", help="complete image reference with digest (default: the r-3.6.3 line of CURATOR_GUIDE.md)")
     c.add_argument("--snapshot", help="YYYY-MM-DD of the Posit CRAN snapshot, or none (default: decided by the packages)")
+    c.add_argument("--fskx", help="the model's FSKX file: enforce the package versions of its packages.json")
+    c.add_argument("--installed", help="package versions of the base, tab separated (default: bases/r-3.6.3/packages.tsv)")
+    c.add_argument("--allow", action="append", help="a declared package that cannot be installed at its version (repeatable)")
     c.add_argument("--cpu", default="1")
     c.add_argument("--ram", default="1")
     g = sub.add_parser("groups")
