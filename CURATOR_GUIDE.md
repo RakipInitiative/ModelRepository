@@ -3,10 +3,11 @@
 For curators who prepare the execution image of a model. You do not need to know Kubernetes. You need a GitHub account
 with access to this repository, Docker Desktop, and Python 3.10 or newer.
 
-> **Status (2026-10-30, draft for review).** The shared base images are published (step 4) and the first model on a
-> base, `9731510d`, is the reference for how a Dockerfile on a base looks
-> ([models/9731510d-5dc3-4da6-9c2c-d5544b253489/Dockerfile](models/9731510d-5dc3-4da6-9c2c-d5544b253489/Dockerfile)).
-> Models that do not fit a base still use a full Dockerfile as generated in step 3.
+> **Status (2026-10-31, draft for review).** The shared base images are published (step 4). Two models run on the R base:
+> `9731510d` (several model-specific packages,
+> [Dockerfile](models/9731510d-5dc3-4da6-9c2c-d5544b253489/Dockerfile)) and `730f8252` (no packages at all, only the
+> three closing lines, [Dockerfile](models/730f8252-374d-4926-a6a1-cdd9bc4b3a23/Dockerfile)). Models that do not fit a
+> base still use a full Dockerfile as generated in step 3.
 
 ## What happens to your model
 
@@ -59,6 +60,12 @@ This downloads the model, creates `models/<model_id>/Dockerfile` and `build.yaml
 starting point from the packages named in the model; it often needs manual fixes. If you already have a Dockerfile that
 works, use `--dockerfile my.Dockerfile` instead. Whatever you commit is built exactly as it is.
 
+**Model with an old image (R 3.6.3)?** `python3 tools/legacy_to_base.py convert --history <build-history.json> --model-id <model_id> --models-dir models`
+writes `models/<model_id>/` with the legacy Dockerfile rewritten on the R base (the setup lines the base already contains are
+dropped, the model's own lines kept, the closing lines moved last, a CRAN snapshot added where ggplot2 >= 3.4 needs it) and
+`build.yaml` (version 1). It is a scaffold: read the `# CHECK:` comments it may add, then go on with step 7. `legacy_to_base.py groups`
+lists which models share the same model-specific lines. Details: the docstring of the tool.
+
 ## Step 4 - Choose a base image
 
 Pick the family that matches your model and start your Dockerfile with `FROM` that base. The base already contains the
@@ -77,13 +84,16 @@ job summary of the `build-base` workflow when a base is rebuilt; models keep usi
 Dockerfile is changed and the version raised. The bases are public; no login is needed to build.
 
 Examples: [models/9731510d-5dc3-4da6-9c2c-d5544b253489/Dockerfile](models/9731510d-5dc3-4da6-9c2c-d5544b253489/Dockerfile)
-(R, real), [bases/python-3.12/example-7c962507.Dockerfile](bases/python-3.12/example-7c962507.Dockerfile) and
+(R, real, with packages), [models/730f8252-374d-4926-a6a1-cdd9bc4b3a23/Dockerfile](models/730f8252-374d-4926-a6a1-cdd9bc4b3a23/Dockerfile)
+(R, real, no packages), [bases/python-3.12/example-7c962507.Dockerfile](bases/python-3.12/example-7c962507.Dockerfile) and
 [bases/r-3.6.3/example-ggplot2-group.Dockerfile](bases/r-3.6.3/example-ggplot2-group.Dockerfile) (prototypes; they still show a
 local `FROM` tag where a real Dockerfile has the line from the table).
 
 Why it matters: a node stores a layer once only if it is identical in all images that use it. With a shared base the
 model above adds 9 MB on top of the base instead of roughly 800-900 MB, and starts in seconds when the base is already
-on the machine.
+on the machine. Measured in the cluster with `730f8252`: pulling the model image onto a node that already held the base took
+0.5 s (the same model's old image: 18 s) and the whole simulation 8 s; the very first pull of the base onto a node still
+costs one download of about 1.5 GB, shared by all later models on that node.
 
 ## Step 5 - Write the Dockerfile
 
@@ -127,7 +137,7 @@ limit**: a simulation can use more if the machine has it. The defaults are 1 CPU
 really run in parallel (number of workers + 1) or hold large data, because every simulation reserves its numbers while
 it runs and fewer simulations fit on a machine at the same time. Measure instead of guessing: run the image once with the
 model's default parameters and a larger one, and read the container's peak memory and CPU time afterwards
-(`/sys/fs/cgroup/memory.peak` and `cpu.stat` inside the container; model 9731510d peaked at 206 MB and used 1.03 cores). Note that R's `detectCores()`
+(`/sys/fs/cgroup/memory.peak` and `cpu.stat` inside the container; model 9731510d peaked at 206 MB and used 1.03 cores, model 730f8252 at 134 MB). Note that R's `detectCores()`
 and Python's `os.cpu_count()` report all cores of the machine, not what was reserved: set the number of workers
 explicitly in the model.
 
