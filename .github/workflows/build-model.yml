@@ -109,7 +109,9 @@ jobs:
     environment: ${{ (github.event_name != 'pull_request' && github.ref == 'refs/heads/master') && 'harbor-push' || 'pr-build' }}
     strategy:
       fail-fast: false
-      max-parallel: 2
+      # One entry per model (up to 10 per PR). Every entry waits for the "pr-build" approval on pull
+      # requests, so all of them must be queued at once to be approved with a single click.
+      max-parallel: 10
       matrix: ${{ fromJSON(needs.detect.outputs.matrix) }}
     env:
       MODEL_ID: ${{ matrix.id }}
