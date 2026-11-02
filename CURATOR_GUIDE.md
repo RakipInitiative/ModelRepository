@@ -63,8 +63,10 @@ works, use `--dockerfile my.Dockerfile` instead. Whatever you commit is built ex
 **Model with an old image (R 3.6.3)?** `python3 tools/legacy_to_base.py convert --history <build-history.json> --model-id <model_id> --models-dir models`
 writes `models/<model_id>/` with the legacy Dockerfile rewritten on the R base (the setup lines the base already contains are
 dropped, the model's own lines kept, the closing lines moved last, a CRAN snapshot added where ggplot2 >= 3.4 needs it) and
-`build.yaml` (version 1). It is a scaffold: read the `# CHECK:` comments it may add, then go on with step 7. `legacy_to_base.py groups`
-lists which models share the same model-specific lines. Details: the docstring of the tool.
+`build.yaml` (version 1). It is a scaffold: read the `# CHECK:` comments it may add, then go on with step 7. Add `--fskx <file>` to keep the environment the model declares: versions in its `packages.json` are installed and checked (the build fails if
+an installed version differs). For the cases it cannot decide: `--allow PKG` (a declared version that cannot be built), `--drop PKG` (leave out
+the legacy line that installs it) and `--repin PKG` (a later install replaced it; install the declared version again at the end).
+`legacy_to_base.py groups` lists which models share the same model-specific lines. Details: the docstring of the tool.
 
 ## Step 4 - Choose a base image
 

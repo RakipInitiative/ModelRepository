@@ -27,6 +27,9 @@ models must keep their environment, so every declared version that differs from 
 installed version differs from the declared one. Cases the converter cannot decide are written as "# CHECK:" comments: a
 declared version that contradicts a version pinned in the legacy lines, and a declared version the build cannot meet (list
 it with --allow PACKAGE after you have looked at it; it is then left out of the check and named in a comment).
+Two more switches for those cases: --drop PACKAGE removes the legacy line(s) that install only that package (for a version the
+base cannot build at all, e.g. MASS 7.3-57 on R 3.6.3; the base's own version stays), and --repin PACKAGE installs the declared
+version again at the end (for a package that a later install in the legacy lines upgraded, e.g. gtable).
 """
 import argparse
 import json
@@ -95,7 +98,12 @@ def read_installed(path):
         return dict(line.rstrip("\n").split("\t", 1) for line in f if "\t" in line)
 
 
-def pin_lines(own, declared, installed, allow):
+def drop_lines(own, drop):
+    """The legacy lines without those that install only a package named in drop."""
+    return [raw for raw in own if not (drop and {name for name, _ in PIN.findall(raw)} and {name for name, _ in PIN.findall(raw)} <= set(drop))]
+
+
+def pin_lines(own, declared, installed, allow, repin=()):
     """(install lines, notes, packages to verify) that bring the environment to the declared versions."""
     pinned = {}
     for raw in own:
@@ -112,6 +120,11 @@ def pin_lines(own, declared, installed, allow):
             verify[name] = want
             if installed.get(name) != want:
                 lines.append(f"""RUN R -e "require(remotes)" -e "install_version('{name}', version = '{want}')\"""")
+    for name in repin:
+        if name not in declared:
+            raise Unsupported(f"--repin {name}: packages.json declares no version of it")
+        lines.append(f"""RUN R -e "require(remotes)" -e "install_version('{name}', version = '{declared[name]}')\"""")
+        notes.append(f"{name} {declared[name]} is installed again at the end: a later legacy line replaces it")
     return lines, notes, verify
 
 
@@ -172,15 +185,16 @@ def notes(own):
     for raw in own:
         flat = " ".join(raw.split())
         if PACKAGE_UNPINNED.search(flat):
-            found.append("an unpinned install.packages line: pin it (guide step 5, rule 1)")
+            found.append("an unpinned install.packages line: on the R 3.6.3 base it resolves from the base's dated CRAN snapshot (2020-04-24), so it is reproducible; pin it if the model needs another version (guide step 5, rule 1)")
         if re.search(r"install_github|git clone|wget |curl ", flat):
             found.append("downloads from outside CRAN/apt: check that the source is still there")
     return sorted(set(found))
 
 
-def convert(text, base_from, snapshot=None, source="", declared=None, installed=None, allow=()):
-    own = split(text)
-    pins, pin_notes, verify = pin_lines(own, declared or {}, installed or {}, set(allow))
+def convert(text, base_from, snapshot=None, source="", declared=None, installed=None, allow=(), drop=(), repin=()):
+    own = drop_lines(split(text), drop)
+    pins, pin_notes, verify = pin_lines(own, declared or {}, installed or {}, set(allow), repin)
+    pin_notes += [f"the legacy lines installing {n} are left out: the base's version stays" for n in drop]
     own = own + pins
     date = snapshot_for(own, snapshot)
     lines = [f"# Converted from the legacy Dockerfile{source} by tools/legacy_to_base.py; build and smoke-test it, then adjust by hand.",
@@ -241,7 +255,7 @@ def cmd_convert(a):
     declared = read_declared(a.fskx) if a.fskx else None
     installed = read_installed(a.installed or DEFAULT_INSTALLED) if a.fskx else None
     try:
-        result = convert(text, base_from, a.snapshot, source, declared, installed, a.allow or [])
+        result = convert(text, base_from, a.snapshot, source, declared, installed, a.allow or [], a.drop or [], a.repin or [])
     except Unsupported as e:
         sys.exit(f"{a.model_id}: {e}")
     if not a.models_dir:
@@ -289,6 +303,8 @@ def main():
     c.add_argument("--fskx", help="the model's FSKX file: enforce the package versions of its packages.json")
     c.add_argument("--installed", help="package versions of the base, tab separated (default: bases/r-3.6.3/packages.tsv)")
     c.add_argument("--allow", action="append", help="a declared package that cannot be installed at its version (repeatable)")
+    c.add_argument("--drop", action="append", help="leave out the legacy lines that install only this package (repeatable)")
+    c.add_argument("--repin", action="append", help="install the declared version of this package again at the end (repeatable)")
     c.add_argument("--cpu", default="1")
     c.add_argument("--ram", default="1")
     g = sub.add_parser("groups")
