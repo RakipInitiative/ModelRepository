@@ -346,6 +346,17 @@ def get_output_parameters(filePath):
     return result_list 
 
 
+def get_file_output_parameters(filePath):
+    # returns the ids of the FILE outputs from metaData.json: the model sets the variable to the name of a file it wrote
+    try:
+        with open(filePath + '/metaData.json', 'r') as json_file:
+            data = json.load(json_file)
+        return [item["id"] for item in data['modelMath']['parameter'] if item["classification"] == "OUTPUT" and item["dataType"] == "FILE"]
+    except Exception as e:
+        logging.info(f"Could not read the FILE outputs from metaData.json: {e}")
+        return []
+
+
 def save_output_vars_python():
     fskx_path = "/fskx"
     result_file = f"{output_path}/output.json"
@@ -355,6 +366,14 @@ def save_output_vars_python():
     save_vars_code += f"import pandas as pd\n\n"
     save_vars_code += "variables_data = {}\n"
     
+    for var_name in get_file_output_parameters(fskx_path):
+        # FILE output: the variable holds the file's name; list it in output.json and copy the file (or folder) to the output folder
+        save_vars_code += f"if '{var_name}' in globals() and isinstance({var_name}, str):\n"
+        save_vars_code += f"    variables_data['{var_name}'] = {var_name}\n"
+        save_vars_code += f"    import os, shutil\n"
+        save_vars_code += f"    if os.path.isfile({var_name}): shutil.copy({var_name}, '{output_path}')\n"
+        save_vars_code += f"    elif os.path.isdir({var_name}): shutil.copytree({var_name}, os.path.join('{output_path}', os.path.basename(os.path.normpath({var_name}))), dirs_exist_ok=True)\n"
+
     for var_name in output_params:
         save_vars_code += f"variables_data['{var_name}'] = {var_name}.to_json(orient='table') if isinstance({var_name}, pd.DataFrame) else {var_name}.tolist() if isinstance({var_name}, np.ndarray) else {var_name} \n"
     
@@ -389,6 +408,14 @@ var_values <- list()
         json_code += f"{name} = get('{name}')\n"
         json_code += f"var_values <- c(var_values, list({name} = {name}))\n"
 
+    for name in get_file_output_parameters(fskx_path):
+        # FILE output: the variable holds the file's name; list it in output.json and copy the file (or folder) to the output folder
+        json_code += f"""
+if (exists('{name}') && is.character({name}) && length({name}) == 1 && file.exists({name})) {{
+  var_values <- c(var_values, list({name} = {name}))
+  file.copy({name}, '{output_path}', overwrite = TRUE, recursive = TRUE)
+}}
+"""
     json_code += f"""
 write_json(var_values, '{result_file}')
 """
