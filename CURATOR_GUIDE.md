@@ -68,6 +68,14 @@ an installed version differs). For the cases it cannot decide: `--allow PKG` (a 
 the legacy line that installs it) and `--repin PKG` (a later install replaced it; install the declared version again at the end).
 `legacy_to_base.py groups` lists which models share the same model-specific lines. Details: the docstring of the tool.
 
+**Model with an old image on `rocker/r2u` or `rocker/tidyverse:4.5` (R 4.5)?** The same tool, same command, with `--fskx <file>` (required):
+`python3 tools/legacy_to_base.py convert --history <build-history.json> --model-id <model_id> --models-dir models --fskx <file>`.
+These legacy images never pinned anything, so the tool does not rewrite their lines. It writes a Dockerfile on the `r-4.5` base that
+points CRAN to the Posit snapshot of the day the legacy image was built, installs the versions declared in `packages.json`, installs
+every other package the model names or loads (in that day's version) and fails the build if a version differs or a package does
+not load. Models that use Stan, JAGS or OpenBUGS are refused (they need a base with that tooling). Read the `# CHECK:` comments
+it may add, then go on with step 7.
+
 ## Step 4 - Choose a base image
 
 Pick the family that matches your model and start your Dockerfile with `FROM` that base. The base already contains the
@@ -78,6 +86,7 @@ only adds what is specific to your model.
 |---|---|---|
 | R 3.6.3 (tidyverse) | `FROM harbor.cloudferro-dev.risk-ai-cloud.com/fskx-base/r-3.6.3@sha256:6df097e61195a14e57e860d27ce605d7c6c4ff81388115024f555dbeddb0a799` | rocker/tidyverse 3.6.3 (Ubuntu 18.04), curl, cmake, Miniconda, harness environment, `remotes`, `jsonlite` |
 | Python 3.12 | `FROM harbor.cloudferro-dev.risk-ai-cloud.com/fskx-base/python-3.12@sha256:d17a7d550130c2e19a40235282be689fb70ed7d22fadc31583092b3335a630b6` | python:3.12-slim, curl, cmake, Miniconda, harness environment, pandas 2.2.3, numpy 2.2.4, matplotlib 3.10.1, openpyxl 3.1.5, seaborn 0.13.2 |
+| R 4.5 (lean, no tidyverse; packages from a dated snapshot) | `FROM harbor.cloudferro-dev.risk-ai-cloud.com/fskx-base/r-4.5@sha256:7c4a3133bd4b4a65c7fd6f966682ac51b89188b8506d574299975f5e321c7c5f` | rocker/r-ver 4.5.1 (Ubuntu 24.04), curl, cmake, the runtime libraries of the Posit binary packages, Miniconda, harness environment, `remotes`, `jsonlite`, a cap of `parallel::detectCores()` at the reserved cores |
 | another R or Python version, system libraries (e.g. GDAL), Octave | none yet | write a full Dockerfile as in step 3 and ask a maintainer whether a new base is worthwhile |
 
 The base is named **by digest**, never by tag. A tag could be moved, and the pull request check
