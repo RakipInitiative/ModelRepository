@@ -73,7 +73,9 @@ the legacy line that installs it) and `--repin PKG` (a later install replaced it
 These legacy images never pinned anything, so the tool does not rewrite their lines. It writes a Dockerfile on the `r-4.5` base that
 points CRAN to the Posit snapshot of the day the legacy image was built, installs the versions declared in `packages.json`, installs
 every other package the model names or loads (in that day's version) and fails the build if a version differs or a package does
-not load. Models that use Stan, JAGS or OpenBUGS are refused (they need a base with that tooling). Read the `# CHECK:` comments
+not load. Models that use Stan or JAGS are refused (they need a base with that tooling). Models that use OpenBUGS (R2OpenBUGS) are converted onto the
+`r-4.5-bugs` base (or `r-3.6.3-bugs` in the R 3.6.3 mode): the legacy lines that installed JAGS and compiled OpenBUGS per model are dropped. The
+digest of the bugs base is read from the table in step 4, or passed with `--bugs-from`. Read the `# CHECK:` comments
 it may add, then go on with step 7.
 
 ## Step 4 - Choose a base image
@@ -87,6 +89,8 @@ only adds what is specific to your model.
 | R 3.6.3 (tidyverse) | `FROM harbor.cloudferro-dev.risk-ai-cloud.com/fskx-base/r-3.6.3@sha256:6df097e61195a14e57e860d27ce605d7c6c4ff81388115024f555dbeddb0a799` | rocker/tidyverse 3.6.3 (Ubuntu 18.04), curl, cmake, Miniconda, harness environment, `remotes`, `jsonlite` |
 | Python 3.12 | `FROM harbor.cloudferro-dev.risk-ai-cloud.com/fskx-base/python-3.12@sha256:d17a7d550130c2e19a40235282be689fb70ed7d22fadc31583092b3335a630b6` | python:3.12-slim, curl, cmake, Miniconda, harness environment, pandas 2.2.3, numpy 2.2.4, matplotlib 3.10.1, openpyxl 3.1.5, seaborn 0.13.2 |
 | R 4.5 (lean, no tidyverse; packages from a dated snapshot) | `FROM harbor.cloudferro-dev.risk-ai-cloud.com/fskx-base/r-4.5@sha256:7c4a3133bd4b4a65c7fd6f966682ac51b89188b8506d574299975f5e321c7c5f` | rocker/r-ver 4.5.1 (Ubuntu 24.04), curl, cmake, the runtime libraries of the Posit binary packages, Miniconda, harness environment, `remotes`, `jsonlite`, a cap of `parallel::detectCores()` at the reserved cores |
+| R 3.6.3 and OpenBUGS (R2OpenBUGS) | `FROM harbor.cloudferro-dev.risk-ai-cloud.com/fskx-base/r-3.6.3-bugs@sha256:<DIGEST: from the job summary of the build-base run>` | the r-3.6.3 base + OpenBUGS 3.2.3 (`/usr/local/bin/OpenBUGS`, 32-bit, compiled once from the webbugs tarball, sha256 checked). R2OpenBUGS itself comes from your Dockerfile |
+| R 4.5 and OpenBUGS (R2OpenBUGS) | `FROM harbor.cloudferro-dev.risk-ai-cloud.com/fskx-base/r-4.5-bugs@sha256:<DIGEST: from the job summary of the build-base run>` | the r-4.5 base + OpenBUGS 3.2.3 as above |
 | another R or Python version, system libraries (e.g. GDAL), Octave | none yet | write a full Dockerfile as in step 3 and ask a maintainer whether a new base is worthwhile |
 
 The base is named **by digest**, never by tag. A tag could be moved, and the pull request check
@@ -170,8 +174,11 @@ The smoke test runs the image the way the platform does, with the model's defaul
 `/data/output.json` is written and not empty. Look at `/tmp/smoke-<model_id>/data` afterwards: plots, result files and
 `simulation_log.log` (errors of your model are in the log, the container exit code says nothing).
 
-*Known limit:* a model whose results are **only files** (for example a plot) writes `{}` to `output.json` and fails the
-smoke test even though it works. If that is your case, say so in the pull request; a maintainer decides.
+*Legacy models without declared outputs:* a few old models declare no output parameters at all, so `output.json` is `{}`. They
+pass the smoke test if they produced a plot (`plot.png`, `.svg`, `.jpg` or `.pdf` in `/data`); the run prints a note. This
+exception exists only to keep those legacy models; a new model must declare its outputs (curation criteria) and a model
+with outputs but an empty `output.json` still fails. Outputs of type FILE are listed in `output.json` and copied to `/data`
+by the harness (HARNESS_VERSION 2).
 
 ## Step 8 - Open the pull request
 
@@ -216,7 +223,7 @@ If something goes wrong after publishing, raise the version again with the fix. 
 | `package 'xyz' is not available (for R version 3.6.3)` | A dependency of your pinned package needs a newer R than today's CRAN offers for yours. Use a dated CRAN snapshot (step 5, rule 1) from before that package moved on, or pin that dependency to an older version first (`install_version('xyz', version = '...')`). |
 | A package that used to be on CRAN cannot be found at all | It was removed (example: `TruncatedDistributions`). Take the installed package from an existing image of the model (`COPY --from=<old image> <library path>/<package> ...`) or ask the author for the source; tell a maintainer. |
 | Model works with the old image but fails now with a type or attribute error | Unpinned package versions (step 5, rule 1). Pin to the versions the model was written for. |
-| `output.json is empty` in the smoke test | Step 7, known limit for file-only results. |
+| `output.json is empty and no plot was produced` in the smoke test | The model produced neither declared outputs nor a plot: check `/tmp/smoke-<model_id>/data` and the log (step 7). |
 | "no space left on device" during the build | The GitHub runner has about 14 GB. Install fewer or smaller packages, merge `RUN` steps that leave large temporary files, use a shared base. |
 
 ## Please do not
