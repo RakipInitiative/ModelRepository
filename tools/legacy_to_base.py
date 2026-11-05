@@ -42,8 +42,10 @@ every version declared in packages.json (and for install_version lines of the le
 snapshot's version for all other names. The names come from the union of packages.json, the library()/require()/pkg:: calls of
 the model's R scripts, the legacy r-cran-* apt names and the legacy install.packages lines. The build fails if an installed
 version differs from a declared one, if a named package is missing, or if a package does not load (a missing system library).
-Not carried over, with a "# CHECK:" note: other legacy lines (Makevars, system -dev libraries). Refused: Bayesian tooling (rstan,
-JAGS, OpenBUGS: those need their own base). Switches: --drop PACKAGE leaves a package out (a false hit of the script scan),
+Not carried over, with a "# CHECK:" note: other legacy lines (Makevars, system -dev libraries). Refused: Stan and JAGS models (their own
+base). OpenBUGS models (R2OpenBUGS in the scripts or packages.json) go on the bugs variant of the base (bases/r-4.5-bugs, and bases/r-3.6.3-bugs
+in the R 3.6.3 mode), whose digest comes from CURATOR_GUIDE.md or --bugs-from; the legacy lines that installed JAGS and compiled OpenBUGS are
+dropped. Switches: --drop PACKAGE leaves a package out (a false hit of the script scan),
 --allow PACKAGE installs a declared package without its version (not enforced), --repin PACKAGE installs the declared version
 again at the end, --apt PACKAGE adds a system package (a package that compiles against a library, e.g. tkrplot needs tk-dev).
 Every version is installed with upgrade = 'never', so a later pin cannot upgrade an earlier one.
@@ -63,6 +65,8 @@ LEGACY_FROM = "rocker/tidyverse:3.6.3-ubuntu18.04"
 DEFAULT_SNAPSHOT = "2024-11-01"
 BASE_FROM_PATTERN = re.compile(r"FROM\s+(\S+/fskx-base/r-3\.6\.3@sha256:[0-9a-f]{64})")
 BASE45_FROM_PATTERN = re.compile(r"FROM\s+(\S+/fskx-base/r-4\.5@sha256:[0-9a-f]{64})")
+BUGS36_FROM_PATTERN = re.compile(r"FROM\s+(\S+/fskx-base/r-3\.6\.3-bugs@sha256:[0-9a-f]{64})")
+BUGS45_FROM_PATTERN = re.compile(r"FROM\s+(\S+/fskx-base/r-4\.5-bugs@sha256:[0-9a-f]{64})")
 LEGACY_FROM_45 = re.compile(r"FROM (rocker/r2u:(latest|24\.04)|rocker/tidyverse:4\.5)")
 SNAPSHOT_45 = "https://p3m.dev/cran/__linux__/noble/{}"
 MINICONDA = "https://repo.anaconda.com/miniconda/Miniconda3-py38_23.5.0-3-Linux-x86_64.sh"
@@ -144,7 +148,7 @@ def pin_lines(own, declared, installed, allow, repin=()):
     for name in repin:
         if name not in declared:
             raise Unsupported(f"--repin {name}: packages.json declares no version of it")
-        lines.append(f"""RUN R -e "require(remotes)" -e "install_version('{name}', version = '{declared[name]}')\"""")
+        lines.append(f"""RUN R -e "require(remotes)" -e "install_version('{name}', version = '{declared[name]}', upgrade = 'never')\"""")
         notes.append(f"{name} {declared[name]} is installed again at the end: a later legacy line replaces it")
     return lines, notes, verify
 
@@ -182,6 +186,43 @@ def split(text):
             raise Unsupported(f"touches the harness setup, write it by hand: {flat[:100]}")
         own.append(raw)
     return own
+
+
+# OpenBUGS: every legacy image apt-installed JAGS and 32-bit development libraries and compiled OpenBUGS 3.2.3 from the webbugs tarball.
+# The bugs bases (bases/r-3.6.3-bugs, bases/r-4.5-bugs) compile it once; the model keeps only R2OpenBUGS (and its other packages).
+BUGS_BUILD = re.compile(r"webbugs\.psychstat\.org|OpenBUGS-3\.2\.3")
+BUGS_APT = re.compile(r"\bapt(-get)? (-\S+ )*install\b.*(\bjags\b|libc6-dev-i386|gcc-multilib)")
+JAGS_PACKAGES = {"rjags", "R2jags", "runjags", "jagsUI"}
+STAN_PACKAGES = {"rstan", "rstanarm", "brms", "cmdstanr", "StanHeaders"}
+BUGS_PACKAGES = {"R2OpenBUGS", "BRugs", "R2WinBUGS"}
+
+
+def remove_bugs(own):
+    """(own without the OpenBUGS build and the apt line that installs JAGS / 32-bit libraries, whether an OpenBUGS build was there)."""
+    flats = [" ".join(raw.replace("\\\n", " ").split()) for raw in own]
+    found = any(BUGS_BUILD.search(f) for f in flats)
+    if not found:
+        return own, False
+    return [raw for raw, f in zip(own, flats) if not BUGS_BUILD.search(f) and not BUGS_APT.search(f)], True
+
+
+def bayes_kinds(fskx_path, declared, installed_by_legacy=()):
+    """Which Bayesian tools a model really uses (its scripts and packages.json, not its legacy Dockerfile, which installed all of them)."""
+    names = set(declared) | set(installed_by_legacy)
+    stan_files = False
+    if fskx_path:
+        names |= scan_scripts(fskx_path)
+        with zipfile.ZipFile(fskx_path) as z:
+            stan_files = any(n.lower().endswith(".stan") for n in z.namelist())
+    kinds = set()
+    lower = {n.lower() for n in names}  # the legacy apt names (r-cran-rstan) are lower case
+    if lower & {n.lower() for n in JAGS_PACKAGES}:
+        kinds.add("jags")
+    if (lower & {n.lower() for n in STAN_PACKAGES}) or stan_files:
+        kinds.add("stan")
+    if lower & {n.lower() for n in BUGS_PACKAGES}:
+        kinds.add("openbugs")
+    return kinds
 
 
 def snapshot_for(own, snapshot):
@@ -288,7 +329,7 @@ def legacy_45(text):
     return apt_r, cran, pins, apt_other, skipped
 
 
-def convert45(text, base_from, built, fskx_path, installed, snapshot=None, allow=(), drop=(), repin=(), source="", apt=()):
+def convert45(text, base_from, built, fskx_path, installed, snapshot=None, allow=(), drop=(), repin=(), source="", apt=(), bugs_from=None):
     items = instructions(text)
     if not items or not LEGACY_FROM_45.fullmatch(items[0][1]):
         raise Unsupported("does not start with FROM rocker/r2u:latest, rocker/r2u:24.04 or rocker/tidyverse:4.5")
@@ -297,15 +338,23 @@ def convert45(text, base_from, built, fskx_path, installed, snapshot=None, allow
     date = snapshot or built
     if not date or date == "none":
         raise Unsupported("no build date of the legacy image: pass --snapshot YYYY-MM-DD")
-    if BAYES_WORDS.search(uncommented(text)):
-        raise Unsupported("Bayesian tooling (Stan, JAGS or OpenBUGS) in the legacy Dockerfile: needs its own base, write it by hand")
     apt_r, cran, legacy_pins, apt_other, skipped = legacy_45(text)
     declared = read_declared(fskx_path)
     used = scan_scripts(fskx_path)
-    bayes = sorted((used | set(declared)) & BAYES_PACKAGES)
-    if bayes:
-        raise Unsupported(f"Bayesian packages ({', '.join(bayes)}): needs its own base, write it by hand")
+    kinds = bayes_kinds(fskx_path, declared, set(apt_r) | set(cran) | set(legacy_pins))
+    if kinds - {"openbugs"}:
+        raise Unsupported(f"Bayesian tooling ({', '.join(sorted(kinds - {'openbugs'}))}): needs its own base, write it by hand")
+    bugs = "openbugs" in kinds
+    if bugs:
+        if not bugs_from:
+            raise Unsupported("uses OpenBUGS: needs the r-4.5-bugs base; its digest is not in CURATOR_GUIDE.md yet, pass --bugs-from")
+        base_from = bugs_from
     notes_ = []
+    if bugs:
+        apt_other = [a for a in apt_other if a not in ("jags", "gcc-multilib", "libc6-dev-i386")]
+        if "jags" in text:
+            notes_.append("the legacy image installed JAGS, the model does not use it (no rjags/R2jags in its scripts or packages.json): not installed")
+        skipped = [l for l in skipped if "webbugs" not in l and "OpenBUGS-3.2.3" not in l]
 
     # spelling: packages.json, pins and install.packages lines know the CRAN case; the apt names are lower case
     spelling = {}
@@ -315,7 +364,7 @@ def convert45(text, base_from, built, fskx_path, installed, snapshot=None, allow
     for n in installed:
         spelling.setdefault(n.lower(), n)
     names = set(declared) | set(legacy_pins) | set(cran) | used | {spelling.get(a.lower(), a) for a in apt_r}
-    names = {n for n in names if n not in R_OWN and n not in drop and n not in BAYES_PACKAGES}
+    names = {n for n in names if n not in R_OWN and n not in drop and n not in BAYES_PACKAGES - ({"R2OpenBUGS"} if bugs else set())}
     guessed = sorted({a for a in apt_r if a.lower() not in spelling and a in names})
     if guessed:
         notes_.append("the CRAN spelling of " + ", ".join(guessed) + " is a guess from the apt name r-cran-<lower case>; the build fails if it is wrong")
@@ -354,7 +403,7 @@ def convert45(text, base_from, built, fskx_path, installed, snapshot=None, allow
                   if not same_version(installed.get(n), v)]
     plain = sorted(n for n in names if n not in pins and n not in installed)
     lines = [f"# Converted from the legacy Dockerfile{source} by tools/legacy_to_base.py (R 4.5 mode); build and smoke-test it, then adjust by hand.",
-             "# On the shared base image bases/r-4.5 (lean rocker/r-ver 4.5.1 + curl, cmake, runtime libraries, Miniconda, the harness",
+             "# On the shared base image bases/" + ("r-4.5-bugs (= bases/r-4.5 + OpenBUGS 3.2.3 compiled once; r-4.5 is" if bugs else "r-4.5 (") + " lean rocker/r-ver 4.5.1 + curl, cmake, runtime libraries, Miniconda, the harness",
              "# conda environment, remotes, jsonlite); the base is named by digest. The environment is reproduced from a date: CRAN is the",
              f"# Posit Package Manager snapshot of {date}, the versions of packages.json are installed from it and checked, a package the",
              "# model only names comes in the version of that day."]
@@ -384,18 +433,30 @@ def convert45(text, base_from, built, fskx_path, installed, snapshot=None, allow
     return "\n".join(lines)
 
 
-def convert(text, base_from, snapshot=None, source="", declared=None, installed=None, allow=(), drop=(), repin=(), built=None, fskx=None, apt=()):
+def convert(text, base_from, snapshot=None, source="", declared=None, installed=None, allow=(), drop=(), repin=(), built=None, fskx=None, apt=(), bugs_from=None):
     items = instructions(text)
     if items and LEGACY_FROM_45.fullmatch(items[0][1]):
-        return convert45(text, base_from, built, fskx, installed or {}, snapshot, allow, drop, repin, source, apt)
-    own = drop_lines(split(text), drop)
+        return convert45(text, base_from, built, fskx, installed or {}, snapshot, allow, drop, repin, source, apt, bugs_from)
+    own, bugs = remove_bugs(split(text))
+    if bugs:
+        kinds = bayes_kinds(fskx, declared or {})
+        if kinds - {"openbugs"}:
+            raise Unsupported(f"Bayesian tooling ({', '.join(sorted(kinds - {'openbugs'}))}): needs its own base, write it by hand")
+        if not bugs_from:
+            raise Unsupported("uses OpenBUGS: needs the r-3.6.3-bugs base; its digest is not in CURATOR_GUIDE.md yet, pass --bugs-from")
+        base_from = bugs_from
+    own = drop_lines(own, drop)
     pins, pin_notes, verify = pin_lines(own, declared or {}, installed or {}, set(allow), repin)
     pin_notes += [f"the legacy lines installing {n} are left out: the base's version stays" for n in drop]
     own = own + pins
     date = snapshot_for(own, snapshot)
     lines = [f"# Converted from the legacy Dockerfile{source} by tools/legacy_to_base.py; build and smoke-test it, then adjust by hand.",
-             "# On the shared base image bases/r-3.6.3 (rocker/tidyverse 3.6.3-ubuntu18.04 + curl, cmake, Miniconda, the harness",
+             "# On the shared base image bases/" + ("r-3.6.3-bugs (= bases/r-3.6.3 + OpenBUGS 3.2.3 compiled once; r-3.6.3 is" if bugs else "r-3.6.3 (")
+             + " rocker/tidyverse 3.6.3-ubuntu18.04 + curl, cmake, Miniconda, the harness",
              "# conda environment, remotes, jsonlite); the base is named by digest."]
+    if bugs:
+        pin_notes = ["the legacy lines that apt-installed JAGS and 32-bit libraries and compiled OpenBUGS 3.2.3 are replaced by the bugs base; "
+                     "the model does not use JAGS (checked in its scripts)"] + pin_notes
     lines += [f"# CHECK: {n}" for n in notes(own) + pin_notes]
     lines += [f"FROM {base_from}", ""]
     if date:
@@ -457,11 +518,17 @@ def cmd_convert(a):
         base_from = default_base_from(BASE45_FROM_PATTERN, "r-4.5")
     else:
         base_from = default_base_from()
+    bugs_from = a.bugs_from
+    if not bugs_from:
+        try:
+            bugs_from = default_base_from(BUGS45_FROM_PATTERN if mode45 else BUGS36_FROM_PATTERN, "bugs")
+        except SystemExit:
+            bugs_from = None
     declared = read_declared(a.fskx) if a.fskx else None
     installed = read_installed(a.installed or (DEFAULT_INSTALLED_45 if mode45 else DEFAULT_INSTALLED)) if (a.fskx or mode45) else None
     try:
         result = convert(text, base_from, a.snapshot, source, declared, installed, a.allow or [], a.drop or [], a.repin or [],
-                         built=str(built) if built else None, fskx=a.fskx, apt=a.apt or [])
+                         built=str(built) if built else None, fskx=a.fskx, apt=a.apt or [], bugs_from=bugs_from)
     except Unsupported as e:
         sys.exit(f"{a.model_id}: {e}")
     if not a.models_dir:
@@ -504,6 +571,7 @@ def main():
     c.add_argument("--dockerfile")
     c.add_argument("--model-id", required=True)
     c.add_argument("--models-dir")
+    c.add_argument("--bugs-from", help="complete image reference of the bugs base (r-3.6.3-bugs or r-4.5-bugs) for OpenBUGS models (default: the line of CURATOR_GUIDE.md)")
     c.add_argument("--base-from", help="complete image reference with digest (default: the r-3.6.3 or r-4.5 line of CURATOR_GUIDE.md)")
     c.add_argument("--snapshot", help="YYYY-MM-DD of the Posit CRAN snapshot, or none (default: R 3.6.3 mode decided by the packages, R 4.5 mode the build date of the legacy image)")
     c.add_argument("--fskx", help="the model's FSKX file: enforce the package versions of its packages.json")

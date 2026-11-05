@@ -7,6 +7,10 @@ Language-agnostic on purpose: the image is run the way the Model Execution Servi
 (JSON config at /workspace/config, results in /data) and must write a valid, non-empty
 /data/output.json. The container exit code says nothing (the harness exits 0 when the
 model script fails), and the S3 upload is expected to fail here (no credentials).
+
+Exception for legacy models (decided 2026-11-05): some old models declare no output parameters at all, so
+output.json is empty (`{}` or `[]`). That passes when the model produced a plot (a non-empty plot.png/.svg/.jpg/.pdf
+in /data); the run prints a note. New models are expected to declare their outputs (curation criteria).
 """
 import argparse
 import json
@@ -16,11 +20,22 @@ import subprocess
 import sys
 import tempfile
 
+PLOT_SUFFIXES = (".png", ".svg", ".jpg", ".jpeg", ".pdf")
+
 CONFIG = {
     "command": "simulate",
     "parameters": {"simulation_id": "smoke-test", "plot_type": "png"},
     "result_bucket_s3": "smoke-test-no-upload",
 }
+
+
+def has_plot(data_dir):
+    """True if the model left a plot in /data (the harness names it plot.<type>)."""
+    for name in os.listdir(data_dir):
+        path = os.path.join(data_dir, name)
+        if name.lower().startswith("plot.") and name.lower().endswith(PLOT_SUFFIXES) and os.path.isfile(path) and os.path.getsize(path) > 0:
+            return True
+    return False
 
 
 def run_smoke_test(image, timeout=900, keep=None, platform="linux/amd64"):
@@ -49,7 +64,10 @@ def run_smoke_test(image, timeout=900, keep=None, platform="linux/amd64"):
         try:
             with open(output_path) as f:
                 if not json.load(f):
-                    problems.append("/data/output.json is empty")
+                    if has_plot(data_dir):
+                        print("note: output.json is empty (the model declares no outputs) but it produced a plot: accepted as a legacy model")
+                    else:
+                        problems.append("/data/output.json is empty and no plot was produced")
         except ValueError as e:
             problems.append(f"/data/output.json is not valid JSON: {e}")
 
