@@ -5,7 +5,7 @@
 # CHECK: the legacy lines that apt-installed JAGS and 32-bit libraries and compiled OpenBUGS 3.2.3 are replaced by the bugs base; the model does not use JAGS (checked in its scripts)
 # CHECK: packages.json declares R2OpenBUGS 3.2-3.2 but the legacy lines install 3.2-3.2.1: decide which one is right
 # CHECK: R2OpenBUGS 3.2-3.2 is installed again at the end: a later legacy line replaces it
-FROM test/r-3.6.3-bugs
+FROM harbor.cloudferro-dev.risk-ai-cloud.com/fskx-base/r-3.6.3-bugs@sha256:219c0ad200231a88a175c722a4347ea29f322fca25988097c99bf4503bf9f2b3
 
 # Dated CRAN snapshot: ggplot2 >= 3.4 does not install from today's CRAN on R 3.6.3 (see bases/r-3.6.3/example-ggplot2-group.Dockerfile).
 RUN echo "options(repos = c(CRAN = 'https://packagemanager.posit.co/cran/2024-11-01'))" > /.Rprofile

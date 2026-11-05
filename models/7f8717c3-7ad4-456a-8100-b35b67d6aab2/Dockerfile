@@ -2,7 +2,7 @@
 # On the shared base image bases/r-3.6.3-bugs (= bases/r-3.6.3 + OpenBUGS 3.2.3 compiled once; r-3.6.3 is rocker/tidyverse 3.6.3-ubuntu18.04 + curl, cmake, Miniconda, the harness
 # conda environment, remotes, jsonlite); the base is named by digest.
 # CHECK: the legacy lines that apt-installed JAGS and 32-bit libraries and compiled OpenBUGS 3.2.3 are replaced by the bugs base; the model does not use JAGS (checked in its scripts)
-FROM test/r-3.6.3-bugs
+FROM harbor.cloudferro-dev.risk-ai-cloud.com/fskx-base/r-3.6.3-bugs@sha256:219c0ad200231a88a175c722a4347ea29f322fca25988097c99bf4503bf9f2b3
 
 RUN R -e "require(remotes)" -e "install_version('R2OpenBUGS', version = '3.2-3.2.1')"
 RUN R -e "missing <- setdiff(c('R2OpenBUGS'), rownames(installed.packages())); if (length(missing) > 0) stop(paste('R packages failed to install:', paste(missing, collapse = ', ')))"

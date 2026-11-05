@@ -5,7 +5,7 @@
 # model only names comes in the version of that day.
 # CHECK: the legacy image installed JAGS, the model does not use it (no rjags/R2jags in its scripts or packages.json): not installed
 # CHECK: system packages of the legacy image are not installed (libcurl4-openssl-dev, libfreetype6-dev, libglu1-mesa-dev, libssl-dev, libx11-dev, libxml2-dev): the Posit binaries only need the runtime libraries of the base; the load check at the end fails the build if one is missing
-FROM test/r-4.5-bugs
+FROM harbor.cloudferro-dev.risk-ai-cloud.com/fskx-base/r-4.5-bugs@sha256:3d62883ac0320b2fbb7d94624ded2faa736a14e19c5d603d112c30fee5f9e957
 
 RUN echo "options(repos = c(CRAN = 'https://p3m.dev/cran/__linux__/noble/2025-09-26'))" > /.Rprofile
 
