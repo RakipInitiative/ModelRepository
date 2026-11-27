@@ -34,7 +34,7 @@ Two more switches for those cases: --drop PACKAGE removes the legacy line(s) tha
 base cannot build at all, e.g. MASS 7.3-57 on R 3.6.3; the base's own version stays), and --repin PACKAGE installs the declared
 version again at the end (for a package that a later install in the legacy lines upgraded, e.g. gtable).
 
-R 4.5 mode (needs --fskx): the legacy images of these models (r2u apt packages, the floating tidyverse:4.5) cannot be rebuilt
+R 4.5 mode (needs --fskx): the legacy images of these models (r2u apt packages, the floating tidyverse:4.5, r-base:4.5.x) cannot be rebuilt
 line by line, they never pinned anything. The Dockerfile is generated from what is known about the model instead: FROM the lean
 bases/r-4.5 (digest from CURATOR_GUIDE.md), CRAN pointed to the Posit Package Manager snapshot of the day the legacy image was
 built (the last evidence of a working environment; --snapshot YYYY-MM-DD overrides), then the packages: install_version for
@@ -67,7 +67,7 @@ BASE_FROM_PATTERN = re.compile(r"FROM\s+(\S+/fskx-base/r-3\.6\.3@sha256:[0-9a-f]
 BASE45_FROM_PATTERN = re.compile(r"FROM\s+(\S+/fskx-base/r-4\.5@sha256:[0-9a-f]{64})")
 BUGS36_FROM_PATTERN = re.compile(r"FROM\s+(\S+/fskx-base/r-3\.6\.3-bugs@sha256:[0-9a-f]{64})")
 BUGS45_FROM_PATTERN = re.compile(r"FROM\s+(\S+/fskx-base/r-4\.5-bugs@sha256:[0-9a-f]{64})")
-LEGACY_FROM_45 = re.compile(r"FROM (rocker/r2u:(latest|24\.04)|rocker/tidyverse:4\.5)")
+LEGACY_FROM_45 = re.compile(r"FROM (rocker/r2u:(latest|24\.04)|rocker/tidyverse:4\.5|rocker/r-base:4\.5(\.\d+)?)")
 SNAPSHOT_45 = "https://p3m.dev/cran/__linux__/noble/{}"
 MINICONDA = "https://repo.anaconda.com/miniconda/Miniconda3-py38_23.5.0-3-Linux-x86_64.sh"
 
@@ -332,7 +332,7 @@ def legacy_45(text):
 def convert45(text, base_from, built, fskx_path, installed, snapshot=None, allow=(), drop=(), repin=(), source="", apt=(), bugs_from=None):
     items = instructions(text)
     if not items or not LEGACY_FROM_45.fullmatch(items[0][1]):
-        raise Unsupported("does not start with FROM rocker/r2u:latest, rocker/r2u:24.04 or rocker/tidyverse:4.5")
+        raise Unsupported("does not start with FROM rocker/r2u:latest, rocker/r2u:24.04, rocker/tidyverse:4.5 or rocker/r-base:4.5.x")
     if not fskx_path:
         raise Unsupported("the R 4.5 mode needs --fskx: the declared versions and the packages the scripts load are read from it")
     date = snapshot or built

@@ -1,0 +1,4 @@
+version: 1
+cpu: 1
+ram: 1
+gpu: 0
