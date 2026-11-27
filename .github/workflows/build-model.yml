@@ -57,7 +57,7 @@ env:
   HARBOR_PROJECT: fskx
   HARBOR_REPO_PREFIX: models
   HARBOR_BASE_PROJECT: fskx-base   # project of the shared base images, see build-base.yml
-  FSKX_LOOKUP_URL: https://api-gateway.cloudferro-dev.risk-ai-cloud.com/model-lookup-service
+  FSKX_LOOKUP_URL: https://fskx-api-gateway-service.risk-ai-cloud.com/model-lookup-service
 
 jobs:
   detect:

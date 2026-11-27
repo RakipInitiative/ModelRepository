@@ -54,7 +54,7 @@ from fskx_dockerfile import dockerfile_from_model
 REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 HARNESS_DIR = os.path.join(REPO_ROOT, "harness")
 
-DEFAULT_LOOKUP_URL = "https://api-gateway.cloudferro-dev.risk-ai-cloud.com/model-lookup-service"
+DEFAULT_LOOKUP_URL = "https://fskx-api-gateway-service.risk-ai-cloud.com/model-lookup-service"
 ORIGINAL_FILE_NAME = "fskx_file.fskx"
 MODEL_ID_PATTERN = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._-]*$")
 
